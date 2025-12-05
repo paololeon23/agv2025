@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
             html: "columnas/definicion.html",
             js: "columnas/app.js"
         }
-        // Aquí puedes agregar más páginas fácilmente
+        // Aquí agregarás más módulos
     };
 
     // ============================================================================
@@ -32,7 +32,20 @@ document.addEventListener("DOMContentLoaded", () => {
     async function loadPage(pageName) {
 
         const page = PAGES[pageName];
-        if (!page) return console.error("Página NO encontrada:", pageName);
+
+        // ⛔ SI LA PÁGINA NO EXISTE → MOSTRAR MENSAJE
+        if (!page) {
+            contentArea.innerHTML = `
+                <div style="padding:25px;">
+                    <h2 style="color:#333; margin-bottom:10px;">🚧 En Construcción</h2>
+                    <p style="font-size:16px; color:#555;">
+                        Se está trabajando en esta sección.
+                    </p>
+                </div>
+            `;
+            removeDynamicScripts();
+            return;
+        }
 
         // 1️⃣ Cargar HTML
         try {
@@ -87,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             highlightMenu(key);
 
-            // 🔥 HASH ROUTING
+            // HASH ROUTING
             location.hash = `#/${key}`;
         });
     });
@@ -105,20 +118,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
             highlightMenu(key);
 
-            // 🔥 HASH ROUTING
             location.hash = `#/${key}`;
         });
     });
 
     // ============================================================================
-    // CARGA DE PÁGINA SEGÚN EL HASH
+    // CARGA DESDE HASH
     // ============================================================================
     function loadFromHash() {
         const hash = location.hash.replace("#/", "");
-        const valid = PAGES[hash] ? hash : "inicio";
 
-        highlightMenu(valid);
-        loadPage(valid);
+        // ⛔ SI LA PÁGINA NO EXISTE → NO ir a inicio
+        if (!PAGES[hash]) {
+            highlightMenu(hash); // igual resalta el menú
+            loadPage(hash);
+            return;
+        }
+
+        highlightMenu(hash);
+        loadPage(hash);
     }
 
     // Escuchar cambios en el hash
