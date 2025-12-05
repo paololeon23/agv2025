@@ -27,24 +27,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ============================================================================
-    // MOSTRAR SPINNER / LOADING
-    // ============================================================================
-    function showLoading() {
-        contentArea.innerHTML = `
-            <div style="padding:20px; text-align:center;">
-                <h3>Cargando...</h3>
-            </div>
-        `;
-    }
-
-    // ============================================================================
     // FUNCIÓN PRINCIPAL PARA CARGAR (HTML + CSS + JS)
     // ============================================================================
     async function loadPage(pageName) {
         const page = PAGES[pageName];
         if (!page) return console.error("Página no encontrada:", pageName);
-
-        showLoading();
 
         // 1️⃣ CARGAR HTML
         try {
@@ -64,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // 2️⃣ CARGAR CSS (evitar cache)
+        // 2️⃣ CARGAR CSS (evita cache)
         if (!document.getElementById(`css-${pageName}`)) {
             const link = document.createElement("link");
             link.rel = "stylesheet";
@@ -73,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.head.appendChild(link);
         }
 
-        // 3️⃣ LIMPIAR JS ANTIGUOS Y CARGAR NUEVO
+        // 3️⃣ LIMPIAR JS ANTIGUOS Y CARGAR EL NUEVO
         removeDynamicScripts();
         const script = document.createElement("script");
         script.src = `${page.js}?v=${Date.now()}`;
@@ -106,6 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
         item.addEventListener("click", (e) => {
             e.preventDefault();
             e.stopPropagation();
+
             const key = item.getAttribute("data-content");
             if (!key) return;
 
@@ -122,6 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
         sub.addEventListener("click", (e) => {
             e.preventDefault();
             e.stopPropagation();
+
             const key = sub.getAttribute("data-content");
             if (!key) return;
 
@@ -141,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ============================================================================
-    // DETECTAR RUTA DIRECTA
+    // DETECTAR RUTA DIRECTA (EJ: /columnas)
     // ============================================================================
     const path = location.pathname.replace("/", "");
     const validPage = PAGES[path] ? path : "inicio";
