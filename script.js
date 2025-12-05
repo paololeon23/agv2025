@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         columnas: {
             html: "columnas/definicion.html",
-            css: "columnas/styles.css",
             js: "columnas/app.js"
         }
     };
