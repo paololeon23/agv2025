@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ============================================================================
     // CONFIGURACIÓN CENTRAL DE PÁGINAS
-    // (Puedes agregar más sin tocar la lógica)
     // ============================================================================
     const PAGES = {
         inicio: {
@@ -21,14 +20,14 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // ============================================================================
-    // LIMPIAR SCRIPTS PARA EVITAR ACUMULACIÓN Y BUGS
+    // LIMPIAR SCRIPTS DINÁMICOS PARA EVITAR ACUMULACIÓN
     // ============================================================================
     function removeDynamicScripts() {
         document.querySelectorAll("script[data-dynamic]").forEach(s => s.remove());
     }
 
     // ============================================================================
-    // MOSTRAR SPINNER / CARGANDO
+    // MOSTRAR SPINNER / LOADING
     // ============================================================================
     function showLoading() {
         contentArea.innerHTML = `
@@ -39,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ============================================================================
-    // FUNCIÓN PRINCIPAL PARA CARGAR PÁGINA (HTML + CSS + JS)
+    // FUNCIÓN PRINCIPAL PARA CARGAR (HTML + CSS + JS)
     // ============================================================================
     async function loadPage(pageName) {
         const page = PAGES[pageName];
@@ -50,12 +49,9 @@ document.addEventListener("DOMContentLoaded", () => {
         // 1️⃣ CARGAR HTML
         try {
             const res = await fetch(page.html);
-
             if (!res.ok) throw new Error("No se pudo cargar el HTML");
-
             const html = await res.text();
             contentArea.innerHTML = html;
-
         } catch (err) {
             contentArea.innerHTML = `
                 <div style="padding:20px;">
@@ -68,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // 2️⃣ CARGAR CSS (con versión para evitar cache)
+        // 2️⃣ CARGAR CSS (evitar cache)
         if (!document.getElementById(`css-${pageName}`)) {
             const link = document.createElement("link");
             link.rel = "stylesheet";
@@ -77,9 +73,8 @@ document.addEventListener("DOMContentLoaded", () => {
             document.head.appendChild(link);
         }
 
-        // 3️⃣ LIMPIAR JS ANTIGUOS Y CARGAR EL NUEVO
+        // 3️⃣ LIMPIAR JS ANTIGUOS Y CARGAR NUEVO
         removeDynamicScripts();
-
         const script = document.createElement("script");
         script.src = `${page.js}?v=${Date.now()}`;
         script.dataset.dynamic = "true";
@@ -105,43 +100,39 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ============================================================================
-    // EVENTOS DEL MENÚ PRINCIPAL
+    // EVENTOS MENÚ PRINCIPAL
     // ============================================================================
     menuItems.forEach(item => {
         item.addEventListener("click", (e) => {
             e.preventDefault();
             e.stopPropagation();
-
             const key = item.getAttribute("data-content");
             if (!key) return;
 
             highlightMenu(key);
             loadPage(key);
-
             history.pushState({ page: key }, "", `/${key}`);
         });
     });
 
     // ============================================================================
-    // EVENTOS DEL SUBMENÚ
+    // EVENTOS SUBMENÚ
     // ============================================================================
     subItems.forEach(sub => {
         sub.addEventListener("click", (e) => {
             e.preventDefault();
             e.stopPropagation();
-
             const key = sub.getAttribute("data-content");
             if (!key) return;
 
             highlightMenu(key);
             loadPage(key);
-
             history.pushState({ page: key }, "", `/${key}`);
         });
     });
 
     // ============================================================================
-    // CONTROL DEL BOTÓN ATRÁS / ADELANTE
+    // ATRÁS / ADELANTE DEL NAVEGADOR
     // ============================================================================
     window.addEventListener("popstate", (e) => {
         const page = e.state?.page || "inicio";
@@ -150,7 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ============================================================================
-    // AL REFRESCAR O ENTRAR DIRECTO A UNA RUTA
+    // DETECTAR RUTA DIRECTA
     // ============================================================================
     const path = location.pathname.replace("/", "");
     const validPage = PAGES[path] ? path : "inicio";
@@ -158,4 +149,5 @@ document.addEventListener("DOMContentLoaded", () => {
     highlightMenu(validPage);
     loadPage(validPage);
     history.replaceState({ page: validPage }, "", `/${validPage}`);
+
 });
