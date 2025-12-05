@@ -3,35 +3,41 @@ document.addEventListener("DOMContentLoaded", () => {
     const menuItems = document.querySelectorAll(".menu-item");
     const subItems = document.querySelectorAll(".submenu-item");
     const contentArea = document.querySelector(".dynamic-content");
+    const pageTitleDiv = document.querySelector(".page-title"); // <- agregado
 
-    // ============================================================================
+    // ====================================================================
     // CONFIGURACIÓN CENTRAL DE PÁGINAS
-    // ============================================================================
+    // ====================================================================
     const PAGES = {
         inicio: {
             html: "inicio/inicio.html",
-            js: "inicio/inicio.js"
+            js: "inicio/inicio.js",
+            title: "INICIO" // <- agregado
         },
         columnas: {
             html: "columnas/definicion.html",
-            js: "columnas/app.js"
+            js: "columnas/app.js",
+            title: "DEFINICIONES" // <- agregado
         }
         // Aquí agregarás más módulos
     };
 
-    // ============================================================================
+    // ====================================================================
     // LIMPIAR SCRIPTS DINÁMICOS
-    // ============================================================================
+    // ====================================================================
     function removeDynamicScripts() {
         document.querySelectorAll("script[data-dynamic]").forEach(s => s.remove());
     }
 
-    // ============================================================================
+    // ====================================================================
     // FUNCIÓN PARA CARGAR HTML + JS
-    // ============================================================================
+    // ====================================================================
     async function loadPage(pageName) {
 
         const page = PAGES[pageName];
+
+        // ⬅️ actualizar título de la página
+        pageTitleDiv.textContent = page?.title || "En Construcción";
 
         // ⛔ SI LA PÁGINA NO EXISTE → MOSTRAR MENSAJE
         if (!page) {
@@ -76,9 +82,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // ============================================================================
+    // ====================================================================
     // MENÚ ACTIVO
-    // ============================================================================
+    // ====================================================================
     function highlightMenu(key) {
         menuItems.forEach(m => m.classList.remove("active"));
         subItems.forEach(s => s.classList.remove("active"));
@@ -87,9 +93,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (mainItem) mainItem.classList.add("active");
     }
 
-    // ============================================================================
+    // ====================================================================
     // CLIC EN MENÚ PRINCIPAL
-    // ============================================================================
+    // ====================================================================
     menuItems.forEach(item => {
         item.addEventListener("click", (e) => {
             e.preventDefault();
@@ -105,9 +111,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // ============================================================================
+    // ====================================================================
     // CLIC EN SUBMENÚ
-    // ============================================================================
+    // ====================================================================
     subItems.forEach(sub => {
         sub.addEventListener("click", (e) => {
             e.preventDefault();
@@ -122,9 +128,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // ============================================================================
+    // ====================================================================
     // CARGA DESDE HASH
-    // ============================================================================
+    // ====================================================================
     function loadFromHash() {
         const hash = location.hash.replace("#/", "");
 
@@ -142,6 +148,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // Escuchar cambios en el hash
     window.addEventListener("hashchange", loadFromHash);
 
-    // Carga inicial
-    loadFromHash();
+    // Carga inicial al abrir la página
+    if (!location.hash || location.hash === "#/") {
+        // Primera vez, sin hash → ir a inicio
+        location.hash = "#/inicio";
+    } else {
+        // Si hay hash, cargar la página correspondiente
+        loadFromHash();
+    }
 });

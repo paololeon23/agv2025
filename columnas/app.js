@@ -1,3 +1,4 @@
+(() => {
 const fileInput = document.getElementById('file');
 const jsonFileInput = document.getElementById('jsonFile');
 const table = document.getElementById('sheetTable');
@@ -388,3 +389,5 @@ function renderPagination() {
 
   paginationContainer.appendChild(ul);
 }
+
+})();
