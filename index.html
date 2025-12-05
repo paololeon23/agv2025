@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar Estilo AGROVISION</title>
+    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- XLSX -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+<body>
+
+    <div class="main-container">
+
+        <div class="top-header-logo-area">
+            <img src="logo.png" alt="Logo" class="app-logo">
+        </div>
+
+        <main class="content-area">
+            <header class="top-bar">
+                <div class="page-title">Home</div>
+                <div class="user-info">
+                    <span class="lang-switch">ES | EN</span>
+                    <i class="fas fa-user-circle user-icon"></i>
+                </div>
+            </header>
+
+            <div class="dynamic-content">
+                <h2 id="content-header">Configuración de Seguridad</h2>
+                <p id="content-text">Gestión de roles, permisos y acceso a la plataforma.</p>
+            </div>
+        </main>
+
+        <aside class="sidebar">
+            
+            <div class="top-logo-spacer"></div>
+
+            <div class="search-box">
+                <input type="text" placeholder="Buscar..." aria-label="Buscar en el menú">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="#" class="menu-item active" data-content="inicio">
+                    <i class="fas fa-home icon-left"></i>
+                    <span>Inicio</span>
+                </a>
+
+                 <a href="#" class="menu-item" data-content="columnas">
+                    <i class="fas fa-database icon-left"></i>
+                    <span>Definiciones</span>
+                    <i class="fas fa-chevron-right icon-right"></i>
+                </a>
+
+                <a href="#" class="menu-item" data-content="procesos">
+                    <i class="fas fa-sync-alt icon-left"></i>
+                    <span>Procesos</span>
+                    <i class="fas fa-chevron-right icon-right"></i>
+                </a>
+
+                <a href="#" class="menu-item" data-content="rossi">
+                    <i class="fas fa-print icon-left"></i>
+                    <span>ROSSI</span>
+                    <i class="fas fa-chevron-right icon-right"></i>
+                </a>
+
+                <a href="#" class="menu-item" data-content="calidad">
+                    <i class="fas fa-check-square icon-left"></i>
+                    <span>Calidad</span>
+                    <i class="fas fa-chevron-right icon-right"></i>
+                </a>
+
+                <a href="#" class="menu-item" data-content="log">
+                    <i class="fas fa-binoculars icon-left"></i>
+                    <span>Log</span>
+                    <i class="fas fa-chevron-right icon-right"></i>
+                </a>
+
+                <!-- SUBMENÚ INICIA CERRADO — SIN ACTIVE, SIN CHEVRON ABAJO -->
+                <a href="#" class="menu-item has-submenu" data-content="seguridad">
+                    <i class="fas fa-cog icon-left"></i>
+                    <span>Seguridad</span>
+                    <i class="fas fa-chevron-right icon-right submenu-arrow"></i>
+                </a>
+
+                <!-- SUBMENÚ SIN active-submenu -->
+                <div class="submenu">
+                    <a href="#" class="submenu-item">
+                        <i class="fas fa-user icon-left-sm"></i> Usuario
+                    </a>
+                    <a href="#" class="submenu-item">
+                        <i class="fas fa-list-ul icon-left-sm"></i> Menú
+                    </a>
+                    <a href="#" class="submenu-item">
+                        <i class="fas fa-user icon-left-sm"></i> Usuario SAP
+                    </a>
+                </div>
+
+            </nav>
+        </aside>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Reordenar columnas - Excel → Tabla → JSON</title>
+  <!-- CSS -->
+  <link rel="stylesheet" href="/columnas/styles.css">
+</head>
+
+<body>
+<div class="wrap">
+
+  <!-- TÍTULO CENTRAL -->
+  <h1 class="title-center">Sube un Excel / CSV y reordena columnas</h1>
+
+  <!-- NUEVA DISTRIBUCIÓN DE CONTROLES -->
+  <div class="controls-grid" style="margin-bottom: 20px;">
+      <!-- COLUMNA IZQUIERDA -->
+      <div class="col-left">
+          <label class="lbl">Archivo Excel / CSV:</label>
+          <input id="file" type="file" accept=".xlsx,.xls,.csv" />
+      </div>
+
+      <div class="col-left">
+          <label class="lbl">Importar orden JSON:</label>
+          <input id="jsonFile" type="file" accept="application/json" disabled />
+      </div>
+  </div>
+  
+  <div class="controls-grid" style="margin-bottom: 20px;">
+        <!-- COLUMNA DERECHA -->
+      <div class="col-right">
+
+          <button id="exportJson" class="full" disabled>
+              Exportar-JSON
+          </button>
+
+          <button id="downloadXlsx" class="full" disabled>
+              Descargar Excel
+          </button>
+
+          <button id="autoIds" class="ghost full">
+            Regresar-IDs
+          </button>
+
+          <button id="clearAll" class="danger full">
+            Limpiar
+          </button>
+
+
+      </div>
+    </div>
+
+<div class="table-controls">
+
+    <label>Mostrar:
+        <select id="rowsPerPage">
+            <option value="10" selected>10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </select>
+        filas
+    </label>
+
+    <div class="search-box">
+        <input id="searchInput" type="text" placeholder="Buscar en toda la tabla...(LOTE - ID)">
+    </div>
+
+</div>
+
+  <!-- TABLA -->
+  <div class="table-wrap" id="tableWrap">
+      <table id="sheetTable" hidden>
+          <thead>
+              <tr id="headerRow"></tr>
+          </thead>
+          <tbody id="bodyRows"></tbody>
+      </table>
+      <div id="emptyNote" class="note">No hay tabla cargada. Sube un archivo.</div>
+    <!-- JS generará la lista <ul class="pagination"> aquí -->
+    </div>
+        <div id="paginationContainer" class="pagination-wrap"></div>
+  </div>
+
+  
+</div>
+
+<!-- JS -->
+<script src="/columnas/app.js"></script>
+</body>
+</html>

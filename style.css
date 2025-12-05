@@ -1,0 +1,322 @@
+/* Importar una fuente moderna (similar a la usada en el ejemplo) */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+:root {
+    /* Colores Actualizados */
+    --color-primary-blue: #0E1B40; /* Azul Oscuro (Fondo Sidebar) */
+    --color-active-green: #7de2ff; /* Verde más suave para el elemento ACTIVO */
+    --color-submenu-bg: #1F3668; /* Azul más oscuro para diferenciar el submenú */
+    
+    --color-text-white: #FFFFFF;
+    --color-text-dark: #0E1B40; /* Añadida para el texto activo sobre fondo claro */
+    --color-search-bg: #EAEAEA; /* Fondo de búsqueda más claro */
+    --color-page-bg: #FFFFFF;
+    
+    /* COLORES DE LA TOP BAR */
+    --color-home-text: #0E1B40; 
+    --color-topbar-border: #0E1B40; 
+    --color-user-icon: #0E1B40; 
+    
+    --header-height: 70px; 
+    --sidebar-width: 230px;
+    --active-item-margin: 10px; /* Margen para crear espacio en los lados del menú */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background-color: var(--color-page-bg);
+}
+
+/* --- BARRA SUPERIOR DEL LOGO --- */
+
+.top-header-logo-area {
+    width: var(--sidebar-width);
+    height: var(--header-height);
+    background-color: var(--color-page-bg); 
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1020; 
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+}
+
+/* Estilo para la imagen del logo */
+.app-logo {
+    max-height: 116%; 
+    max-width: 90%;
+    object-fit: contain;
+}
+
+/* --- Sidebar sin scroll ni direction --- */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--color-primary-blue);
+    color: var(--color-text-white);
+    padding: 0;
+
+    position: fixed;
+    height: calc(100vh - var(--header-height));
+    top: var(--header-height);
+    z-index: 1010;
+
+    border-radius: 0 40px 0 0 !important;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Importante */
+}
+
+/* --- SOLO el menú debe tener scroll a la izquierda --- */
+.nav-menu {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    /* mover scroll a la izquierda */
+    direction: rtl;
+    scrollbar-color: var(#fff) var(#fff);
+}
+
+/* Mantener texto hacia la izquierda NORMAL */
+.nav-menu * {
+    direction: ltr;
+}
+
+/* Scroll estético (solo WebKit) */
+.nav-menu::-webkit-scrollbar {
+    width: 6px;
+}
+.nav-menu::-webkit-scrollbar-track {
+    background: var(#fff);
+}
+.nav-menu::-webkit-scrollbar-thumb {
+    background: var(#fff);
+    border-radius: 10px;
+}
+
+
+
+.top-logo-spacer {
+    height: 15px; 
+}
+
+/* Caja de Búsqueda */
+.search-box {
+    /* Mantenemos el margen del menú activo para que la caja parezca flotar */
+    padding: 15px var(--active-item-margin) 25px var(--active-item-margin); 
+    position: relative;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 10px 10px 10px 40px;
+    border: none;
+    /* Borde redondeado de la caja de búsqueda */
+    border-radius: 20px; 
+    background-color: var(--color-search-bg);
+    color: #333;
+    font-size: 1rem;
+}
+
+.search-icon {
+    position: absolute;
+    /* Ajustamos la posición basado en el padding lateral */
+    left: calc(15px + var(--active-item-margin) / 2); 
+    top: 25px;
+    color: #666;
+    font-size: 1rem; 
+}
+
+/* Menú de Navegación */
+.nav-menu {
+    flex-grow: 1;
+    /* Padding lateral para que los ítems del menú no estén pegados a los bordes */
+    padding: 0 var(--active-item-margin); 
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    text-decoration: none;
+    color: var(--color-text-white);
+    font-size:14px; 
+    font-weight: 500;
+    margin: 5px 0; 
+}
+
+.menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    /* Borde redondeado al hacer hover */
+    border-radius: 20px; 
+}
+
+.icon-left {
+    width: 20px;
+    margin-right: 10px;
+    font-size: 1rem; 
+}
+
+.icon-right {
+    margin-left: auto;
+    font-size: 0.7rem;
+    opacity: 0.7;
+    transition: transform 0.3s;
+}
+
+/* Estilo del Ítem Activo */
+.menu-item.active {
+    background-color: var(--color-active-green); 
+    /* CORRECCIÓN: Texto oscuro sobre fondo verde, como en la imagen "Inicio" */
+    color: var(--color-text-dark); 
+    
+    /* Bordes redondeados para el ítem activo */
+    border-radius: 20px; 
+    padding: 12px 15px;
+}
+
+.menu-item.active:hover {
+    background-color: var(--color-active-green);
+}
+
+.menu-item.active .icon-left,
+.menu-item.active .icon-right {
+    /* Íconos oscuros en el activo */
+    color: var(--color-text-dark); 
+}
+
+/* --- Estilos del Submenú --- */
+
+.submenu {
+    max-height: 0;
+    overflow: hidden;
+    background-color: var(--color-submenu-bg); 
+    
+    /* Aplicar borde redondeado a la parte inferior del submenú */
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    margin-bottom: 5px; 
+}
+
+.submenu.active-submenu {
+    max-height: 500px; 
+    /* El submenú ya no necesita romper el redondeo del padre, solo se alinea */
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+/* SOLUCIÓN 2: Ajustes del ítem padre cuando el submenú está activo */
+.has-submenu.active {
+    /* Fondo verde para el elemento padre desglosado */
+    background-color: var(--color-active-green);
+    color: var(--color-text-dark);
+    
+    /* El padre debe perder el redondeo inferior para unirse al submenú */
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    margin-bottom: 0; /* Eliminar el margen entre el padre y el submenú */
+}
+
+/* El elemento padre desglosado debe tener iconos oscuros */
+.has-submenu.active .icon-left,
+.has-submenu.active .icon-right {
+    color: var(--color-text-dark);
+}
+
+.has-submenu:not(.active):hover {
+    /* Para que el hover funcione correctamente si el submenú está cerrado */
+    border-radius: 20px;
+}
+
+.has-submenu.active .submenu-arrow {
+    transform: rotate(180deg);
+}
+
+.submenu-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 15px 8px 30px; 
+    text-decoration: none;
+    /* Ítems del submenú deben ser blancos sobre fondo azul oscuro */
+    color: var(--color-text-white); 
+    font-size: 0.9rem;
+    font-weight: 400;
+    transition: background-color 0.2s;
+}
+
+.submenu-item:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Aplica el redondeo solo al último submenú-item (si existe) */
+/* NOTA: Estos se eliminan porque el redondeo se aplica al contenedor .submenu */
+/*
+.submenu-item:last-child {
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+*/
+.icon-left-sm {
+    width: 20px;
+    margin-right: 10px;
+    font-size: 0.85rem;
+}
+
+
+/* --- Estilos del Contenido Principal y Top Bar --- */
+
+.content-area {
+    margin-left: var(--sidebar-width); 
+    flex-grow: 1;
+    padding: 0;
+    background-color: var(--color-page-bg);
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    border-bottom: 2px solid var(--color-topbar-border); 
+    background-color: var(--color-page-bg);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: var(--header-height); 
+}
+
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--color-home-text); 
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.lang-switch {
+    font-weight: 500; 
+    color: #888; 
+}
+
+.user-icon {
+    font-size: 2.2rem; 
+    cursor: pointer;
+    color: var(--color-user-icon); 
+}
+
+.dynamic-content {
+    padding: 30px;
+}
