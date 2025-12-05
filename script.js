@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const PAGES = {
         inicio: {
             html: "inicio/inicio.html",
-            css: "inicio/inicio.css",
             js: "inicio/inicio.js"
         },
         columnas: {
@@ -27,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ============================================================================
-    // FUNCIÓN PRINCIPAL PARA CARGAR (HTML + CSS + JS)
+    // FUNCIÓN PRINCIPAL PARA CARGAR (HTML + JS)
     // ============================================================================
     async function loadPage(pageName) {
         const page = PAGES[pageName];
@@ -51,21 +50,15 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // 2️⃣ CARGAR CSS (evita cache)
-        if (!document.getElementById(`css-${pageName}`)) {
-            const link = document.createElement("link");
-            link.rel = "stylesheet";
-            link.href = `${page.css}?v=${Date.now()}`;
-            link.id = `css-${pageName}`;
-            document.head.appendChild(link);
-        }
-
-        // 3️⃣ LIMPIAR JS ANTIGUOS Y CARGAR EL NUEVO
+        // 2️⃣ LIMPIAR JS ANTIGUO Y CARGAR EL NUEVO
         removeDynamicScripts();
-        const script = document.createElement("script");
-        script.src = `${page.js}?v=${Date.now()}`;
-        script.dataset.dynamic = "true";
-        document.body.appendChild(script);
+
+        if (page.js) {
+            const script = document.createElement("script");
+            script.src = `${page.js}?v=${Date.now()}`;
+            script.dataset.dynamic = "true";
+            document.body.appendChild(script);
+        }
     }
 
     // ============================================================================
@@ -87,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ============================================================================
-    // EVENTOS MENÚ PRINCIPAL
+    // EVENTOS DEL MENÚ PRINCIPAL
     // ============================================================================
     menuItems.forEach(item => {
         item.addEventListener("click", (e) => {
@@ -104,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ============================================================================
-    // EVENTOS SUBMENÚ
+    // EVENTOS DEL SUBMENÚ
     // ============================================================================
     subItems.forEach(sub => {
         sub.addEventListener("click", (e) => {
