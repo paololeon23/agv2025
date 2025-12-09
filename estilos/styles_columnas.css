@@ -1,5 +1,5 @@
 :root {
-    --bg: #f5f6f8;            /* Fondo general claro */
+    --bg: #ffffff;            /* Fondo general claro */
     --card: #ffffff;          /* Tarjetas y contenedores */
     --border: #e2e5e9;        /* Líneas suaves */
     --muted: #7a8594;         /* Texto suave */
@@ -21,7 +21,7 @@ html, body {
    CONTENEDOR PRINCIPAL
 ============================ */
 .wrap {
-    max-width: 1100px;
+    max-width: 100%;
     margin: 30px auto;
     padding: 24px;
     background: var(--card);
@@ -165,7 +165,6 @@ tbody tr:hover {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
-    margin-bottom: 20px;
 }
 
 /* Cada columna */
@@ -227,8 +226,7 @@ input[type="file"]:focus {
 #searchInput {
     padding: 7px 12px;
     font-size: 14px;
-    width: 230px;
-
+    width: 250px;
     border: 2px solid #4a90e2;     /* azul */
     border-radius: 10px;           /* curvado */
     background: #fff;
@@ -321,4 +319,11 @@ button.danger:hover {
   background-color: #4a90e2;
   color: #fff;
   border-color: #4a90e2;
+}
+
+
+@media (max-width: 600px) {
+    .controls-grid {
+        grid-template-columns: 1fr; /* solo una columna en móviles */
+    }
 }

@@ -1,89 +1,82 @@
-<!doctype html>
-<html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>INICIO</title>
-  <!-- CSS -->
-</head>
+<!-- ===================================================
+     DASHBOARD AGROINDUSTRIAL — AGROVISIÓN
+=================================================== -->
 
-<body>
-<div class="wrap">
+<div class="dashboard-wrapper">
 
-  <!-- TÍTULO CENTRAL -->
-  <h1 class="title-center">INICIO</h1>
+    <!-- =============================
+         🔵 SECCIÓN DE KPIs
+    ============================== -->
+    <div class="kpi-grid">
 
-  <!-- NUEVA DISTRIBUCIÓN DE CONTROLES -->
-  <div class="controls-grid" style="margin-bottom: 20px;">
-      <!-- COLUMNA IZQUIERDA -->
-      <div class="col-left">
-          <label class="lbl">Archivo Excel / CSV:</label>
-          <input id="file" type="file" accept=".xlsx,.xls,.csv" />
-      </div>
+        <div class="kpi-card">
+            <h4>Producción Total (Toneladas)</h4>
+            <p id="kpi-production">0</p>
+            <span class="kpi-source">AGV / Agrovisión históricos</span>
+        </div>
 
-      <div class="col-left">
-          <label class="lbl">Importar orden JSON:</label>
-          <input id="jsonFile" type="file" accept="application/json" disabled />
-      </div>
-  </div>
-  
-  <div class="controls-grid" style="margin-bottom: 20px;">
-        <!-- COLUMNA DERECHA -->
-      <div class="col-right">
+        <div class="kpi-card">
+            <h4>Clientes Activos</h4>
+            <p id="kpi-clients">0</p>
+            <span class="kpi-source">AGV / Comercial ERP</span>
+        </div>
 
-          <button id="exportJson" class="full" disabled>
-              Exportar-JSON
-          </button>
+        <div class="kpi-card">
+            <h4>Trabajadores</h4>
+            <p id="kpi-workers">0</p>
+            <span class="kpi-source">AGV / Recursos Humanos</span>
+        </div>
 
-          <button id="downloadXlsx" class="full" disabled>
-              Descargar Excel
-          </button>
+        <div class="kpi-card">
+            <h4>Exportaciones Totales (Ton)</h4>
+            <p id="kpi-exports">0</p>
+            <span class="kpi-source">ADEX / Reportes internos</span>
+        </div>
 
-          <button id="autoIds" class="ghost full">
-            Regresar-IDs
-          </button>
-
-          <button id="clearAll" class="danger full">
-            Limpiar
-          </button>
-
-
-      </div>
     </div>
 
-<div class="table-controls">
+    <!-- =============================
+         📊 SECCIÓN DE GRÁFICOS
+    ============================== -->
 
-    <label>Mostrar:
-        <select id="rowsPerPage">
-            <option value="10" selected>10</option>
-            <option value="25">25</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-        </select>
-        filas
-    </label>
+    <div class="dashboard-grid">
 
-    <div class="search-box">
-        <input id="searchInput" type="text" placeholder="Buscar en toda la tabla...(LOTE - ID)">
+        <!-- 1️⃣ Comparación de fundos (barras) -->
+        <div class="card">
+            <h3>Comparación de fundos (kg exportados)</h3>
+            <canvas id="chartFondos"></canvas>
+        </div>
+
+        <!-- 2️⃣ Variedades más exportadas (doughnut) -->
+        <div class="card">
+            <h3>Variedades de arándanos y uva más exportadas</h3>
+            <canvas id="chartVariedades"></canvas>
+        </div>
+
+        <!-- 3️⃣ Variedades orgánicas (doughnut) -->
+        <div class="card">
+            <h3>Variedades orgánicas más exportadas</h3>
+            <canvas id="chartVariedadesOrg"></canvas>
+        </div>
+
+        <!-- 4️⃣ Sanidad por fundo (barras) -->
+        <div class="card">
+            <h3>Sanidad de cada fundo (%)</h3>
+            <canvas id="chartSanidad"></canvas>
+        </div>
+
+        <!-- 5️⃣ Cliente país con mayor exportación (barras) -->
+        <div class="card">
+            <h3>Cliente / país con mayor exportación (Ton)</h3>
+            <canvas id="chartClientesPais"></canvas>
+        </div>
+
+        <!-- 6️⃣ Acidez y Brix de uva y arándano (barras combinadas) -->
+        <div class="card">
+            <h3>Acidez y Brix de uva y arándano</h3>
+            <canvas id="chartAcidezBrix"></canvas>
+        </div>
+
     </div>
 
 </div>
-
-  <!-- TABLA -->
-  <div class="table-wrap" id="tableWrap">
-      <table id="sheetTable" hidden>
-          <thead>
-              <tr id="headerRow"></tr>
-          </thead>
-          <tbody id="bodyRows"></tbody>
-      </table>
-      <div id="emptyNote" class="note">No hay tabla cargada. Sube un archivo.</div>
-    <!-- JS generará la lista <ul class="pagination"> aquí -->
-    </div>
-        <div id="paginationContainer" class="pagination-wrap"></div>
-  </div>
-  
-</div>
-
-</body>
-</html>

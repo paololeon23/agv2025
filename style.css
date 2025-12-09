@@ -9,7 +9,7 @@
     
     --color-text-white: #FFFFFF;
     --color-text-dark: #0E1B40; /* Añadida para el texto activo sobre fondo claro */
-    --color-search-bg: #EAEAEA; /* Fondo de búsqueda más claro */
+    --color-search-bg: #ffffff; /* Fondo de búsqueda más claro */
     --color-page-bg: #FFFFFF;
     
     /* COLORES DE LA TOP BAR */
@@ -319,4 +319,19 @@ body {
 
 .dynamic-content {
     padding: 30px;
+}
+
+/* RESPONSIVEEEEEEEEEEEEEEEEEEEEEEE principal */
+
+/* Contenedor principal */
+.app-wrapper {
+    width: 100%;        /* ocupar todo el ancho disponible */
+    height: 100%;       /* ocupar todo el alto disponible */
+    min-width: 937px;   /* no se reduce más allá de 937px */
+    min-height: 594px;  /* no se reduce más allá de 594px */
+}
+
+/* Scroll solo cuando sea necesario */
+body {
+    overflow: auto;
 }

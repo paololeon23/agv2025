@@ -1,324 +1,140 @@
-:root {
-    --bg: #f5f6f8;            /* Fondo general claro */
-    --card: #ffffff;          /* Tarjetas y contenedores */
-    --border: #e2e5e9;        /* Líneas suaves */
-    --muted: #7a8594;         /* Texto suave */
-    --accent: #2f7cc0;        /* Azul corporativo */
-    --accent-soft: #d9e7f5;   /* Azul muy suave */
-}
-
-/* ============================
-   GENERAL
-============================ */
-html, body {    
-    margin: 0;
-    font-family: Inter, ui-sans-serif, system-ui;
-    background: var(--bg);
-    color: #222;
-}
-
-/* ============================
-   CONTENEDOR PRINCIPAL
-============================ */
-.wrap {
-    max-width: 1100px;
-    margin: 30px auto;
-    padding: 24px;
-    background: var(--card);
-    border-radius: 14px;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-    border: 1px solid var(--border);
-}
-
-h1 {
-    font-size: 20px;
-    margin: 0 0 12px;
-    color: #1e1e1e;
-}
-
-/* ============================
-   CONTROLES / BOTONES
-============================ */
-.controls {
+/* =======================================================
+   🎨 ESTILOS GLOBALES
+======================================================= */
+.dashboard-wrapper {
+    width: 100%;
     display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-bottom: 16px;
+    flex-direction: column;
+    gap: 25px;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 12px;
 }
 
-button {
-    background: var(--accent);
-    color: white;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    font-size: 14px;
-    transition: 0.2s ease;
-}
-
-button:hover {
-    background: #23639d;
-}
-
-button.ghost {
-    background: transparent;
-    color: var(--accent);
-    border: 1px solid var(--accent-soft);
-}
-
-button.ghost:hover {
-    background: var(--accent-soft);
-}
-
-/* ============================
-   TABLA
-============================ */
-.table-wrap {
-    overflow: auto;
-    border-radius: 10px;
-    background: #ffffff;
-    padding: 14px;
-    border: 1px solid var(--border);
-}
-
-table {
-    border-collapse: collapse;
-    min-width: 800px;
-    width: 100%;
-}
-
-th, td {
-    padding: 7px 12px;
-    border: 1px solid var(--border);
-    text-align: left;
-    font-size: 14px;
-    color: #2b2b2b;
-}
-
-th {
-    position: relative;
-    background: #f0f4f8; /* gris azul muy suave */
-    font-weight: 600;
-    color: #1c1c1c;
-}
-
-/* Badge de ID (NO CAMBIADO POR TU PEDIDO) */
-.id-badge {
-    display: block;
-    font-size: 11px;
-    background: #ffd54f; /* amarillo obligatorio */
-    color: #000;
-    padding: 2px 6px;
-    border-radius: 6px;
-    margin-bottom: 4px;
-    font-weight: 600;
-    text-align: center;
-}
-
-/* Inputs en encabezado */
-.header-input {
-    width: 100%;
-    padding: 5px;
-    border-radius: 6px;
-    border: 1px solid var(--border);
-    background: #ffffff;
-    color: #2b2b2b;
-    font-size: 13px;
-}
-
-/* Handle de drag */
-.drag-handle {
-    position: absolute;
-    right: 4px;
-    top: 7px;
-    opacity: 0.55;
-    cursor: grab;
-}
-
-/* Hover fila */
-tbody tr:hover {
-    background: #f3f7fb;
-}
-
-/* ============================
-   RESPONSIVE
-============================ */
-@media (max-width: 768px) {
-
-    .wrap {
-        padding: 16px;
-    }
-
-    th, td {
-        font-size: 12px;
-    }
-
-    .header-input {
-        font-size: 12px;
-    }
-}
-
-/* Contenedor general */
-.controls-grid {
+/* =======================================================
+   🔵 KPI CARDS
+======================================================= */
+.kpi-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
 }
 
-/* Cada columna */
-.col-left {
+.kpi-card {
+    background: linear-gradient(135deg, #ffffff 0%, #e6f0fa 100%);
+    padding: 22px 20px;
+    border-radius: 16px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    border: 1px solid #eaeaea;
     display: flex;
     flex-direction: column;
     gap: 6px;
+    transition: transform .2s ease, box-shadow .2s ease;
 }
 
-/* Etiquetas */
-.lbl {
-    font-size: 14px;
+.kpi-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+}
+
+.kpi-card h4 {
+    font-size: 15px;
+    color: #1a2e44;
     font-weight: 600;
-    margin-bottom: 2px;
+    margin: 0;
 }
 
-/* ======================================
-   AJUSTE DE sleect y buscar
-======================================= */
-
-/* Inputs file */
-input[type="file"] {
-    padding: 8px;
-    background: #f8f8f8;
-    border: 1px solid #d0d0d0;
-    border-radius: 6px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: 0.2s ease-in-out;
+.kpi-card p {
+    font-size: 34px;
+    font-weight: 700;
+    margin: 0;
+    color: #0073b1; /* Azul corporativo agroindustrial */
 }
 
-/* Hover */
-input[type="file"]:hover {
-    background: #efefef;
-    border-color: #bdbdbd;
+.kpi-source {
+    font-size: 11px;
+    margin-top: 4px;
+    color: #7c8a96;
 }
 
-/* Focus */
-input[type="file"]:focus {
-    outline: none;
-    border-color: #4a90e2;
-    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.25);
+/* =======================================================
+   📊 GRID DE GRÁFICOS
+======================================================= */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 22px;
 }
 
-.table-controls {
-    display: flex;
-    justify-content: space-between;  /* Izquierda ↔ Derecha */
-    align-items: center;
-    margin-bottom: 10px;
-    font-size: 14px;
-}
-/* Contenedor para que no choque con el select */
-.search-box {
-    display: flex;
-    align-items: center;
-}
-
-/* Estilo exclusivo del buscador */
-#searchInput {
-    padding: 7px 12px;
-    font-size: 14px;
-    width: 230px;
-
-    border: 2px solid #4a90e2;     /* azul */
-    border-radius: 10px;           /* curvado */
+/* =======================================================
+   🟦 TARJETAS DE GRÁFICO
+======================================================= */
+.card {
     background: #fff;
-    outline: none;
-
-    transition: border-color .25s ease, box-shadow .25s ease;
+    padding: 20px 20px 28px;
+    border-radius: 16px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    border: 1px solid #e9eef5;
+    transition: transform .2s ease, box-shadow .2s ease;
 }
 
-/* Al hacer clic */
-#searchInput:focus {
-    border-color: #5cb85c;         /* verde */
-    box-shadow: 0 0 6px rgba(92, 184, 92, 0.45);
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.12);
 }
 
-.table-controls {
-    margin-bottom: 10px;
-    font-size: 14px;
+.card h3 {
+    margin: 0 0 15px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a2e44;
+    text-align: left;
 }
 
-.table-controls select {
-    padding: 4px 6px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    font-size: 14px;
+/* =======================================================
+   🎨 CANVAS GRÁFICOS
+======================================================= */
+.card canvas {
+    width: 100% !important;
+    max-width: 100%;
+    height: 280px !important;
+    max-height: 280px !important;
+    border-radius: 12px;
 }
 
-/* ======================================
-   AJUSTE DE COLUMNAS SEGÚN CONTENIDO
-======================================= */
-
-/* Las celdas se expanden según el texto */
-td.dynamic-cell {
-    white-space: nowrap;          /* no hace salto de línea */
-    max-width: 360px;             /* límite máximo antes de cortar */
-    overflow: hidden;
-    text-overflow: ellipsis;      /* muestra "..." */
-    cursor: pointer;
-    position: relative;
+/* Colores suaves y degradados para cada cultivo */
+.chart-arandanos { /* arándanos */
+    background: linear-gradient(135deg, #6a5acd 0%, #8a7fe3 100%);
+    border-color: #5a4db3;
 }
 
-button.danger {
-    background: #d9534f;
-    color: white;
-    border: none;
+.chart-uvas { /* uvas */
+    background: linear-gradient(135deg, #27ae60 0%, #58d68d 100%);
+    border-color: #229954;
 }
 
-button.danger:hover {
-    background: #c9302c;
+.chart-esparrago { /* espárragos */
+    background: linear-gradient(135deg, #f1c40f 0%, #f7dc6f 100%);
+    border-color: #f1c40f;
 }
 
-
-/* ======================================
-   AJUSTE DE pagination
-======================================= */
-.pagination-wrap {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
+/* =======================================================
+   📱 RESPONSIVE
+======================================================= */
+@media (max-width: 1024px) {
+    .card canvas { height: 260px !important; }
+    .kpi-card p { font-size: 30px; }
 }
 
-.pagination {
-  display: flex;
-  list-style: none;
-  padding: 0;
-  gap: 4px;
+@media (max-width: 768px) {
+    .dashboard-grid { grid-template-columns: 1fr; }
+    .kpi-grid { grid-template-columns: 1fr; }
+    .card canvas { height: 240px !important; }
+    .kpi-card p { font-size: 26px; }
 }
 
-.page-link {
-  display: block;
-  padding: 4px 8px;
-  border: 1px solid #dee2e6;
-  border-radius: 4px;
-  color: #4a90e2;
-  text-decoration: none;
-  font-size: 0.85rem;
-  cursor: pointer;
-}
-
-.page-link:hover {
-  background-color: #e9ecef;
-}
-
-.page-item.disabled .page-link {
-  color: #6c757d;
-  pointer-events: none;
-  cursor: default;
-}
-
-.page-item.active .page-link {
-  background-color: #4a90e2;
-  color: #fff;
-  border-color: #4a90e2;
+@media (max-width: 480px) {
+    .card canvas { height: 220px !important; }
+    .kpi-card p { font-size: 22px; }
+    .kpi-card h4 { font-size: 13px; }
 }

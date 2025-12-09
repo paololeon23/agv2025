@@ -111,51 +111,86 @@ menuItems.forEach(item => {
         const isSubmenuParent = item.classList.contains("has-submenu");
         const submenu = item.nextElementSibling;
 
-        if (isSubmenuParent) {
-            const isOpen = submenu.classList.contains("active-submenu");
+        // ============================================================
+        // CASE 1: El item está dentro del submenu (submenu-item)
+        // ============================================================
+        if (!isSubmenuParent && item.classList.contains("submenu-item")) {
 
-            if (isOpen) {
-                // Cerrar el submenú si ya estaba abierto
-                item.classList.remove("active");
-                submenu.classList.remove("active-submenu");
-                const arrow = item.querySelector(".submenu-arrow");
-                if (arrow) {
-                    arrow.classList.remove("fa-chevron-down");
-                    arrow.classList.add("fa-chevron-right");
-                }
-            } else {
-                // Cerrar todos los demás submenús primero
-                menuItems.forEach(i => i.classList.remove("active"));
-                document.querySelectorAll(".submenu").forEach(s => s.classList.remove("active-submenu"));
-                document.querySelectorAll(".submenu-arrow").forEach(ar => {
-                    ar.classList.remove("fa-chevron-down");
-                    ar.classList.add("fa-chevron-right");
-                });
-
-                // Abrir este submenú
-                item.classList.add("active");
-                submenu.classList.add("active-submenu");
-                const arrow = item.querySelector(".submenu-arrow");
-                if (arrow) {
-                    arrow.classList.remove("fa-chevron-right");
-                    arrow.classList.add("fa-chevron-down");
-                }
-            }
-        } else {
-            // Item normal → activar
+            // Quitar activos
             menuItems.forEach(i => i.classList.remove("active"));
             document.querySelectorAll(".submenu").forEach(s => s.classList.remove("active-submenu"));
             document.querySelectorAll(".submenu-arrow").forEach(ar => {
                 ar.classList.remove("fa-chevron-down");
                 ar.classList.add("fa-chevron-right");
             });
+
+            // Activar subItem
+            item.classList.add("active");
+
+            // Activar su padre
+            const parent = item.closest(".submenu")?.previousElementSibling;
+            if (parent) parent.classList.add("active");
+
+            // Abrir submenu del padre
+            const submenuParent = item.closest(".submenu");
+            const arrow = parent?.querySelector(".submenu-arrow");
+
+            submenuParent.classList.add("active-submenu");
+
+            if (arrow) {
+                arrow.classList.remove("fa-chevron-right");
+                arrow.classList.add("fa-chevron-down");
+            }
+
+        }
+        // ============================================================
+        // CASE 2: Click en item padre (has-submenu)
+        // ============================================================
+        else if (isSubmenuParent) {
+
+            const isOpen = submenu.classList.contains("active-submenu");
+
+            // Primero cerramos TODO
+            menuItems.forEach(i => i.classList.remove("active"));
+            document.querySelectorAll(".submenu").forEach(s => s.classList.remove("active-submenu"));
+            document.querySelectorAll(".submenu-arrow").forEach(ar => {
+                ar.classList.remove("fa-chevron-down");
+                ar.classList.add("fa-chevron-right");
+            });
+
+            // Si estaba abierto → lo cerramos solamente
+            if (!isOpen) {
+                item.classList.add("active");
+                submenu.classList.add("active-submenu");
+
+                const arrow = item.querySelector(".submenu-arrow");
+                if (arrow) {
+                    arrow.classList.remove("fa-chevron-right");
+                    arrow.classList.add("fa-chevron-down");
+                }
+            }
+        }
+        // ============================================================
+        // CASE 3: Item normal sin submenu
+        // ============================================================
+        else {
+            menuItems.forEach(i => i.classList.remove("active"));
+            document.querySelectorAll(".submenu").forEach(s => s.classList.remove("active-submenu"));
+            document.querySelectorAll(".submenu-arrow").forEach(ar => {
+                ar.classList.remove("fa-chevron-down");
+                ar.classList.add("fa-chevron-right");
+            });
+
             item.classList.add("active");
         }
 
-        // Actualizar hash → esto dispara loadFromHash
-        location.hash = `#/${key}`;
+        // Cambiar hash → solo si NO es submenu padre
+        if (!isSubmenuParent) {
+            location.hash = `#/${key}`;
+        }
     });
 });
+
 
     // ====================================================================
     // CLICK SUBMENÚ
