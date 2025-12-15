@@ -1,0 +1,153 @@
+/* ======================================
+   DASHBOARD – REVISIÓN UVA
+   (AISLADO Y SEGURO)
+====================================== */
+
+.dashboard-wrapper {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 24px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+}
+
+/* ============================
+   TÍTULO
+============================ */
+
+.dashboard-wrapper h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1e1e1e;
+    margin-bottom: 16px;
+}
+
+/* ============================
+   CONTROLES (SIN PISAR .controls GLOBAL)
+============================ */
+
+.dashboard-wrapper .controls {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    margin-bottom: 14px;
+}
+
+.dashboard-wrapper .controls > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-wrapper label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 4px;
+}
+
+/* Inputs SOLO dentro del dashboard */
+.dashboard-wrapper input[type="file"],
+.dashboard-wrapper input[type="date"] {
+    padding: 7px 10px;
+    font-size: 13px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: #fff;
+}
+
+/* ============================
+   BOTÓN REVISAR (SIN TOCAR button GLOBAL)
+============================ */
+
+.dashboard-wrapper #runReview {
+    background: var(--accent);
+    color: #fff;
+    padding: 9px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.dashboard-wrapper #runReview:hover:not(:disabled) {
+    background: #23639d;
+}
+
+.dashboard-wrapper #runReview:disabled {
+    background: #b8c2cc;
+    cursor: not-allowed;
+}
+
+/* ============================
+   INFO BOX
+============================ */
+
+.dashboard-wrapper .info-box {
+    background: var(--accent-soft);
+    border-left: 4px solid var(--accent);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #333;
+}
+
+.dashboard-wrapper .info-box ul {
+    margin: 6px 0 0 18px;
+    padding: 0;
+}
+
+/* ============================
+   RESULTADOS
+============================ */
+
+.dashboard-wrapper .table-wrap {
+    margin-bottom: 20px;
+    padding: 0; /* usa el tuyo */
+    border: none; /* usa el tuyo */
+    background: transparent;
+}
+
+.dashboard-wrapper .table-wrap h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #c0392b;
+    margin-bottom: 10px;
+}
+
+/* ============================
+   TABLA DE ERRORES (SOLO ESTA)
+============================ */
+
+.dashboard-wrapper #resultsTable {
+    min-width: 600px;
+    font-size: 13px;
+}
+
+.dashboard-wrapper #resultsTable th {
+    background: #f0f4f8;
+    font-weight: 600;
+}
+
+.dashboard-wrapper #resultsTable td {
+    vertical-align: middle;
+}
+
+/* ============================
+   ESTADOS
+============================ */
+
+.dashboard-wrapper #resultsTable td.error {
+    color: #c0392b;
+    font-weight: 600;
+}
+
+.dashboard-wrapper #resultsTable td.ok {
+    color: #27ae60;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Hover solo en esta tabla */
+.dashboard-wrapper #resultsTable tbody tr:hover {
+    background: #f6f9fc;
+}

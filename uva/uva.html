@@ -1,0 +1,68 @@
+<div class="dashboard-wrapper">
+
+  <h2>📋 Revisión de Excel – Uva</h2>
+
+  <!-- ===============================
+       CONTROLES PRINCIPALES
+       =============================== -->
+  <div class="controls">
+
+    <!-- Cargar Excel -->
+    <div>
+      <label>📂 Cargar Excel</label><br />
+      <input type="file" id="file" accept=".xlsx,.xls">
+    </div>
+
+    <!-- Fecha de inspección (OBLIGATORIA) -->
+    <div>
+    <label>📅 Fecha de inspección</label><br />
+    <input type="date" id="inspectionDate">
+    </div>
+
+    <!-- Fecha actualización LMR (columna 70) -->
+    <div>
+    <label>📅 Fecha actualización LMR</label><br />
+    <input type="date" id="updateDate">
+    </div>
+
+
+    <!-- Ejecutar revisión -->
+    <div>
+      <br />
+      <button id="runReview" disabled>
+        ▶ Revisar Excel
+      </button>
+    </div>
+
+  </div>
+
+  <!-- ===============================
+       MENSAJE INFORMATIVO
+       =============================== -->
+  <div class="info-box">
+    ⚠️ La revisión solo se habilita cuando:
+    <ul>
+      <li>El Excel está cargado</li>
+      <li>La fecha de inspección está seleccionada</li>
+    </ul>
+  </div>
+
+  <!-- ===============================
+       RESULTADOS
+       =============================== -->
+  <div class="table-wrap">
+
+    <table id="resultsTable">
+      <thead>
+        <tr id="resultsHeader">
+          <!-- JS inserta encabezados -->
+        </tr>
+      </thead>
+      <tbody id="resultsBody">
+        <!-- JS inserta filas -->
+      </tbody>
+    </table>
+
+  </div>
+
+</div>

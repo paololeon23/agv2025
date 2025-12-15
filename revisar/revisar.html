@@ -1,0 +1,55 @@
+<!-- CONTENEDOR PRINCIPAL -->
+<div class="wrap" id="reviewWrap">
+    <h1>Revisar Excel</h1>
+
+<!-- Selección de archivo -->
+<div class="controls-grid" style="margin-bottom: 10px;">
+    <div class="col-left">
+        <label class="lbl">Archivo Excel / CSV:</label>
+        <input id="file" type="file" accept=".xlsx,.xls,.csv" />
+    </div>
+
+    <div class="col-right" style="display:flex; gap:10px; align-items:end;">
+
+        <div class="col-left">
+            <label class="lbl">Importar Json:</label>
+            <input id="importJson" type="file" accept="application/json" disabled />
+        </div>
+
+        <button id="exportJson" class="btn-secondary" disabled>
+            Exportar JSON
+        </button>
+
+        <input type="file" id="jsonFile" accept=".json" hidden>
+    </div>
+
+</div>      
+
+ <!-- ===== ENCABEZADOS FIJOS (100%) ===== -->
+  <div class="review-head">
+    <div class="h revisar">Revisar</div>    
+    <div class="h campo">Campo</div>
+    <div class="h regla">Regla</div>
+    <div class="h eliminar">Eliminar</div>
+  </div>
+
+    <!-- ===== FILAS DINÁMICAS ===== -->
+    <div id="reviewColumns">
+        <!-- JS genera aquí cada .review-column -->
+    </div>
+
+    <!-- Botón -->
+    <div>
+        <button id="runReview" disabled >Revisar Selección</button>
+    </div>
+
+    <!-- Tabla de resultados -->
+    <div class="table-wrap" id="revisar" style="margin-top:20px;">
+        <table id="resultsTable">
+            <thead>
+                <tr id="resultsHeader"></tr>
+            </thead>
+            <tbody id="resultsBody"></tbody>
+        </table>
+    </div>
+</div>

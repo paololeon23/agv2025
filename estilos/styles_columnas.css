@@ -22,7 +22,6 @@ html, body {
 ============================ */
 .wrap {
     max-width: 100%;
-    margin: 30px auto;
     padding: 24px;
     background: var(--card);
     border-radius: 14px;

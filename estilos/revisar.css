@@ -1,0 +1,173 @@
+/* =====================================================
+   ✅ REVISAR EXCEL — GRID DEFINITIVO 100%
+===================================================== */
+
+#reviewWrap {
+    padding: 20px;
+    background: #fff;
+    border-radius: 14px;
+}
+
+/* ===== GRID BASE (MISMO PARA TODO) ===== */
+.review-head,
+.review-column {
+    display: grid;
+    grid-template-columns: 15% 50% 25% 10%;
+    width: 100%;
+    box-sizing: border-box;
+    align-items: center;
+}
+
+/* 🔒 CLAVE: NO DEJAR QUE EL CONTENIDO ROMPA EL GRID */
+.review-head > div,
+.review-column > div {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* ===== ENCABEZADOS ===== */
+.review-head {
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: #e5e7eb;
+    font-weight: 700;
+    font-size: 13px;
+    color: #111827;
+}
+
+.review-head .h {
+    text-align: center;
+}
+
+/* ===== FILAS ===== */
+#reviewColumns {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.review-column {
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+}
+
+.review-column:hover {
+    background: #f1f5f9;
+}
+
+/* ===== COLUMNA: REVISAR ===== */
+.col.revisar {
+    display: flex;
+    justify-content: center;
+}
+
+/* ===== COLUMNA: VER (TOGGLE) ===== */
+.col.ver {
+    display: flex;
+    justify-content: center;
+}
+
+.review-column i.fa-solid {
+    font-size: 22px;
+    cursor: pointer;
+    color: #9ca3af;
+}
+
+.review-column i.fa-toggle-on {
+    color: #2563eb;
+}
+
+/* ===== COLUMNA: CAMPO ===== */
+.col.campo {
+    font-weight: 600;
+    font-size: 13px;
+    color: #111827;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ===== COLUMNA: REGLA ===== */
+.col.regla {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+}
+
+.review-column .min-value,
+.review-column .max-value,
+.review-column .text-value {
+    width: 100%;
+    max-width: 100%;
+    padding: 5px 8px;
+    font-size: 12px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    box-sizing: border-box;
+}
+
+/* Min y Max juntos */
+.review-column .min-value,
+.review-column .max-value {
+    width: 48%;
+}
+
+/* ===== COLUMNA: ELIMINAR ===== */
+.col.eliminar {
+    display: flex;
+    justify-content: center;
+}
+
+.review-column .fa-trash {
+    cursor: pointer;
+    font-size: 18px;
+    color: #ef4444;
+}
+
+.review-column .fa-trash:hover {
+    color: #b91c1c;
+}
+
+/* ===== BOTÓN ===== */
+#runReview {
+    margin-top: 20px;
+    padding: 10px 22px;
+    border-radius: 10px;
+    background: #2563eb;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+}
+
+#runReview:hover {
+    background: #1d4ed8;
+}
+
+/* ===== RESPONSIVE (NO SE DESARMA) ===== */
+@media (max-width: 900px) {
+    .review-head,
+    .review-column {
+        font-size: 12px;
+    }
+
+    .col.regla {
+        flex-direction: column;
+    }
+
+    .review-column .min-value,
+    .review-column .max-value,
+    .review-column .text-value {
+        width: 100%;
+    }
+}
+
+#revisar {
+    display: none;
+}

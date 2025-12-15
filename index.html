@@ -6,8 +6,11 @@
     <title>Sidebar Estilo AGROVISION</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="estilos/inicio.css">
-    <link rel="stylesheet" href="estilos/styles_columnas.css">    
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="estilos/styles_columnas.css"> 
+    <link rel="stylesheet" href="estilos/revisar.css">
+    <link rel="stylesheet" href="estilos/uva.css">         
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <!-- 1️⃣ Chart.js primero -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -53,63 +56,91 @@
             </div>
 
             <nav class="nav-menu">
+
                 <a href="#" class="menu-item active" data-content="inicio">
-                    <i class="fas fa-home icon-left"></i>
+                    <i class="fas fa-house icon-left"></i>
                     <span>Inicio</span>
                 </a>
 
-                 <a href="#" class="menu-item" data-content="columnas">
-                    <i class="fas fa-database icon-left"></i>
-                    <span>Definiciones</span>
+                <a href="#" class="menu-item" data-content="columnas">
+                    <i class="fas fa-table-columns icon-left"></i>
+                    <span>Ordenar Columnas</span>
                     <i class="fas fa-chevron-right icon-right"></i>
                 </a>
 
-                <a href="#" class="menu-item" data-content="procesos">
-                    <i class="fas fa-sync-alt icon-left"></i>
-                    <span>Procesos</span>
-                    <i class="fas fa-chevron-right icon-right"></i>
+                <!-- UVA -->
+                <a href="#" class="menu-item has-submenu" data-content="uva">
+                    <i class="fas fa-leaf icon-left"></i>
+                    <span>UVA</span>
+                    <i class="fas fa-chevron-right icon-right submenu-arrow"></i>
                 </a>
 
-                <a href="#" class="menu-item" data-content="rossi">
-                    <i class="fas fa-print icon-left"></i>
-                    <span>ROSSI</span>
+                <div class="submenu">
+                    <a href="#" class="submenu-item" data-content="mpuva">
+                    <i class="fas fa-flask icon-left-sm"></i> MP UVA
+                    </a>
+                    <a href="#" class="submenu-item" data-content="uva2">
+                    <i class="fas fa-industry icon-left-sm"></i> PT UVA
+                    </a>
+                    <a href="#" class="submenu-item" data-content="usuarioSAP">
+                    <i class="fas fa-bug icon-left-sm"></i> PLAGAS
+                    </a>
+                </div>
+
+                <!-- ARÁNDANO -->
+                <a href="#" class="menu-item has-submenu" data-content="seguridad">
+                <i class="fas fa-leaf icon-left"></i>
+                <span>ARANDANO</span>
+                <i class="fas fa-chevron-right icon-right submenu-arrow"></i>
+                </a>
+
+                <div class="submenu">
+                    <a href="#" class="submenu-item" data-content="usuario">
+                    <i class="fas fa-flask icon-left-sm"></i> MP ARANDANO
+                    </a>
+                    <a href="#" class="submenu-item" data-content="menu">
+                    <i class="fas fa-industry icon-left-sm"></i> PT ARANDANO
+                    </a>
+                    <a href="#" class="submenu-item" data-content="usuarioSAP">
+                    <i class="fas fa-bug icon-left-sm"></i> PLAGAS ARANDANO
+                    </a>
+                </div>
+
+                <!-- ESPÁRRAGO -->
+                <a href="#" class="menu-item has-submenu">
+                    <i class="fas fa-leaf icon-left"></i>
+                    <span>ESPARRAGO</span>
+                    <i class="fas fa-chevron-right icon-right submenu-arrow"></i>
+                </a>
+
+                <div class="submenu">
+                    <a href="#" class="submenu-item" data-content="usuario">
+                    <i class="fas fa-flask icon-left-sm"></i> MP ESPARRAGO
+                    </a>
+                    <a href="#" class="submenu-item" data-content="menu">
+                    <i class="fas fa-industry icon-left-sm"></i> PT ESPARRAGO
+                    </a>
+                    <a href="#" class="submenu-item" data-content="usuarioSAP">
+                    <i class="fas fa-bug icon-left-sm"></i> PLAGAS ESPARRAGO
+                    </a>
+                </div>
+
+                <a href="#" class="menu-item" data-content="revisar">
+                    <i class="fas fa-file-excel icon-left"></i>
+                    <span>Revisar Excel</span>
                     <i class="fas fa-chevron-right icon-right"></i>
                 </a>
 
                 <a href="#" class="menu-item" data-content="calidad">
-                    <i class="fas fa-check-square icon-left"></i>
+                    <i class="fas fa-certificate icon-left"></i>
                     <span>Calidad</span>
                     <i class="fas fa-chevron-right icon-right"></i>
                 </a>
 
-                <a href="#" class="menu-item" data-content="log">
-                    <i class="fas fa-binoculars icon-left"></i>
-                    <span>Log</span>
-                    <i class="fas fa-chevron-right icon-right"></i>
-                </a>
-
-                <!-- SUBMENÚ INICIA CERRADO — SIN ACTIVE, SIN CHEVRON ABAJO -->
-                <a href="#" class="menu-item has-submenu" data-content="seguridad">
-                    <i class="fas fa-cog icon-left"></i>
-                    <span>Seguridad</span>
-                    <i class="fas fa-chevron-right icon-right submenu-arrow"></i>
-                </a>
-
-                <!-- SUBMENÚ SIN active-submenu -->
-                <div class="submenu">
-                    <a href="#" class="submenu-item" data-content="usuario">
-                        <i class="fas fa-user icon-left-sm"></i> Usuario
-                    </a>
-                    <a href="#" class="submenu-item" data-content="menu">
-                        <i class="fas fa-list-ul icon-left-sm"></i> Menú
-                    </a>
-                    <a href="#" class="submenu-item" data-content="usuarioSAP">
-                        <i class="fas fa-user icon-left-sm"></i> Usuario SAP
-                    </a>
-                </div>
+                </nav>
 
 
-            </nav>
+
         </aside>
 
     </div>

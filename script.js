@@ -18,6 +18,16 @@ document.addEventListener("DOMContentLoaded", () => {
             html: "columnas/definicion.html",
             js: "columnas/app.js",
             title: "DEFINICIONES"
+        },
+        revisar: {
+            html: "revisar/revisar.html",
+            js: "revisar/revisar.js",
+            title: "Revision"
+        },
+        mpuva: {
+            html: "uva/uva.html",
+            js: "uva/uva.js",
+            title: "Materia Prima Uva"
         }
     };
 
