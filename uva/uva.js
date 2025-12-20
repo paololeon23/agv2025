@@ -143,34 +143,38 @@ fileInput.addEventListener('change', e => {
     fillSelect(inspectionDateSelect, inspectionDates);
     fillSelect(updateDateSelect, updateDates);
 
-    // Si hay más de 1 fecha LMR, marcar el select rojo y mostrar alerta
-          if(updateDates.length > 1){  // >1 significa 2 o más fechas
-              updateDateSelect.style.border = "2px solid red";
-              updateDateSelect.style.color = "red";
-
-              Swal.fire({
-                  icon: 'warning',
-                  title: 'Atención',
-                  html: `Se han encontrado <b>${updateDates.length}</b> fechas LMR para esta inspección.<br>Consulta a la supervisora si es correcto.`,
-                  confirmButtonText: 'Aceptar'
-              });
-          } else {
-              updateDateSelect.style.border = "";
-              updateDateSelect.style.color = "";
-          }
-
           if (inspectionDates.length) inspectionDateSelect.disabled = false;
           runReviewBtn.disabled = false;
 
-          inspectionDateSelect.addEventListener('change', () => {
-            const selectedInspection = inspectionDateSelect.value;
-            const matchingRow = rawData.slice(1)
-              .find(r => formatDate(r[50]) === selectedInspection);
+        inspectionDateSelect.addEventListener('change', () => {
+          const selectedInspection = inspectionDateSelect.value;
 
-            if (matchingRow) {
-              updateDateSelect.value = formatDate(matchingRow[69] || "");
-            }
-          });
+          // Filtrar solo filas de esta inspección
+          const matchingRows = rawData.slice(1).filter(r => formatDate(r[50]) === selectedInspection);
+
+          // Extraer todas las fechas LMR de estas filas
+          const lmrDates = [...new Set(matchingRows.map(r => formatDate(r[69])).filter(Boolean))];
+
+          // Mostrar la primera fecha LMR en el select
+          updateDateSelect.value = lmrDates[0] || "";
+
+          // Cambiar estilo si hay más de una fecha LMR
+          if(lmrDates.length > 1){
+            updateDateSelect.style.border = "2px solid red";
+            updateDateSelect.style.color = "red";
+
+            Swal.fire({
+              icon: 'warning',
+              title: 'Atención',
+              html: `Se han encontrado <b>${lmrDates.length}</b> fechas LMR para esta inspección.<br>Consulta a la supervisora si es correcto.`,
+              confirmButtonText: 'Aceptar'
+            });
+          } else {
+            updateDateSelect.style.border = "";
+            updateDateSelect.style.color = "";
+          }
+        });
+
         };
 
           reader.readAsArrayBuffer(f);
