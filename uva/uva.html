@@ -1,6 +1,6 @@
 <div class="dashboard-wrapper">
 
-  <h2>📋 Revisión de Excel – Uva</h2>
+  <h2>Revisión de Excel – Uva</h2>
 
   <!-- ===============================
        CONTROLES PRINCIPALES
@@ -9,20 +9,30 @@
 
     <!-- Cargar Excel -->
     <div>
-      <label>📂 Cargar Excel</label><br />
+      <label class="icon-label">
+        <i class="fi fi-rr-folder"></i> Cargar Excel
+      </label><br />
       <input type="file" id="file" accept=".xlsx,.xls">
     </div>
 
     <!-- Fecha de inspección (OBLIGATORIA) -->
-    <div>
-    <label>📅 Fecha de inspección</label><br />
-    <input type="date" id="inspectionDate">
+    <div class="select-wrapper">
+      <label class="icon-label">
+        <i class="fi fi-rr-calendar"></i> Fecha de inspección
+      </label><br />
+      <select id="inspectionDate" class="styled-select" disabled>
+        <option value="" disabled selected>Selecciona una fecha</option>
+      </select>
     </div>
 
     <!-- Fecha actualización LMR (columna 70) -->
-    <div>
-    <label>📅 Fecha actualización LMR</label><br />
-    <input type="date" id="updateDate">
+    <div class="select-wrapper">
+      <label class="icon-label">
+        <i class="fi fi-rr-calendar"></i> Fecha actualización LMR
+      </label><br />
+      <select id="updateDate" disabled class="styled-select disabled-select">
+        <option value="" selected>Se actualizará automáticamente</option>
+      </select>
     </div>
 
 
@@ -34,18 +44,26 @@
       </button>
     </div>
 
+    <!-- Limpiar datos -->
+    <div>
+    <br />
+    <button id="clearData" style="padding: 10px 14px;">Limpiar</button>
+    </div>
+
   </div>
 
   <!-- ===============================
        MENSAJE INFORMATIVO
        =============================== -->
   <div class="info-box">
-    ⚠️ La revisión solo se habilita cuando:
+    ⚠️ Atención: 
     <ul>
-      <li>El Excel está cargado</li>
-      <li>La fecha de inspección está seleccionada</li>
+      <li>Debes cargar un archivo Excel válido antes de revisar.</li>
+      <li>Selecciona una fecha de inspección para habilitar el botón "Revisar".</li>
+      <li>Si existen múltiples fechas LMR, se mostrará un aviso y el select se marcará en rojo.</li>
     </ul>
   </div>
+
 
   <!-- ===============================
        RESULTADOS
@@ -62,6 +80,9 @@
         <!-- JS inserta filas -->
       </tbody>
     </table>
+    <!-- Total de filas filtradas -->
+    <div id="totalFilas" style="margin-top:10px; font-weight:600; color:#0E1B40;">
+    </div>
 
   </div>
 

@@ -1,0 +1,107 @@
+<div class="dashboard-wrapper">
+
+  <h2>Revisión de Excel – PT UVA</h2>
+
+  <!-- ===============================
+       CONTROLES PRINCIPALES
+       =============================== -->
+  <div class="controls">
+
+      <!-- Cargar Excel -->
+<div>
+  <label class="icon-label">
+    <i class="fi fi-rr-folder"></i> Cargar Excel
+  </label><br />
+  <input type="file" id="filePT" accept=".xlsx,.xls">
+</div>
+
+<!-- Fecha de inspección -->
+<div class="select-wrapper">
+  <label class="icon-label">
+    <i class="fi fi-rr-calendar"></i> Fecha de inspección
+  </label><br />
+  <select id="inspectionDatePT" class="styled-select" disabled>
+    <option value="" disabled selected>Selecciona una fecha</option>
+  </select>
+</div>
+
+<!-- Fecha de cosecha -->
+<div class="select-wrapper">
+  <label class="icon-label">
+    <i class="fi fi-rr-calendar"></i> Fecha de cosecha
+  </label><br />
+  <select id="cosechaDatePT" disabled class="styled-select">
+    <option value="" selected>Se actualizará</option>
+  </select>
+</div>
+
+<!-- Fecha de embalaje -->
+<div class="select-wrapper">
+  <label class="icon-label">
+    <i class="fi fi-rr-calendar"></i> Fecha de embalaje
+  </label><br />
+  <select id="embalajeDatePT" disabled class="styled-select">
+    <option value="" selected>Se actualizará</option>
+  </select>
+</div>
+
+<!-- Fecha actualización LMR -->
+<div class="select-wrapper">
+  <label class="icon-label">
+    <i class="fi fi-rr-calendar"></i> Fecha actualización LMR
+  </label><br />
+  <select id="updateDatePT" disabled class="styled-select disabled-select">
+    <option value="" selected>Se actualizará</option>
+  </select>
+</div>
+
+      
+  </div>
+
+  <!-- Ejecutar revisión -->
+
+  <div style="display: flex; gap: 10px; align-items: center;">
+    <button id="runReviewPT" disabled>▶ Revisar Excel</button>
+    <button id="exportPT" disabled> Excel filtrado</button>
+    <button id="clearDataPT" style="padding: 9px 14px;">Limpiar</button>
+  </div>
+
+  
+  <!-- ===============================
+       MENSAJE INFORMATIVO
+       =============================== -->
+      <div class="info-box">
+        ⚠️ La revisión se habilita únicamente cuando:
+        <ul>
+          <li>Se ha cargado un Excel válido de PTCUV</li>
+          <li>Se ha seleccionado una fecha de inspección</li>
+          <li>Las fechas de cosecha, embalaje y LMR se sincronizan automáticamente con la inspección</li>
+          <li>Si hay más de una fecha LMR para la inspección, el sistema alerta y pinta el select de rojo</li>
+        </ul>
+      </div>
+
+
+  <!-- ===============================
+       RESULTADOS
+       =============================== -->
+  <div class="table-wrap">
+
+    <table id="resultsTablePT">
+      <thead>
+        <tr id="resultsHeaderPT">
+          <!-- JS insertará solo las columnas que necesites -->
+        </tr>
+      </thead>
+      <tbody id="resultsBodyPT">
+        <!-- JS insertará filas filtradas según columnas -->
+      </tbody>
+    </table>
+
+    <!-- Total de filas filtradas -->
+  <div id="totalFilas" style="margin-top:10px; font-weight:600; color:#0E1B40;">
+
+  </div>
+
+  </div>
+
+</div>

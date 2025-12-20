@@ -326,3 +326,19 @@ button.danger:hover {
         grid-template-columns: 1fr; /* solo una columna en móviles */
     }
 }
+
+#uvaInfoBox {
+    background: #eef4ff;
+    border-left: 4px solid #007BFF;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #333;
+    margin-bottom: 14px;
+    margin-top: 14px;
+}
+
+#uvaInfoBox ul {
+    margin: 6px 0 0 18px;
+    padding: 0;
+}

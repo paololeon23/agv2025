@@ -28,6 +28,16 @@ document.addEventListener("DOMContentLoaded", () => {
             html: "uva/uva.html",
             js: "uva/uva.js",
             title: "Materia Prima Uva"
+        },
+        ptuva: {
+            html: "uva/ptuva/ptuva.html",
+            js: "uva/ptuva/ptuva.js",
+            title: "Producto Terminado Uva"
+        },
+        plagasuva: {
+            html: "uva/plagasuva/plagasuva.html",
+            js: "uva/plagasuva/plagasuva.js",
+            title: "Plagas Uva"
         }
     };
 
@@ -91,21 +101,49 @@ document.addEventListener("DOMContentLoaded", () => {
     // ====================================================================
     // FUNCIONES DE MENÚ
     // ====================================================================
-    function highlightMenu(key) {
-        menuItems.forEach(m => m.classList.remove("active"));
-        subItems.forEach(s => s.classList.remove("active"));
+function highlightMenu(key) {
 
-        const mainItem = document.querySelector(`.menu-item[data-content="${key}"]`);
-        if (mainItem) mainItem.classList.add("active");
+    // 1️⃣ Reset total
+    menuItems.forEach(m => m.classList.remove("active"));
+    subItems.forEach(s => s.classList.remove("active"));
 
-        const subItem = document.querySelector(`.submenu-item[data-content="${key}"]`);
-        if (subItem) {
-            subItem.classList.add("active");
-            // mantener el padre activo
-            const parent = subItem.closest(".submenu")?.previousElementSibling;
-            if (parent) parent.classList.add("active");
-        }
+    document.querySelectorAll(".submenu").forEach(sm => {
+        sm.classList.remove("active-submenu");
+    });
+
+    document.querySelectorAll(".submenu-arrow").forEach(ar => {
+        ar.classList.remove("fa-chevron-down");
+        ar.classList.add("fa-chevron-right");
+    });
+
+    // 2️⃣ Item normal
+    const mainItem = document.querySelector(`.menu-item[data-content="${key}"]`);
+    if (mainItem) {
+        mainItem.classList.add("active");
+        return;
     }
+
+    // 3️⃣ SubItem
+    const subItem = document.querySelector(`.submenu-item[data-content="${key}"]`);
+    if (!subItem) return;
+
+    subItem.classList.add("active");
+
+    // 4️⃣ Padre + submenu
+    const submenu = subItem.closest(".submenu");
+    const parent = submenu?.previousElementSibling;
+
+    if (parent) parent.classList.add("active");
+    if (submenu) submenu.classList.add("active-submenu");
+
+    // 5️⃣ Flecha
+    const arrow = parent?.querySelector(".submenu-arrow");
+    if (arrow) {
+        arrow.classList.remove("fa-chevron-right");
+        arrow.classList.add("fa-chevron-down");
+    }
+}
+
 
     // ====================================================================
     // TOGGLE SUBMENÚ + CLICK MENÚ PRINCIPAL

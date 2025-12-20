@@ -1,0 +1,81 @@
+<div class="dashboard-wrapper">
+
+  <h2>Revisión de Excel – Plagas Uva</h2>
+
+  <!-- ===============================
+       CONTROLES PRINCIPALES
+       =============================== -->
+  <div class="controls">
+
+    <!-- Cargar Excel -->
+    <div>
+      <label class="icon-label">
+        <i class="fi fi-rr-folder"></i> Cargar Excel
+      </label><br />
+      <input type="file" id="filePlagas" accept=".xlsx,.xls">
+    </div>
+
+    <!-- Fecha de inspección -->
+    <div class="select-wrapper">
+      <label class="icon-label">
+        <i class="fi fi-rr-calendar"></i> Fecha de inspección
+      </label><br />
+      <select id="inspectionDatePlagas" class="styled-select" disabled>
+        <option value="" disabled selected>Selecciona una fecha</option>
+      </select>
+    </div>
+
+    <!-- Fecha de cosecha -->
+    <div class="select-wrapper">
+      <label class="icon-label">
+        <i class="fi fi-rr-calendar"></i> Fecha de cosecha
+      </label><br />
+        <select id="cosechaDatePlagas" disabled class="styled-select" disabled>
+        <option value="" selected>Se actualizará automáticamente</option>
+      </select>
+    </div>
+
+  </div>
+
+      <!-- Limpiar datos -->
+    <div>
+      <button id="runReviewPlagas" disabled>▶ Revisar Excel</button>
+      <button id="exportPlagasuva" disabled> Excel filtrado</button>
+      <button id="clearDataPlagas"style="padding: 9px 14px;">Limpiar</button>
+    </div>
+
+  <!-- ===============================
+       MENSAJE INFORMATIVO
+       =============================== -->
+  <div class="info-box">
+    ⚠️ La revisión se habilita únicamente cuando:
+    <ul>
+      <li>Se ha cargado un archivo Excel válido de Plagas Uva</li>
+      <li>Se ha seleccionado una fecha de inspección</li>
+      <li>La fecha de cosecha se sincroniza automáticamente con la inspección</li>
+    </ul>
+  </div>
+
+  <!-- ===============================
+       RESULTADOS
+       =============================== -->
+  <div class="table-wrap">
+
+    <table id="resultsTablePlagas">
+      <thead>
+        <tr id="resultsHeaderPlagas">
+          <!-- JS insertará columnas -->
+        </tr>
+      </thead>
+      <tbody id="resultsBodyPlagas">
+        <!-- JS insertará filas filtradas según columnas -->
+      </tbody>
+    </table>
+
+    <!-- Total de filas filtradas -->
+    <div id="totalFilasPlagas" style="margin-top:10px; font-weight:600; color:#0E1B40;">
+    </div>
+
+  </div>
+
+</div>
