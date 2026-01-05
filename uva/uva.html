@@ -7,50 +7,42 @@
        =============================== -->
   <div class="controls">
 
-    <!-- Cargar Excel -->
-    <div>
-      <label class="icon-label">
-        <i class="fi fi-rr-folder"></i> Cargar Excel
-      </label><br />
-      <input type="file" id="file" accept=".xlsx,.xls">
-    </div>
+      <!-- Cargar Excel -->
+      <div>
+        <label class="icon-label">
+          <i class="fi fi-rr-folder"></i> Cargar Excel
+        </label><br />
+        <input type="file" id="file" accept=".xlsx,.xls">
+      </div>
 
-    <!-- Fecha de inspección (OBLIGATORIA) -->
-    <div class="select-wrapper">
-      <label class="icon-label">
-        <i class="fi fi-rr-calendar"></i> Fecha de inspección
-      </label><br />
-      <select id="inspectionDate" class="styled-select" disabled>
-        <option value="" disabled selected>Selecciona una fecha</option>
-      </select>
-    </div>
+      <!-- Fecha de inspección (OBLIGATORIA) -->
+      <div class="select-wrapper">
+        <label class="icon-label">
+          <i class="fi fi-rr-calendar"></i> Fecha de inspección
+        </label><br />
+        <select id="inspectionDate" class="styled-select" disabled>
+          <option value="" disabled selected>Selecciona una fecha</option>
+        </select>
+      </div>
 
-    <!-- Fecha actualización LMR (columna 70) -->
-    <div class="select-wrapper">
-      <label class="icon-label">
-        <i class="fi fi-rr-calendar"></i> Fecha actualización LMR
-      </label><br />
-      <select id="updateDate" disabled class="styled-select disabled-select">
-        <option value="" selected>Se actualizará automáticamente</option>
-      </select>
-    </div>
+      <!-- Fecha actualización LMR (columna 70) -->
+      <div class="select-wrapper">
+        <label class="icon-label">
+          <i class="fi fi-rr-calendar"></i> Fecha actualización LMR
+        </label><br />
+        <select id="updateDate" disabled class="styled-select disabled-select">
+          <option value="" selected>Se actualizará automáticamente</option>
+        </select>
+      </div>
 
+</div>
 
     <!-- Ejecutar revisión -->
     <div>
-      <br />
-      <button id="runReview" disabled>
-        ▶ Revisar Excel
-      </button>
+      <button id="runReview" disabled>▶ Revisar Excel</button>
+      <button id="exportmpuva"style="padding: 10px 14px;" disabled> Excel filtrado</button>
+      <button id="clearData" style="padding: 10px 14px;">Limpiar</button>
     </div>
-
-    <!-- Limpiar datos -->
-    <div>
-    <br />
-    <button id="clearData" style="padding: 10px 14px;">Limpiar</button>
-    </div>
-
-  </div>
 
   <!-- ===============================
        MENSAJE INFORMATIVO

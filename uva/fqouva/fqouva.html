@@ -1,0 +1,67 @@
+<div class="dashboard-wrapper">
+
+  <h2>Revisión de Excel – FQO Uva (Plantilla)</h2>
+
+  <div class="controls">
+
+    <!-- Cargar Excel -->
+    <div>
+      <label class="icon-label">
+        <i class="fi fi-rr-folder"></i> Cargar Excel
+      </label><br />
+      <input type="file" id="fileFQO" accept=".xlsx,.xls">
+    </div>
+
+
+    <!-- Descargar plantilla -->
+    <div>
+      <button id="downloadTemplateFQO">Descargar plantilla Excel</button>
+    </div>
+  </div>
+
+  <!-- Botones -->
+  <div>
+    <button id="runReviewFQO" style="padding: 10px 14px;" disabled>▶ Revisar Excel</button>
+    <button id="exportFQOuva" style="padding: 10px 14px;" disabled> Excel filtrado</button>
+    <button id="clearDataFQO" style="padding: 10px 14px;">  Limpiar</button>
+  </div>
+
+  <div class="info-box">
+    ⚠️ Para habilitar la revisión de FQO Uva:
+    <ul>
+      <li>
+        Copia la información exportada y pégala en la <b>QUERY FQO UVA 2025</b>.
+      </li>
+      <li>
+        La consulta mostrará la información ordenada; copia ese resultado.
+      </li>
+      <li>
+        Pega el ordenamiento en la <b>plantilla FQO Uva</b> que te brinda el sistema.
+      </li>
+      <li>
+        Inserta la plantilla en el sistema.
+      </li>
+      <li>
+        El sistema te brindará la data lista para pegarla en el archivo final
+        <b>BD-UVA FQO-2025</b>, donde quedarán registrados los
+        <b>Físico-Químicos</b>.
+      </li>
+    </ul>
+  </div>
+
+
+  <div class="table-wrap">
+    <table id="resultsTableFQO">
+      <thead>
+        <tr id="resultsHeaderFQO">
+          <!-- JS insertará columnas -->
+        </tr>
+      </thead>
+      <tbody id="resultsBodyFQO">
+        <!-- JS insertará filas filtradas según columnas -->
+      </tbody>
+    </table>
+    <div id="totalFilasFQO" style="margin-top:10px; font-weight:600; color:#0E1B40;"></div>
+  </div>
+
+</div>

@@ -1,0 +1,22 @@
+/* inspection block */
+.inspection-block {
+ display: flex;
+ flex-direction: column;
+ gap: 8px;
+ border-radius: 8px;
+}
+
+#inspectionType{
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;   /* estado normal */
+}
+
+/* SOLO cuando el usuario interactúa */
+#inspectionType:focus-visible {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0,123,255,0.3);
+    outline: none;
+}
+
+

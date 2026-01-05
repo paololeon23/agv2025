@@ -31,7 +31,6 @@
     gap: 16px;
     flex-wrap: wrap;
     align-items: flex-end;
-    margin-bottom: 14px;
 }
 
 .dashboard-wrapper .controls > div {
@@ -74,10 +73,12 @@
     background: #23639d;
 }
 
-.dashboard-wrapper #runReview:disabled {
+.dashboard-wrapper #runReview:disabled,
+.dashboard-wrapper #exportmpuva:disabled {
     background: #b8c2cc;
     cursor: not-allowed;
 }
+
 
 /* ============================
    INFO BOX
@@ -201,7 +202,7 @@
   outline: none;
   border-color: #007BFF;
   box-shadow: 0 0 5px rgba(0,123,255,0.5);
-}
+} 
 
 /* Select LMR deshabilitado pero visible */
 #updateDate {

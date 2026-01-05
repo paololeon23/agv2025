@@ -38,6 +38,16 @@ document.addEventListener("DOMContentLoaded", () => {
             html: "uva/plagasuva/plagasuva.html",
             js: "uva/plagasuva/plagasuva.js",
             title: "Plagas Uva"
+        },
+        fqouva: {
+            html: "uva/fqouva/fqouva.html",
+            js: "uva/fqouva/fqouva.js",
+            title: "Fisico Quimicos de Uva"
+        },
+        mparandano: {
+            html: "arandano/arandano.html",
+            js: "arandano/arandano.js",
+            title: "Materia Prima Arandano"
         }
     };
 
