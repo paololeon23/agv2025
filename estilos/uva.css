@@ -28,7 +28,6 @@
 
 .dashboard-wrapper .controls {
     display: flex;
-    gap: 16px;
     flex-wrap: wrap;
     align-items: flex-end;
 }

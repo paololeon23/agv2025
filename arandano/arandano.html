@@ -3,78 +3,71 @@
   <h2>Revisión de Excel – Arándanos</h2>
 
   <!-- ===============================
-       CONTROLES PRINCIPALES (ARCHIVOS)
+       CONTROLES PRINCIPALES
        =============================== -->
   <div class="controls">
 
-    <!-- EXCEL INSPECCIÓN -->
-    <div class="file-box" id="boxInspection">
+    <!-- EXCEL ÚNICO -->
+    <div class="file-box" id="boxArandano">
       <label class="icon-label">
-        <i class="fi fi-rr-folder"></i> Excel Inspección Arándanos
+        <i class="fi fi-rr-folder"></i> Excel Arándanos (MPHA / MPBA / MPGA)
       </label><br />
-      <input type="file" id="fileInspection" accept=".xlsx,.xls">
+      <input type="file" id="fileArandano" accept=".xlsx,.xls" multiple>
     </div>
 
-    <!-- EXCEL LMR -->
-    <div class="file-box" id="boxLMR">
+    <!-- FECHA DE INSPECCIÓN -->
+    <div class="select-wrapper">
       <label class="icon-label">
-        <i class="fi fi-rr-folder"></i> Excel LMR Arándanos
+        <i class="fi fi-rr-document"></i> Cartillas
       </label><br />
-      <input type="file" id="fileLMR" accept=".xlsx,.xls">
+        <select id="inspectionType">
+          <option value="" selected disabled>Selecciona tipo</option>
+          <option value="MPHA">MPHA</option>
+          <option value="MPBA">MPBA</option>
+          <option value="MPGA">MPGA</option>
+        </select>
     </div>
 
-    <!-- EXCEL COSECHA / PRODUCCIÓN -->
-    <div class="file-box" id="boxCosecha">
+        <!-- FECHA DE INSPECCIÓN -->
+    <div class="select-wrapper">
       <label class="icon-label">
-        <i class="fi fi-rr-folder"></i> Excel Cosecha / Producción
+        <i class="fi fi-rr-calendar"></i> Fecha de inspección
       </label><br />
-      <input type="file" id="fileCosecha" accept=".xlsx,.xls">
+        <!-- FECHA -->
+    <select id="inspectionDate" class="styled-select" disabled>
+      <option value="" disabled selected>Selecciona fecha</option>
+    </select>
     </div>
 
   </div>
 
-<!-- ============CONTROLES FECHAS==== -->
+  <!-- ===============================
+       CONTROLES SECUNDARIOS
+       =============================== -->
   <div class="controls controls1">
-        <!-- FECHA DE INSPECCIÓN -->
-    <div class="select-wrapper inspection-block">
 
-        <!-- 1 ARRIBA: TEXTO -->
-        <label class="icon-label">
-            <i class="fi fi-rr-calendar"></i> Fecha de inspección
-        </label>
-        <!-- 2 ABAJO: SELECT + SELECT -->
-        <div style="display: flex; gap: 8px;">
-
-            <!-- Tipo MPHA / MPBA / MPGA -->
-            <select id="inspectionType">
-                <option value="" selected disabled>Selecciona tipo</option>
-                <option value="MPHA">MPHA</option>
-                <option value="MPBA">MPBA</option>
-                <option value="MPGA">MPGA</option>
-            </select>
-            <!-- Fecha según tipo -->
-            <select id="inspectionDate" class="styled-select" disabled>
-            <option value="" disabled selected>Selecciona fecha</option>
-            </select>
-        </div>
+    <!-- FECHA LMR -->
+    <div class="select-wrapper">
+      <label class="icon-label">
+        <i class="fi fi-rr-calendar"></i> Fecha actualización LMR
+      </label><br />
+      <select id="updateDate" class="styled-select disabled-select" disabled>
+        <option value="" selected>Se actualizará automáticamente</option>
+      </select>
     </div>
 
-        <!-- FECHA ACTUALIZACIÓN LMR -->
-        <div class="select-wrapper">
-        <label class="icon-label">
-            <i class="fi fi-rr-calendar"></i> Fecha actualización LMR
-        </label><br />
-        <select id="updateDate" class="styled-select disabled-select" disabled>
-            <option value="" selected>Se actualizará automáticamente</option>
-        </select>
-        </div>
-        <!-- BOTONES -->
-        <div><br />
-        <button id="runReview" disabled>▶ Revisar Excel</button>
-        </div>
-        <div><br />
-        <button id="clearData" style="padding:10px 14px;">Limpiar</button>
-        </div>
+    <!-- BOTONES -->
+    <div>
+      <button id="runReviewArandano" disabled>▶ Revisar Excel</button>
+    </div>
+
+    <button id="exportArandano" style="padding: 10px 14px;" disabled>
+      Excel filtrado
+    </button>
+
+    <div>
+      <button id="clearArandano" style="padding:10px 14px;">Limpiar</button>
+    </div>
 
   </div>
 
@@ -85,8 +78,8 @@
     ⚠️ Atención:
     <ul>
       <li>Los campos se marcarán en <b>rojo</b> si falta cargar información.</li>
-      <li>Debes cargar los <b>3 archivos Excel</b>.</li>
-      <li>La fecha LMR dependerá del tipo seleccionado: MPHA / MPBA / MPGA.</li>
+      <li>El Excel debe contener registros <b>MPHA, MPBA y MPGA</b>.</li>
+      <li>Selecciona el tipo para revisar uno por uno.</li>
     </ul>
   </div>
 
@@ -97,17 +90,12 @@
 
     <table id="resultsTable">
       <thead>
-        <tr id="resultsHeader">
-          <!-- JS inserta encabezados -->
-        </tr>
+        <tr id="resultsHeader"></tr>
       </thead>
-      <tbody id="resultsBody">
-        <!-- JS inserta filas -->
-      </tbody>
+      <tbody id="resultsBody"></tbody>
     </table>
 
-    <div id="totalFilas" style="margin-top:10px; font-weight:600; color:#0E1B40;">
-    </div>
+    <div id="totalFilas" style="margin-top:10px; font-weight:600; color:#0E1B40;"></div>
 
   </div>
 
