@@ -279,19 +279,25 @@
 
 /* posiciones exactas */
 .sticky-col-1 {
-  left: 0;
+  left: 0;          /* ID */
   min-width: 90px;
   z-index: 4;
 }
 
 .sticky-col-2 {
-  left: 90px;
+  left: 90px;       /* Columna 7 nueva */
   min-width: 108px;
   z-index: 3;
 }
 
 .sticky-col-3 {
-  left: 198px;
+  left: 316px;      /* Lote */
+  min-width: 90px;
+  z-index: 3;
+}
+
+.sticky-col-4 {
+  left: 406px;      /* Cant Muestra */
   min-width: 90px;
   z-index: 3;
 }
@@ -307,6 +313,7 @@ th.sticky-col {
 td.sticky-col {
   border-right: 1px solid #e0e0e0;
 }
+
 
 /* Estilo para iconos en labels */
 .icon-label i {

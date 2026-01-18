@@ -2,12 +2,9 @@
 
   <h2>Revisión de Excel – Arándanos</h2>
 
-  <!-- ===============================
-       CONTROLES PRINCIPALES
-       =============================== -->
   <div class="controls">
 
-    <!-- EXCEL ÚNICO -->
+    <!-- EXCEL -->
     <div class="file-box" id="boxArandano">
       <label class="icon-label">
         <i class="fi fi-rr-folder"></i> Excel Arándanos (MPHA / MPBA / MPGA)
@@ -15,35 +12,35 @@
       <input type="file" id="fileArandano" accept=".xlsx,.xls" multiple>
     </div>
 
-    <!-- FECHA DE INSPECCIÓN -->
+    <!-- CARTILLAS -->
     <div class="select-wrapper">
       <label class="icon-label">
         <i class="fi fi-rr-document"></i> Cartillas
       </label><br />
-        <select id="inspectionType">
-          <option value="" selected disabled>Selecciona tipo</option>
-          <option value="MPHA">MPHA</option>
-          <option value="MPBA">MPBA</option>
-          <option value="MPGA">MPGA</option>
-        </select>
+
+      <select id="inspectionType" disabled>
+        <option value="" selected disabled>Selecciona tipo</option>
+      </select>
     </div>
 
-        <!-- FECHA DE INSPECCIÓN -->
+    <!-- FECHA INSPECCIÓN -->
     <div class="select-wrapper">
       <label class="icon-label">
         <i class="fi fi-rr-calendar"></i> Fecha de inspección
       </label><br />
-        <!-- FECHA -->
-    <select id="inspectionDate" class="styled-select" disabled>
-      <option value="" disabled selected>Selecciona fecha</option>
-    </select>
+      <select id="inspectionDate" class="styled-select" disabled>
+        <option value="" disabled selected>Selecciona fecha</option>
+      </select>
     </div>
+
+    <!-- Icono notificación -->
+  <div id="notificationIcon" class="notification ok" title="Notificaciones">
+    <i class="fa-solid fa-bell"></i>
+    <span id="notificationCount" class="count">0</span>
+  </div>
 
   </div>
 
-  <!-- ===============================
-       CONTROLES SECUNDARIOS
-       =============================== -->
   <div class="controls controls1">
 
     <!-- FECHA LMR -->
@@ -56,38 +53,22 @@
       </select>
     </div>
 
-    <!-- BOTONES -->
-    <div>
-      <button id="runReviewArandano" disabled>▶ Revisar Excel</button>
-    </div>
-
-    <button id="exportArandano" style="padding: 10px 14px;" disabled>
-      Excel filtrado
-    </button>
-
-    <div>
-      <button id="clearArandano" style="padding:10px 14px;">Limpiar</button>
-    </div>
+    <div><button id="runReviewArandano" disabled>▶ Revisar Excel</button></div>
+    <button id="exportArandano" style="padding: 10px 14px;" disabled>Excel filtrado</button>
+    <div><button id="clearArandano" style="padding:10px 14px;">Limpiar</button></div>
 
   </div>
 
-  <!-- ===============================
-       MENSAJE INFORMATIVO
-       =============================== -->
   <div class="info-box">
     ⚠️ Atención:
     <ul>
       <li>Los campos se marcarán en <b>rojo</b> si falta cargar información.</li>
-      <li>El Excel debe contener registros <b>MPHA, MPBA y MPGA</b>.</li>
-      <li>Selecciona el tipo para revisar uno por uno.</li>
+      <li>Las cartillas se detectan automáticamente desde el Excel.</li>
+      <li>Selecciona una cartilla con data para revisar.</li>
     </ul>
   </div>
 
-  <!-- ===============================
-       RESULTADOS
-       =============================== -->
   <div class="table-wrap">
-
     <table id="resultsTable">
       <thead>
         <tr id="resultsHeader"></tr>
@@ -95,8 +76,9 @@
       <tbody id="resultsBody"></tbody>
     </table>
 
-    <div id="totalFilas" style="margin-top:10px; font-weight:600; color:#0E1B40;"></div>
-
+    <div id="totalFilas"
+      style="margin-top:10px;font-weight:600;color:#0E1B40;">
+    </div>
   </div>
 
 </div>

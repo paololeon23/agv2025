@@ -18,6 +18,7 @@
       // COLUMNAS A MOSTRAR (VALIDADAS)
       // ===============================
       const columnsToShow = [
+        6,
         9,   // 10 → Lote
         ...Array.from({length:8},(_,i)=>10+i), // 11-18
         28,29, // 29-30
@@ -251,9 +252,11 @@ runReviewBtn.addEventListener('click', () => {
   Swal.fire({
     title: 'Revisión de fechas',
     html: `
-      Se va a revisar:<br>
-      <b>Fecha inspección:</b> ${formatDateDMY(selectedInspection)}<br>
+      <div style="line-height:1.0">
+      Se va a revisar:<br><br>
+      <b>Fecha inspección:</b> ${formatDateDMY(selectedInspection)}<br><br>
       <b>Fecha LMR:</b> ${formatDateDMY(selectedUpdate)}
+      </div>
     `,
     icon: 'info',
     confirmButtonText: 'Continuar'
@@ -368,86 +371,121 @@ function procesarFilas(selectedInspection, selectedUpdate) {
           headerRow.innerHTML = "";
           bodyRows.innerHTML = "";
 
-        // ===============================
-        // HEADERS
-        // ===============================
-        const headers = ["ID"]
-          .concat(columnsToShow.map(idx => columns[idx]?.header || `Columna ${idx+1}`))
-          .concat(["suma_tonalidades", "suma_calibres"]);
+          // ===============================
+          // SI HAY FILAS → HEADERS + FILAS
+          // ===============================
+          if (rows.length) {
 
-        headers.forEach((h, i) => {
-          const th = document.createElement("th");
-          th.textContent = h;
+            // ===============================
+            // HEADERS
+            // ===============================
+            const headers = ["ID"]
+              .concat(columnsToShow.map(idx => columns[idx]?.header || `Columna ${idx+1}`))
+              .concat(["suma_tonalidades", "suma_calibres"]);
 
-          // 🔒 columnas fijas (headers)
-          if (i === 0) th.classList.add("sticky-col", "sticky-col-1"); // ID
-          if (i === 1) th.classList.add("sticky-col", "sticky-col-2"); // Lote
-          if (i === 2) th.classList.add("sticky-col", "sticky-col-3"); // Cant Muestra
+            headers.forEach((h, i) => {
+              const th = document.createElement("th");
+              th.textContent = h;
 
-          headerRow.appendChild(th);
-        });
+              // 🔒 columnas fijas (headers)
+              if (i === 0) th.classList.add("sticky-col", "sticky-col-1"); // ID
+              if (i === 1) th.classList.add("sticky-col", "sticky-col-2"); // Columna 7
+              if (i === 2) th.classList.add("sticky-col", "sticky-col-3"); // Lote
+              if (i === 3) th.classList.add("sticky-col", "sticky-col-4"); // Cant Muestra
 
-        // ===============================
-        // FILAS
-        // ===============================
-        rows.forEach(row => {
-          const tr = document.createElement("tr");
+              headerRow.appendChild(th);
+            });
 
-          // ---- ID ----
-          const tdId = document.createElement("td");
-          tdId.textContent = row[0] || "";
-          tdId.classList.add("sticky-col", "sticky-col-1");
-          tr.appendChild(tdId);
+            // ===============================
+            // FILAS
+            // ===============================
+            rows.forEach(row => {
+              const tr = document.createElement("tr");
 
-          // ---- Columnas dinámicas ----
-          columnsToShow.forEach((idx, i) => {
-            const td = document.createElement("td");
-            const val = row[idx] || "";
-            td.textContent = val;
+              // ---- ID ----
+              const tdId = document.createElement("td");
+              tdId.textContent = row[0] || "";
+              tdId.classList.add("sticky-col", "sticky-col-1");
+              tr.appendChild(tdId);
 
-            // 🔒 columnas fijas (body)
-            if (i === 0) td.classList.add("sticky-col", "sticky-col-2"); // Lote
-            if (i === 1) td.classList.add("sticky-col", "sticky-col-3"); // Cant Muestra
+              // ---- Columnas dinámicas ----
+              columnsToShow.forEach((idx, i) => {
+                const td = document.createElement("td");
+                const val = row[idx] || "";
+                td.textContent = val;
 
-            // ❌ errores
-            if (row._errors && row._errors.some(e => e.includes(`Columna ${idx+1}`))) {
-              if (!val || val.toString().trim() === "") {
-                td.style.backgroundColor = "red";
-              } else {
-                td.style.color = "red";
+                // 🔒 columnas fijas (body)
+                if (i === 0) td.classList.add("sticky-col", "sticky-col-2");
+                if (i === 1) td.classList.add("sticky-col", "sticky-col-3");
+                if (i === 2) td.classList.add("sticky-col", "sticky-col-4");
+
+                // ❌ errores
+                if (row._errors && row._errors.some(e => e.includes(`Columna ${idx+1}`))) {
+                  if (!val || val.toString().trim() === "") {
+                    td.style.backgroundColor = "red";
+                  } else {
+                    td.style.color = "red";
+                  }
+                }
+
+                tr.appendChild(td);
+              });
+
+              // ---- Suma tonalidades ----
+              const tdSumaT = document.createElement("td");
+              tdSumaT.textContent = row._suma_tonalidades?.toFixed(2) || "";
+              if (row._errors && row._errors.some(e => e.includes("Suma tonalidades"))) {
+                tdSumaT.style.color = "red";
               }
-            }
+              tr.appendChild(tdSumaT);
+
+              // ---- Suma calibres ----
+              const tdSumaC = document.createElement("td");
+              tdSumaC.textContent = row._suma_calibres?.toFixed(2) || "";
+              if (row._errors && row._errors.some(e => e.includes("Suma calibres"))) {
+                tdSumaC.style.color = "red";
+              }
+              tr.appendChild(tdSumaC);
+
+              bodyRows.appendChild(tr);
+            });
+
+            table.hidden = false;
+
+          } else {
+            // ===============================
+            // SI NO HAY FILAS → MENSAJE VERDE
+            // ===============================
+            const tr = document.createElement("tr");
+            const td = document.createElement("td");
+
+            td.colSpan = columnsToShow.length + 3; // ID + sumas
+            td.textContent = "No se encontraron errores en esta inspección";
+            td.style.textAlign = "center";
+            td.style.fontWeight = "bold";
+            td.style.padding = "12px";
+            td.style.background = "#e8f5e9";
+            td.style.color = "#2e7d32";
 
             tr.appendChild(td);
-          });
+            bodyRows.appendChild(tr);
 
-          // ---- Suma tonalidades ----
-          const tdSumaT = document.createElement("td");
-          tdSumaT.textContent = row._suma_tonalidades?.toFixed(2) || "";
-          if (row._errors && row._errors.some(e => e.includes("Suma tonalidades"))) {
-            tdSumaT.style.color = "red";
+            table.hidden = false;
           }
-          tr.appendChild(tdSumaT);
 
-          // ---- Suma calibres ----
-          const tdSumaC = document.createElement("td");
-          tdSumaC.textContent = row._suma_calibres?.toFixed(2) || "";
-          if (row._errors && row._errors.some(e => e.includes("Suma calibres"))) {
-            tdSumaC.style.color = "red";
+          // ===============================
+          // TOTAL DE FILAS POR FECHA (igual)
+          // ===============================
+          const totalFilasDiv = document.getElementById("totalFilas");
+          if(totalFilasDiv) {
+            const selectedInspection = inspectionDateSelect.value;
+            const totalPorFecha = rawData.slice(1)
+              .filter(r => formatDate(r[50]) === selectedInspection).length;
+
+            totalFilasDiv.textContent = `Total filas: ${totalPorFecha}`;
           }
-          tr.appendChild(tdSumaC);
+        }
 
-          bodyRows.appendChild(tr);
-        });
-
-        table.hidden = false;
-
-        // ===============================
-        // MOSTRAR TOTAL DE FILAS
-        // ===============================
-        const totalFilasDiv = document.getElementById("totalFilas");
-        if(totalFilasDiv) totalFilasDiv.textContent = `Total filas: ${rows.length}`;
-      }
 
       // ===============================
       // FORMATO DE FECHA dd/mm/yyyy → yyyy-mm-dd
@@ -568,7 +606,7 @@ function procesarFilas(selectedInspection, selectedUpdate) {
         icon: "success",
         title: "Datos limpiados",
         text: "Ya puedes cargar otro Excel.",
-        timer: 1500,
+        timer: 1000,
         showConfirmButton: false
       });
     });
