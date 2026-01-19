@@ -1,0 +1,92 @@
+<div class="dashboard-wrapper">
+
+  <h2>Revisión de Excel – Plagas Arándano</h2>
+
+  <!-- ===============================
+       CONTROLES PRINCIPALES
+       =============================== -->
+  <div class="controls">
+
+    <!-- Cargar Excel -->
+    <div>
+      <label class="icon-label">
+        <i class="fi fi-rr-folder"></i> Cargar Excel
+      </label><br />
+      <input type="file" id="filePlagasArandano" accept=".xlsx,.xls">
+    </div>
+
+    <!-- Fecha de inspección -->
+    <div class="select-wrapper">
+      <label class="icon-label">
+        <i class="fi fi-rr-calendar"></i> Fecha de inspección
+      </label><br />
+      <select id="inspectionDatePlagasArandano" class="styled-select" disabled>
+        <option value="" disabled selected>Selecciona una fecha</option>
+      </select>
+    </div>
+
+    <!-- Fecha de cosecha -->
+    <div class="select-wrapper">
+      <label class="icon-label">
+        <i class="fi fi-rr-calendar"></i> Fecha de cosecha
+      </label><br />
+      <select id="cosechaDatePlagasArandano" class="styled-select" disabled>
+        <option value="" selected>Se actualizará automáticamente</option>
+      </select>
+    </div>
+
+  </div>
+
+  <!-- ===============================
+       ACCIONES
+       =============================== -->
+  <div>
+    <button id="runReviewPlagasArandano" style="padding: 10px 14px;" disabled>
+      ▶ Revisar Excel
+    </button>
+
+    <button id="exportPlagasArandano" style="padding: 10px 14px;" disabled>
+      Excel filtrado
+    </button>
+
+    <button id="clearDataPlagasArandano" style="padding: 10px 14px;">
+      Limpiar
+    </button>
+  </div>
+
+  <!-- ===============================
+       MENSAJE INFORMATIVO
+       =============================== -->
+  <div class="info-box">
+    ⚠️ La revisión se habilita únicamente cuando:
+    <ul>
+      <li>Se ha cargado un archivo Excel válido de Plagas Arándano</li>
+      <li>Se ha seleccionado una fecha de inspección</li>
+      <li>La fecha de cosecha se sincroniza automáticamente con la inspección</li>
+    </ul>
+  </div>
+
+  <!-- ===============================
+       RESULTADOS
+       =============================== -->
+  <div class="table-wrap">
+
+    <table id="resultsTablePlagasArandano">
+      <thead>
+        <tr id="resultsHeaderPlagasArandano">
+          <!-- JS insertará columnas -->
+        </tr>
+      </thead>
+      <tbody id="resultsBodyPlagasArandano">
+        <!-- JS insertará filas filtradas -->
+      </tbody>
+    </table>
+
+    <!-- Total de filas filtradas -->
+    <div id="totalFilasPlagasArandano"
+         style="margin-top:10px; font-weight:600; color:#0E1B40;">
+    </div>
+
+  </div>
+
+</div>

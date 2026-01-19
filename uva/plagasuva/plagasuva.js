@@ -301,6 +301,7 @@ function procesarTodoExcel() {
     }
 
     for (let i = 10; i <= 18; i++) {
+      if (i === 16) continue; // 🔹 Excluir columna 17 Excel
       if (isEmpty(row[i])) addError(i, "Obligatorio");
     }
 
@@ -329,72 +330,14 @@ function procesarTodoExcel() {
   });
 
   renderTable();
+
+  // Mostrar total de filas filtradas POR FECHA
+  const totalFilasDiv = document.getElementById("totalFilasPlagas");
+  if (totalFilasDiv) {
+    totalFilasDiv.textContent = `Total registros válidos: ${processedData.length}`;
+  }
+
 }
-
-
-
-// ===============================
-// VALIDACIONES DE COLUMNAS
-// ===============================
-processedData.forEach((row) => {
-  row._errors = [];
-
-  const addError = (col, msg) => {
-    row._errors.push(`Columna ${col + 1}: ${msg}`);
-  };
-
-  // considera vacío SOLO null / undefined / string vacío
-  const isEmpty = v =>
-    v === null ||
-    v === undefined ||
-    (typeof v === "string" && v.trim() === "");
-
-  // 🔴 11–19 obligatorios
-  for (let i = 10; i <= 18; i++) {
-    if (isEmpty(row[i])) {
-      addError(i, "Obligatorio");
-    }
-  }
-
-  // 🔴 Col 20 <= Col 57 (FECHAS dd/MM/yyyy)
-  const parseDate = d => {
-    if (isEmpty(d)) return null;
-    const [dd, mm, yy] = d.toString().split("/").map(Number);
-    return new Date(yy, mm - 1, dd);
-  };
-
-  const f20 = parseDate(row[19]);
-  const f57 = parseDate(row[56]);
-
-  if (f20 && f57 && f20 > f57) {
-    addError(19, "Debe ser menor o igual a columna 57");
-  }
-
-  // 🔴 Columna 29 (Excel) → debe ser 59
-  if (row[28]?.toString().trim() !== "59") {
-    addError(28, "Debe ser 59");
-  }
-
-  // 🔴 Columna 30 (Excel) → debe ser 53
-  if (row[29]?.toString().trim() !== "53") {
-    addError(29, "Debe ser 53");
-  }
-
-  // 🔴 80–105 no vacías (0 ES VÁLIDO)
-  for (let i = 79; i <= 104; i++) {
-    if (isEmpty(row[i])) {
-      addError(i, "No debe estar vacío");
-    }
-  }
-});
-
-renderTable();
-
-const totalFilasDiv = document.getElementById("totalFilasPlagas");
-if (totalFilasDiv) {
-  totalFilasDiv.textContent = `Total filas: ${processedData.length}`;
-}
-
 
     // ===============================
     // RENDER TABLA

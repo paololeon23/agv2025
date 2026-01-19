@@ -187,3 +187,12 @@
 .swal-fecha-delete:hover{
   background:#c0392b;
 }
+
+
+/* CONTADOR TOTAL */
+#totalFilasPlagas {
+  margin-top: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #333;
+}

@@ -47,7 +47,12 @@ document.addEventListener("DOMContentLoaded", () => {
         mparandano: {
             html: "arandano/arandano.html",
             js: "arandano/arandano.js",
-            title: "Materia Prima Arandano"
+            title: "Materia Prima Arándano"
+        },
+        plagasarandano: {
+        html: "arandano/plagas-arandano/plagas-arandano.html",
+        js: "arandano/plagas-arandano/plagas-arandano.js",
+        title: "Plagas Arándano"
         }
     };
 
