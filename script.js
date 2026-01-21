@@ -50,9 +50,14 @@ document.addEventListener("DOMContentLoaded", () => {
             title: "Materia Prima Arándano"
         },
         plagasarandano: {
-        html: "arandano/plagas-arandano/plagas-arandano.html",
-        js: "arandano/plagas-arandano/plagas-arandano.js",
-        title: "Plagas Arándano"
+            html: "arandano/plagas-arandano/plagas-arandano.html",
+            js: "arandano/plagas-arandano/plagas-arandano.js",
+            title: "Plagas Arándano"
+        },
+        ptarandano: {
+            html: "arandano/pt-arandano/pt-arandano.html",
+            js: "arandano/pt-arandano/pt-arandano.js",
+            title: "Producto Terminado Arándano"
         }
     };
 
@@ -293,4 +298,30 @@ menuItems.forEach(item => {
         loadFromHash();
     }
 
+const jCard = document.getElementById("jooleanoCard");
+
+let lastDay = null;
+
+function updateJooleanoCard() {
+    const today = new Date();
+    const dia = today.getDate();
+    const mes = String(today.getMonth() + 1).padStart(2, "0");
+    const anio = today.getFullYear();
+
+    const jooleano = String(dia).padStart(3, "0");
+
+    // Solo actualizamos si cambió el día
+    if (dia !== lastDay) {
+        jCard.textContent = `${dia}/${mes}/${anio}  - Jooleano = ${jooleano}`;
+        lastDay = dia;
+    }
+}
+
+// Actualizar al cargar
+updateJooleanoCard();
+
+// Revisar cada minuto si cambió el día
+setInterval(updateJooleanoCard, 60000);
+
+    
 });

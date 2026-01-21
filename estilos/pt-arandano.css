@@ -1,0 +1,79 @@
+/* SELECTOR ULTRA ESPECÍFICO: No afectará a ninguna otra tabla del sistema */
+#resultsTable.resultsTable-compact-mode tbody td {
+    height: 34px !important;        /* Altura mínima forzada */
+    padding: 2px 8px !important;    /* Espacio interno mínimo */
+    line-height: 1 !important;      /* El texto no tiene aire arriba/abajo */
+    white-space: nowrap !important; /* TODO el texto en una sola línea (clave) */
+    font-size: 11.5px !important;   /* Letra compacta pero legible */
+    vertical-align: middle !important;
+    border: 1px solid #e0e0e0 !important;
+    overflow: hidden;               /* No deja que nada "empuje" la celda */
+    text-overflow: ellipsis;        /* Si no cabe, pone ... */
+}
+
+/* ===============================
+   Estilos específicos para la tabla resultsTable
+   =============================== */
+
+/* Evita que la primera columna de cada fila ocupe demasiado ancho */
+#resultsTable tbody td:first-child {
+    width: 30px !important;       /* ancho fijo del handle */
+    text-align: center;
+}
+
+/* ===============================
+   Estilos tabla resultsTable
+   =============================== */
+
+/* Primera columna: handle + círculo + candado */
+#resultsTable tbody td:first-child {
+    width: 70px !important;      /* ancho para ☰ + círculo + candado */
+    text-align: center;
+    background: #f0f0f0;         /* gris claro por defecto */
+    cursor: grab;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hover del handle */
+#resultsTable tbody td:first-child:hover {
+    background-color: #2f7cc0; /* azul al pasar el mouse */
+    cursor: pointer;
+}
+
+.action-cell-content {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.drag-handle-icon {
+  cursor: grab;
+  font-size: 18px;
+}
+
+/* Círculos de colores degradados */
+.circle {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: inline-block;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+/* Color degradado 1 */
+.circle-1 {
+  background: linear-gradient(45deg, #2f7cc0, #6fb1fc);
+}
+
+/* Color degradado 2 */
+.circle-2 {
+  background: linear-gradient(45deg, #f2709c, #ff9472);
+}
+
+
+
+
+
+

@@ -335,3 +335,20 @@ body {
 body {
     overflow: auto;
 }
+
+
+.jooleano-card {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 4px 8px;
+    background-color: #f0f4ff;
+    color: #1a237e;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    text-align: center;
+    min-width: 120px;
+}
+
+

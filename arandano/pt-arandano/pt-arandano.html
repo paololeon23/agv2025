@@ -1,0 +1,78 @@
+<div class="dashboard-wrapper">
+
+  <h2>Revisión de Excel – PT Arándano</h2>
+
+  <div class="controls">
+
+    <!-- EXCEL -->
+    <div class="file-box" id="boxArandano">
+      <label class="icon-label">
+        <i class="fi fi-rr-folder"></i> Excel Producto Terminado – Arándano
+      </label><br />
+      <input type="file" id="fileArandano" accept=".xlsx,.xls" multiple>
+    </div>
+
+    <!-- CARTILLAS -->
+    <div class="select-wrapper">
+      <label class="icon-label">
+        <i class="fi fi-rr-document"></i> Cartillas de Producto Terminado
+      </label><br />
+
+      <select id="inspectionType" disabled>
+        <option value="" selected disabled>Selecciona tipo de cartilla</option>
+      </select>
+    </div>
+
+    <!-- FECHA INSPECCIÓN -->
+    <div class="select-wrapper">
+      <label class="icon-label">
+        <i class="fi fi-rr-calendar"></i> Fecha de inspección (Producto Terminado)
+      </label><br />
+      <select id="inspectionDate" class="styled-select" disabled>
+        <option value="" disabled selected>Selecciona fecha</option>
+      </select>
+    </div>
+
+  </div>
+
+  <div class="controls controls1">
+
+    <!-- FECHA LMR -->
+    <div class="select-wrapper">
+      <label class="icon-label">
+        <i class="fi fi-rr-calendar"></i> Fecha actualización LMR (Producto Terminado)
+      </label><br />
+      <select id="updateDate" class="styled-select disabled-select" disabled>
+        <option value="" selected>Se actualizará automáticamente</option>
+      </select>
+    </div>
+
+    <div><button id="runReviewArandano" disabled>▶ Revisar PT</button></div>
+    <button id="exportArandano" style="padding: 10px 14px;" disabled>Excel filtrado</button>
+    <div><button id="clearArandano" style="padding:10px 14px;">Limpiar</button></div>
+
+  </div>
+
+  <div class="info-box">
+    ⚠️ Atención:
+    <ul>
+      <li>Los campos se marcarán en <b>rojo</b> si falta cargar información.</li>
+      <li>Las cartillas de <b>Producto Terminado</b> se detectan automáticamente desde el Excel.</li>
+      <li>Selecciona una cartilla con data para revisar.</li>
+    </ul>
+  </div>
+
+    <div class="table-wrap">
+        <table id="resultsTable" class="resultsTable-compact-mode">
+        <thead>
+            <tr id="resultsHeader"></tr>
+        </thead>
+        <tbody id="resultsBody"></tbody>
+        </table>
+
+        <div id="totalFilas"
+        style="margin-top:10px;font-weight:600;color:#0E1B40;">
+        </div>
+    </div>
+
+</div>
