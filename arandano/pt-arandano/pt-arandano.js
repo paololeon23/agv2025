@@ -590,6 +590,26 @@ runBtn.addEventListener("click", () => {
                 }
             }
 
+            if (c === 57) {
+                const num = Number(val);
+
+                if (!val) {
+                    // Vacío → fondo rojo, texto vacío
+                    td.style.background = "red";
+                    td.textContent = "";
+                } else if (isNaN(num) || num <= 0 || num > 5) {
+                    // 0, negativo o >5 → letras rojo normal, fondo normal
+                    td.innerHTML = "";
+                    const span = document.createElement("span");
+                    span.textContent = val;
+                    span.style.color = "red"; // rojo normal
+                    td.appendChild(span);
+                } else {
+                    // Valor válido → normal
+                    td.textContent = val;
+                }
+            }
+
             /* ===============================
             VALIDACIÓN CANTIDAD / UNIDADES
             =============================== */
@@ -609,7 +629,6 @@ runBtn.addEventListener("click", () => {
             =============================== */
             if (val) {
                 if (c === 9 && val.length !== 12) td.style.color = "red";
-                if (c === 57 && Number(val) > 5) td.style.color = "red";
                 if (c === 58 && val.length > 13) td.style.color = "red";
                 if (c === 58) {
                     const trazCheck = extraerTrazabilidad(val);

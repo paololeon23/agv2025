@@ -1,0 +1,86 @@
+<div class="dashboard-wrapper">
+
+  <h2>Revisión de Excel – Firmpro Arándano</h2>
+
+  <!-- ===============================
+       CONTROLES
+       =============================== -->
+  <div class="controls">
+
+    <!-- Cargar Excel (PLANTILLA LLENA) -->
+    <div>
+      <label class="icon-label">
+        <i class="fi fi-rr-folder"></i> Subir Excel (Plantilla llena)
+      </label><br />
+      <input type="file" id="filePlagasArandano" accept=".xlsx,.xls">
+    </div>
+
+    <!-- Descargar plantilla -->
+    <div>
+      <button id="downloadTemplate" style="padding: 10px 14px;">
+        📄 Descargar plantilla
+      </button>
+    </div>
+
+  </div>
+
+  <!-- ===============================
+       ACCIONES
+       =============================== -->
+  <div style="margin-top:10px;">
+    <button id="runReviewPlagasArandano" style="padding: 10px 14px;" disabled>
+      ▶ Procesar Excel
+    </button>
+
+    <button id="exportPlagasArandano" style="padding: 10px 14px;" disabled>
+      Excel final
+    </button>
+
+    <button id="clearDataPlagasArandano" style="padding: 10px 14px;">
+      Limpiar
+    </button>
+  </div>
+
+  <!-- ===============================
+       INFO
+       =============================== -->
+  <div class="info-box">
+    ⚠️ Flujo correcto:
+    <ul>
+      <li>Descarga la plantilla Excel</li>
+      <li>Llénala con datos (Acidez, Brix, Sciocup, Test Sabor)</li>
+      <li>Sube el archivo al sistema</li>
+      <li>Presiona “Procesar Excel”</li>
+      <li>Se mostrará SOLO el resultado final</li>
+    </ul>
+  </div>
+
+  <!-- ===============================
+       RESULTADOS (SOLO FINAL)
+       =============================== -->
+  <div class="table-wrap" id="resultsTableFirmproArandano" style="display:none;">
+    <table id="resultsTablePlagasArandano">
+      <thead>
+        <tr>
+          <th>LOTE</th>
+          <th>VARIEDAD</th>
+          <th>Genetica</th>
+          <th>Etapa</th>
+          <th>Campo</th>
+          <th>Solidos-Solubles</th>
+          <th>Acidez</th>
+          <th>SCIOCUP</th>
+          <th>Test De Sabor</th>
+        </tr>
+      </thead>
+      <tbody id="resultsBodyPlagasArandano">
+        <!-- JS inserta resultados finales -->
+      </tbody>
+    </table>
+
+    <div id="totalFilasPlagasArandano"
+         style="margin-top:10px; font-weight:600; color:#0E1B40;">
+    </div>
+  </div>
+
+</div>

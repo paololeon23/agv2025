@@ -352,3 +352,75 @@ body {
 }
 
 
+/* --- AJUSTE AL CONTENEDOR EXISTENTE --- */
+.sidebar {
+    /* Mantenemos tus estilos, pero aseguramos el position relative para el anclaje */
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    /* ... resto de tus estilos (height, top, etc) ... */
+}
+
+/* --- AJUSTE AL MENÚ PARA QUE NO TAPE LA TARJETA --- */
+.nav-menu {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    direction: rtl;
+    /* Dejamos espacio abajo para que el último ítem (Calidad) sea visible sobre la tarjeta */
+    margin-bottom: 85px; 
+}
+
+/* --- ESTILO DE LA TARJETA FIJA (CARD) --- */
+.user-card-fixed {
+    position: absolute;
+    bottom: 7px; /* Separación del fondo */
+    left: 0;
+    width: 100%;
+    padding: 0 var(--active-item-margin); /* Usa tu variable de margen 10px */
+    box-sizing: border-box;
+    z-index: 1050; /* Por encima del nav-menu */
+    direction: ltr; /* Reset de la dirección RTL del menú */
+}
+
+.user-card-body {
+    background-color: #2f7cc0; /* Color que solicitaste */
+    border-radius: 15px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.user-card-avatar {
+    font-size: 28px;
+    color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.user-card-info {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Evita que el correo largo rompa la caja */
+}
+
+.user-card-email {
+    color: #FFFFFF;
+    font-size: 10px; /* Tamaño reducido para el correo largo */
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Añade "..." si no cabe */
+}
+
+.user-card-role {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-top: 2px;
+}

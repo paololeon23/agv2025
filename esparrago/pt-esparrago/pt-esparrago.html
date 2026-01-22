@@ -1,0 +1,57 @@
+<div class="dashboard-wrapper">
+  <h2>Revisión de Excel – PT Espárrago</h2>
+
+  <div class="controls">
+      <div>
+        <label class="icon-label">
+          <i class="fi fi-rr-folder"></i> Cargar Excel (PTES)
+        </label><br />
+        <input type="file" id="filePTEsparrago" accept=".xlsx,.xls">
+      </div>
+
+      <div class="select-wrapper">
+        <label class="icon-label">
+          <i class="fi fi-rr-calendar"></i> Fecha de inspección
+        </label><br />
+        <select id="inspectionDatePTEsparrago" class="styled-select" disabled>
+          <option value="" disabled selected>Selecciona fecha de inspección</option>
+        </select>
+      </div>
+
+      <div class="select-wrapper">
+        <label class="icon-label">
+          <i class="fi fi-rr-calendar"></i> Fecha actualización LMR
+        </label><br />
+        <select id="updateDatePTEsparrago" disabled class="styled-select disabled-select">
+          <option value="" selected>Se actualizará automáticamente</option>
+        </select>
+      </div>
+  </div>
+
+    <div style="display: flex; gap: 10px;">
+      <button id="runReviewPTEsparrago" style="padding: 9px 14px;" disabled>▶ Revisar PT</button>
+      <button id="exportPTEsparrago" style="padding: 10px 14px;" disabled>Excel Filtrado (PT)</button>
+      <button id="clearDataPTEsparrago" style="padding: 10px 14px;">Limpiar</button>
+    </div>
+
+    <div class="info-box">
+    ⚠️ <strong>Instrucciones PT Espárrago:</strong> 
+    <ul>
+        <li>El archivo debe ser de tipo <strong>PTES</strong>.</li>
+        <li>Es <strong>obligatorio</strong> seleccionar una fecha de inspección para habilitar la revisión.</li>
+        <li>La revisión se basará en <span style="font-weight:bold;">cliente de USA y Europa</span>.</li>
+    </ul>
+    </div>
+
+
+  <div class="table-wrap">
+    <table id="resultsTablePTEsparrago">
+      <thead>
+        <tr id="resultsHeaderPTEsparrago"></tr>
+      </thead>
+      <tbody id="resultsBodyPTEsparrago"></tbody>
+    </table>
+    <div id="totalFilasPTEsparrago" style="margin-top:10px; font-weight:600; color:#0E1B40;"></div>
+  </div>
+  
+</div>

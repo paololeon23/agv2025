@@ -12,12 +12,12 @@ document.addEventListener("DOMContentLoaded", () => {
         inicio: {
             html: "inicio/inicio.html",
             js: "inicio/inicio.js",
-            title: "INICIO"
+            title: "Inicio"
         },
         columnas: {
             html: "columnas/definicion.html",
             js: "columnas/app.js",
-            title: "DEFINICIONES"
+            title: "Ordenar Columnas"
         },
         revisar: {
             html: "revisar/revisar.html",
@@ -58,6 +58,21 @@ document.addEventListener("DOMContentLoaded", () => {
             html: "arandano/pt-arandano/pt-arandano.html",
             js: "arandano/pt-arandano/pt-arandano.js",
             title: "Producto Terminado Arándano"
+        },
+        firmproarandano: {
+            html: "arandano/firmpro/firmpro.html",
+            js: "arandano/firmpro/firmpro.js",
+            title: "Firmpro Arándano"
+        },
+        mpesparrago: {
+            html: "esparrago/esparrago.html",
+            js: "esparrago/esparrago.js",
+            title: "Materia Prima Espárrago"
+        },
+        ptesparrago: {
+            html: "esparrago/pt-esparrago/pt-esparrago.html",
+            js: "esparrago/pt-esparrago/pt-esparrago.js",
+            title: "Producto Terminado Espárrago"
         }
     };
 

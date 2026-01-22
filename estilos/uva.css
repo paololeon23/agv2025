@@ -265,7 +265,7 @@
 
 /* contenedor tabla */
 #resultsTable {
-  border-collapse: separate;
+  border-collapse: collapse;
   border-spacing: 0;
 }
 
@@ -285,19 +285,19 @@
 }
 
 .sticky-col-2 {
-  left: 90px;       /* Columna 7 nueva */
+  left: 89px;       /* Columna 7 nueva */
   min-width: 108px;
   z-index: 3;
 }
 
 .sticky-col-3 {
-  left: 316px;      /* Lote */
+  left: 332px;      /* Lote */
   min-width: 90px;
   z-index: 3;
 }
 
 .sticky-col-4 {
-  left: 406px;      /* Cant Muestra */
+  left: 421px;      /* Cant Muestra */
   min-width: 90px;
   z-index: 3;
 }

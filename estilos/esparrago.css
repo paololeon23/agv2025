@@ -1,0 +1,71 @@
+/* ============================================================
+   ESTADO DE BOTONES (Específico Espárrago)
+   ============================================================ */
+
+/* Botones desactivados en el módulo Espárrago */
+.dashboard-wrapper #runReviewEsparrago:disabled,
+.dashboard-wrapper #exportEsparrago:disabled {
+    background: #b8c2cc;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Estilo para los botones activos de Espárrago (para que no hereden estilos raros) */
+#runReviewEsparrago, 
+#exportEsparrago, 
+#clearDataEsparrago {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.dashboard-wrapper #resultsTableEsparrago th {
+    background: #f0f4f8;
+    font-weight: 600;
+}
+
+th, td {
+    padding: 7px 9px;
+    border: 1px solid var(--border, #ccc);
+    text-align: left;
+    font-size: 12px;
+    color: #2b2b2b;
+    max-width: 250px;
+    word-wrap: break-word;
+}
+
+/* CONTADOR TOTAL */
+#totalFilasEsparrago {
+  margin-top: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #333;
+}
+
+/* Clase base corregida para Espárrago */
+.esparrago-col {
+  position: sticky !important;
+  background: #fff !important;
+  /* Forzamos los bordes para que no se pierdan al hacer scroll */
+border-right: 1px solid #d1d5db !important;
+  border-bottom: 1px solid #d1d5db !important;
+}
+
+/* Bordes para los encabezados (Th) */
+#resultsHeaderEsparrago th.esparrago-col {
+  border-top: 1px solid #d1d5db !important;
+  border-bottom: 1px solid #d1d5db !important;
+  background-color: #f0f4f8 !important;
+  z-index: 5;
+}
+
+/* Posiciones exactas */
+.esparrago-col-0 { left: 0; min-width: 90px; border-left: 1px solid #f0f4f8 !important; }
+.esparrago-col-1 { left: 90px; min-width: 108px; }
+.esparrago-col-6 { left: 198px; min-width: 90px; }
+.esparrago-col-9 { left: 398px; min-width: 89px; }
+
+
+#resultsTableEsparrago {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}

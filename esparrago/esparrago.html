@@ -1,0 +1,81 @@
+<div class="dashboard-wrapper">
+
+  <h2>Revisión de Excel – Espárrago</h2>
+
+  <!-- ===============================
+       CONTROLES PRINCIPALES
+       =============================== -->
+  <div class="controls">
+
+      <!-- Cargar Excel -->
+      <div>
+        <label class="icon-label">
+          <i class="fi fi-rr-folder"></i> Cargar Excel
+        </label><br />
+        <input type="file" id="fileEsparrago" accept=".xlsx,.xls">
+      </div>
+
+      <!-- Fecha de inspección (OBLIGATORIA) -->
+      <div class="select-wrapper">
+        <label class="icon-label">
+          <i class="fi fi-rr-calendar"></i> Fecha de inspección
+        </label><br />
+        <select id="inspectionDateEsparrago" class="styled-select" disabled>
+          <option value="" disabled selected>Selecciona una fecha</option>
+        </select>
+      </div>
+
+      <!-- Fecha actualización LMR (columna 70) -->
+      <div class="select-wrapper">
+        <label class="icon-label">
+          <i class="fi fi-rr-calendar"></i> Fecha actualización LMR
+        </label><br />
+        <select id="updateDateEsparrago" disabled class="styled-select disabled-select">
+          <option value="" selected>Se actualizará automáticamente</option>
+        </select>
+      </div>
+
+</div>
+
+    <!-- Ejecutar revisión -->
+    <div>
+      <button id="runReviewEsparrago" style="padding: 9px 14px;" disabled>▶ Revisar Excel</button>
+      <button id="exportEsparrago" style="padding: 10px 14px;" disabled> Excel filtrado</button>
+      <button id="clearDataEsparrago" style="padding: 10px 14px;">Limpiar</button>
+    </div>
+
+  <!-- ===============================
+       MENSAJE INFORMATIVO
+       =============================== -->
+  <div class="info-box">
+    ⚠️ Atención: 
+    <ul>
+      <li>Debes cargar un archivo Excel válido antes de revisar.</li>
+      <li>Selecciona una fecha de inspección para habilitar el botón "Revisar".</li>
+      <li>Si existen múltiples fechas LMR, se mostrará un aviso y el select se marcará en rojo.</li>
+    </ul>
+  </div>
+
+
+  <!-- ===============================
+       RESULTADOS
+       =============================== -->
+  <div class="table-wrap">
+
+    <table id="resultsTableEsparrago">
+      <thead>
+        <tr id="resultsHeaderEsparrago">
+          <!-- JS inserta encabezados -->
+        </tr>
+      </thead>
+      <tbody id="resultsBodyEsparrago">
+        <!-- JS inserta filas -->
+      </tbody>
+    </table>
+    <!-- Total de filas filtradas -->
+    <div id="totalFilasEsparrago" style="margin-top:10px; font-weight:600; color:#0E1B40;">
+    </div>
+
+  </div>
+
+</div>

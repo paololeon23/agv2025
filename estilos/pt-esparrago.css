@@ -1,0 +1,57 @@
+/* Estilo para que el nombre del cliente sea legible */
+#resultsTablePTEsparrago td:nth-child(10) {
+    min-width: 250px;
+    white-space: normal;
+    word-break: break-word;
+    text-align: left;
+    font-weight: 600;
+}
+
+.dashboard-wrapper #resultsTablePTEsparrago th {
+    background: #f0f4f8;
+    font-weight: 600;
+}
+/* CONTADOR TOTAL */
+#totalFilasPTEsparrago {
+  margin-top: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #333;
+}
+
+/* Clase base corregida para Espárrago */
+.pt-esparrago-col {
+  position: sticky !important;
+  background: #fff !important;
+  /* Forzamos los bordes para que no se pierdan al hacer scroll */
+border-right: 1px solid #d1d5db !important;
+  border-bottom: 1px solid #d1d5db !important;
+}
+
+/* Bordes para los encabezados (Th) */
+#resultsHeaderPTEsparrago th.pt-esparrago-col {
+  border-top: 1px solid #d1d5db !important;
+  border-bottom: 1px solid #d1d5db !important;
+  background-color: #f0f4f8 !important;
+  z-index: 5;
+}
+
+/* Posiciones exactas */
+.pt-esparrago-col-0 { left: 0; min-width: 90px; border-left: 1px solid #f0f4f8 !important; }
+.pt-esparrago-col-1 { left: 90px; min-width: 108px; }
+.pt-esparrago-col-6 { left: 198px; min-width: 90px; }
+.pt-esparrago-col-9 { left: 419px; min-width: 90px; }
+
+
+#resultsTablePTEsparrago {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+/* Botones desactivados en el módulo Espárrago */
+.dashboard-wrapper #runReviewPTEsparrago:disabled,
+.dashboard-wrapper #exportPTEsparrago:disabled {
+    background: #b8c2cc;
+    cursor: not-allowed;
+    opacity: 0.7;
+}

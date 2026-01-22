@@ -29,7 +29,7 @@
 #resultsTable tbody td:first-child {
     width: 70px !important;      /* ancho para ☰ + círculo + candado */
     text-align: center;
-    background: #f0f0f0;         /* gris claro por defecto */
+
     cursor: grab;
     align-items: center;
     justify-content: center;

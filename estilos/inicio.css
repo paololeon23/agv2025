@@ -121,7 +121,6 @@
    📱 RESPONSIVE
 ======================================================= */
 @media (max-width: 1024px) {
-    .card canvas { height: 260px !important; }
     .kpi-card p { font-size: 30px; }
 }
 

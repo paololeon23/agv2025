@@ -24,95 +24,99 @@
         esparrago: { bg: 'rgba(255, 193, 7, 0.3)', border: 'rgba(255, 193, 7, 1)' }
     };
 
-    const fundos = ['A9','C5','C6','LN'];
+    // ================================
+// 1️⃣ Producción por cultivo (Líneas)
+// ================================
+const ctxProduccionCultivo = document.getElementById('chartProduccionCultivo');
+if(ctxProduccionCultivo){
+    new Chart(ctxProduccionCultivo, {
+        type: 'line',
+        data: {
+            labels: ['Arándano', 'Uva', 'Espárrago'],
+            datasets: [{
+                label: 'Producción (Ton)',
+                data: [1280, 670, 90], // tus datos de ejemplo
+                backgroundColor: 'rgba(106, 90, 205, 0.2)', // relleno suave
+                borderColor: 'rgba(90, 77, 179, 1)',        // línea
+                borderWidth: 2,
+                fill: true,
+                tension: 0.3,  // suaviza la curva
+                pointBackgroundColor: [
+                    'rgba(106, 90, 205, 1)',
+                    'rgba(34, 153, 84, 1)',
+                    'rgba(255, 193, 7, 1)'
+                ],
+                pointRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Toneladas'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ': ' + context.raw.toLocaleString() + ' Ton';
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
 
+
+    const fundos = ['A9','C5','C6','LN'];
     // ================================
-    // 1️⃣ Comparación de fundos
+    // 1️⃣ Total de variedades registradas por cultivo
     // ================================
-    const ctxFondos = document.getElementById('chartFondos');
-    if(ctxFondos){
-        new Chart(ctxFondos, {
+    const ctxVariedadesTotales = document.getElementById('chartVariedadesTotales');
+    if(ctxVariedadesTotales){
+        new Chart(ctxVariedadesTotales, {
             type: 'bar',
             data: {
-                labels: fundos,
-                datasets: [
-                    {
-                        label: 'Arándanos (kg)',
-                        data: [400, 320, 280, 250],
-                        backgroundColor: colors.arandanos.bg,
-                        borderColor: colors.arandanos.border,
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Uvas (kg)',
-                        data: [180, 150, 120, 100],
-                        backgroundColor: colors.uvas.bg,
-                        borderColor: colors.uvas.border,
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Espárragos (kg)',
-                        data: [90, 80, 60, 50],
-                        backgroundColor: colors.esparrago.bg,
-                        borderColor: colors.esparrago.border,
-                        borderWidth: 1
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                animation: { duration: 1200 },
-                scales: { y: { beginAtZero: true } }
-            }
-        });
-    }
-
-    // ================================
-    // 2️⃣ Variedades más exportadas (doughnut)
-    // ================================
-    const ctxVariedades = document.getElementById('chartVariedades');
-    if(ctxVariedades){
-        new Chart(ctxVariedades, {
-            type: 'doughnut',
-            data: {
-                labels: ['Secoya', 'POP', 'Beauty', 'Red Globe'],
+                labels: ['Arándano', 'Uva', 'Espárrago'],
                 datasets: [{
-                    data: [250, 180, 300, 220],
-                    backgroundColor: [
-                        colors.arandanos.bg,
-                        colors.arandanos.bg,
-                        colors.arandanos.bg,
-                        colors.uvas.bg
-                    ],
-                    borderColor: [
-                        colors.arandanos.border,
-                        colors.arandanos.border,
-                        colors.arandanos.border,
-                        colors.uvas.border
-                    ],
+                    label: 'Variedades registradas',
+                    data: [60, 21, 2], // de tu data real
+                    backgroundColor: [colors.arandanos.bg, colors.uvas.bg, colors.esparrago.bg],
+                    borderColor: [colors.arandanos.border, colors.uvas.border, colors.esparrago.border],
                     borderWidth: 1
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { legend: { position:'bottom' } }
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true } }
             }
         });
     }
 
     // ================================
-    // 3️⃣ Variedades orgánicas (doughnut)
+    // 2️⃣ Orgánico vs Convencional (Arándano)
     // ================================
-    const ctxVarOrg = document.getElementById('chartVariedadesOrg');
-    if(ctxVarOrg){
-        new Chart(ctxVarOrg, {
+    const ctxOrganico = document.getElementById('chartOrganico');
+    if(ctxOrganico){
+        new Chart(ctxOrganico, {
             type: 'doughnut',
             data: {
-                labels: ['Jack Salute', 'Sweet Orgánica'],
+                labels: ['Convencional', 'Orgánico'],
                 datasets: [{
-                    data: [120, 150],
+                    data: [51, 9], // de tu data real
                     backgroundColor: [colors.arandanos.bg, colors.uvas.bg],
                     borderColor: [colors.arandanos.border, colors.uvas.border],
                     borderWidth: 1
@@ -127,28 +131,36 @@
     }
 
     // ================================
-    // 4️⃣ Sanidad por fundo
+    // 3️⃣ Uso de líneas de proceso
     // ================================
-    const ctxSanidad = document.getElementById('chartSanidad');
-    if(ctxSanidad){
-        new Chart(ctxSanidad, {
+    const ctxLineas = document.getElementById('chartLineas');
+    if(ctxLineas){
+        new Chart(ctxLineas, {
             type: 'bar',
             data: {
-                labels: fundos,
+                labels: [
+                    'Arándano BERRY PRO',
+                    'HAND PACK',
+                    'BULK',
+                    'UVA LINEA 1-4',
+                    'ESPARRAGO LINEA 1-4'
+                ],
                 datasets: [{
-                    label: 'Sanidad (%)',
-                    data: [95, 90, 85, 92],
+                    label: 'Líneas activas',
+                    data: [10, 8, 6, 4, 4], // ejemplo basado en tu data
                     backgroundColor: [
                         colors.arandanos.bg,
                         colors.arandanos.bg,
                         colors.arandanos.bg,
-                        colors.uvas.bg
+                        colors.uvas.bg,
+                        colors.esparrago.bg
                     ],
                     borderColor: [
                         colors.arandanos.border,
                         colors.arandanos.border,
                         colors.arandanos.border,
-                        colors.uvas.border
+                        colors.uvas.border,
+                        colors.esparrago.border
                     ],
                     borderWidth: 1
                 }]
@@ -156,80 +168,56 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                animation: { duration: 1200 },
-                scales: { y: { beginAtZero: true, max: 100 } }
-            }
-        });
-    }
-
-    // ================================
-    // 5️⃣ Cliente / país con mayor exportación
-    // ================================
-    const ctxClientes = document.getElementById('chartClientesPais');
-    if(ctxClientes){
-        new Chart(ctxClientes, {
-            type: 'bar',
-            data: {
-                labels: ['EEUU', 'Países Bajos', 'Alemania', 'Canadá', 'China'],
-                datasets: [{
-                    label: 'Toneladas exportadas',
-                    data: [220, 180, 150, 120, 90],
-                    backgroundColor: [
-                        colors.arandanos.bg,
-                        colors.uvas.bg,
-                        colors.esparrago.bg,
-                        colors.uvas.bg,
-                        colors.arandanos.bg
-                    ],
-                    borderColor: [
-                        colors.arandanos.border,
-                        colors.uvas.border,
-                        colors.esparrago.border,
-                        colors.uvas.border,
-                        colors.arandanos.border
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                animation: { duration: 1200 },
                 scales: { y: { beginAtZero: true } }
             }
         });
     }
 
     // ================================
-    // 6️⃣ Acidez y Brix de uva y arándano
+    // 4️⃣ Distribución de calibres (Arándano)
     // ================================
-    const ctxAcidezBrix = document.getElementById('chartAcidezBrix');
-    if(ctxAcidezBrix){
-        new Chart(ctxAcidezBrix, {
+    const ctxCalibres = document.getElementById('chartCalibres');
+    if(ctxCalibres){
+        new Chart(ctxCalibres, {
             type: 'bar',
             data: {
-                labels: ['Arándano', 'Uva'],
-                datasets: [
-                    {
-                        label: 'Acidez (%)',
-                        data: [0.35, 0.42],
-                        backgroundColor: [colors.arandanos.bg, colors.uvas.bg],
-                        borderColor: [colors.arandanos.border, colors.uvas.border],
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Brix (%)',
-                        data: [12, 15],
-                        backgroundColor: [colors.arandanos.bg, colors.uvas.bg],
-                        borderColor: [colors.arandanos.border, colors.uvas.border],
-                        borderWidth: 1
-                    }
-                ]
+                labels: ['+12mm','+14mm','+16mm','+18mm','Jumbo','Super Jumbo','Mixto'],
+                datasets: [{
+                    label: 'Cantidad de calibres',
+                    data: [10,8,6,4,2,2,5], // ejemplo basado en tu data
+                    backgroundColor: colors.arandanos.bg,
+                    borderColor: colors.arandanos.border,
+                    borderWidth: 1
+                }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                animation: { duration: 1200 },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+    }
+
+    // ================================
+    // 5️⃣ Lotes registrados por tipo
+    // ================================
+    const ctxLotes = document.getElementById('chartLotes');
+    if(ctxLotes){
+        new Chart(ctxLotes, {
+            type: 'bar',
+            data: {
+                labels: ['Individual', 'Consolidado', 'Producto terminado'],
+                datasets: [{
+                    label: 'Cantidad de lotes',
+                    data: [36, 15, 20], // ejemplo basado en tu data
+                    backgroundColor: [colors.arandanos.bg, colors.uvas.bg, colors.esparrago.bg],
+                    borderColor: [colors.arandanos.border, colors.uvas.border, colors.esparrago.border],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
                 scales: { y: { beginAtZero: true } }
             }
         });

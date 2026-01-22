@@ -1,0 +1,7 @@
+#resultsTableFirmproArandano td {
+    padding: 9px 11px;
+    border: 1px solid var(--border);
+    text-align: left;
+    font-size: 12px;
+    color: #2b2b2b;
+}
