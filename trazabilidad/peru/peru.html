@@ -1,0 +1,65 @@
+<div class="dashboard-wrapper">
+  <h2 style="border-bottom-color: #D91E18;">Revisión de Trazabilidad AGV – Perú</h2>
+
+  <div class="trace-search-container">
+    <div class="input-control">
+      <label class="icon-label">
+        <i class="fi fi-rr-barcode"></i> Ingrese Código de Trazabilidad (Perú)
+      </label>
+      <div class="search-group">
+        <input type="text" id="pe-traceInput" placeholder="Ej: 6A49A01101015" maxlength="13">
+        <button id="pe-btnProcess" style="background-color: #D91E18;">Separar Código</button>
+        <button id="pe-btnClearTrace" class="btn-secondary">Limpiar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="trace-display-grid">
+    <div class="trace-column">
+      <span class="digit-ref">1</span><span class="label-ref">YEAR</span>
+      <div class="box-value pe-val" id="pe-val-year">-</div>
+    </div>
+    <div class="trace-column">
+      <span class="digit-ref">1</span><span class="label-ref">COUNTRY</span>
+      <div class="box-value pe-val" id="pe-val-country">-</div>
+    </div>
+    <div class="trace-column">
+      <span class="digit-ref">2</span><span class="label-ref">PACKING</span>
+      <div class="box-value pe-val" id="pe-val-packing">-</div>
+    </div>
+    <div class="trace-column">
+      <span class="digit-ref">1</span><span class="label-ref">GROWER</span>
+      <div class="box-value pe-val" id="pe-val-grower">-</div>
+    </div>
+    <div class="trace-column">
+      <span class="digit-ref">2</span><span class="label-ref">SECTOR</span>
+      <div class="box-value pe-val" id="pe-val-sector">-</div>
+    </div>
+    <div class="trace-column">
+      <span class="digit-ref">1</span><span class="label-ref">CROP</span>
+      <div class="box-value pe-val" id="pe-val-crop">-</div>
+    </div>
+    <div class="trace-column">
+      <span class="digit-ref">2</span><span class="label-ref">VARIETY</span>
+      <div class="box-value pe-val" id="pe-val-variety">-</div>
+    </div>
+    <div class="trace-column">
+      <span class="digit-ref">3</span><span class="label-ref">JULIAN DATE</span>
+      <div class="box-value pe-val" id="pe-val-julian">-</div>
+    </div>
+  </div>
+
+  <div class="trace-details-container" id="pe-detailsBox" style="display: none; border-left-color: #D91E18;">
+    <h3><i class="fi fi-rr-info"></i> Detalle de Información – Origen Perú</h3>
+    <div class="details-grid">
+      <div class="detail-item"><strong>Año:</strong> <span id="pe-det-year"></span></div>
+      <div class="detail-item"><strong>País:</strong> <span id="pe-det-country"></span></div>
+      <div class="detail-item"><strong>Packing:</strong> <span id="pe-det-packing"></span></div>
+      <div class="detail-item"><strong>Productor:</strong> <span id="pe-det-grower"></span></div>
+      <div class="detail-item"><strong>Sector:</strong> <span id="pe-det-sector"></span></div>
+      <div class="detail-item"><strong>Cultivo:</strong> <span id="pe-det-crop"></span></div>
+      <div class="detail-item"><strong>Variedad:</strong> <span id="pe-det-variety"></span></div>
+      <div class="detail-item"><strong>Fecha:</strong> <span id="pe-det-julian"></span></div>
+    </div>
+  </div>
+</div>

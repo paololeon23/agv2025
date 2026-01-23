@@ -24,6 +24,10 @@
      <link rel="stylesheet" href="estilos/pt-esparrago.css">
      <link rel="stylesheet" href="estilos/plagas-esparrago.css">
 
+     <!-- chile -->
+     <link rel="stylesheet" href="estilos/chile.css">
+     <link rel="stylesheet" href="estilos/peru.css">
+     <link rel="stylesheet" href="estilos/chilecartilla.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
@@ -81,11 +85,27 @@
 
             <nav class="nav-menu">
 
-                <a href="#" class="menu-item active" data-content="inicio">
-                    <i class="fas fa-house icon-left"></i>
+                <a href="#" class="menu-item has-submenu active" data-content="inicio_root">
+                    <i class="fas fa-home icon-left"></i> 
                     <span>Inicio</span>
+                    <i class="fas fa-chevron-down icon-right submenu-arrow"></i>
                 </a>
 
+                <div class="submenu active-submenu">
+                    <a href="#" class="submenu-item active" data-content="inicio">
+                        <i class="fas fa-database icon-left-sm"></i> Agrovision Perú
+                    </a>
+                    <a href="#" class="submenu-item" data-content="agvperu">
+                        <i class="fas fa-clipboard-list icon-left-sm"></i> Trazabilidad Peru
+                    </a>
+                    <a href="#" class="submenu-item" data-content="agvchile">
+                        <i class="fas fa-seedling icon-left-sm"></i> Trazabilidad Chile
+                    </a>
+                    <a href="#" class="submenu-item" data-content="chilecartilla">
+                        <i class="fas fa-clipboard-list icon-left-sm"></i> Cartillas
+                    </a>
+                </div>
+                
                 <a href="#" class="menu-item" data-content="columnas">
                     <i class="fas fa-arrows-left-right icon-left"></i>
                     <span>Ordenar Columnas</span>

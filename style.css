@@ -125,6 +125,8 @@ body {
     font-size: 1rem;
 }
 
+
+
 .search-icon {
     position: absolute;
     /* Ajustamos la posición basado en el padding lateral */
@@ -384,7 +386,7 @@ body {
 }
 
 .user-card-body {
-    background-color: #2f7cc0; /* Color que solicitaste */
+    background-color: #164c7c; /* Color que solicitaste */
     border-radius: 15px;
     padding: 12px;
     display: flex;

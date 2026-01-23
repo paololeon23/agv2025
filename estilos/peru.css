@@ -1,0 +1,144 @@
+/* =========================================
+   TRAZABILIDAD AGV - ESTILOS PERÚ
+   ========================================= */
+
+/* Contenedor Principal */
+.dashboard-wrapper {
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    font-family: Arial, sans-serif;
+}
+
+/* Buscador */
+.trace-search-container {
+    margin-bottom: 30px;
+    background: #fdfdfd;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+}
+
+.search-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+#pe-traceInput {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Botón Procesar (Rojo Perú) */
+#pe-btnProcess {
+    background-color: #D91E18;
+    color: white;
+    border: none;
+    padding: 0 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-secondary {
+    background-color: #666;
+    color: white;
+    border: none;
+    padding: 0 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* El Grid de Cuadros (Estructura idéntica a Chile) */
+.trace-display-grid {
+    display: flex;
+    width: 100%;
+    border: 1px solid #ccc;
+    overflow-x: auto;
+    background: #fff;
+}
+
+.trace-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #ccc;
+    min-width: 60px;
+}
+
+.trace-column:last-child {
+    border-right: none;
+}
+
+.digit-ref {
+    font-size: 10px;
+    text-align: center;
+    background: #fff;
+    color: #333;
+    border-bottom: 1px solid #ccc;
+    padding: 2px 0;
+}
+
+.label-ref {
+    font-size: 11px;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 2px;
+    background: #f9f9f9;
+    min-height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Valor Grande en Rojo */
+.pe-val {
+    padding: 20px 5px;
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #D91E18 !important;
+    border-top: 1px solid #ccc;
+}
+
+/* Cuadro de Detalles Final */
+.trace-details-container {
+    margin-top: 25px;
+    padding: 20px;
+    background-color: #fcf2f2; /* Fondo sutil para Perú */
+    border-left: 5px solid #D91E18;
+    border-radius: 4px;
+}
+
+.trace-details-container h3 {
+    margin: 0 0 15px 0;
+    color: #0E1B40;
+    font-size: 1.1rem;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.detail-item {
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.detail-item strong {
+    color: #555;
+}
+
+.detail-item span {
+    color: #D91E18;
+    font-weight: bold;
+    margin-left: 5px;
+}

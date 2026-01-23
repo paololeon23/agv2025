@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
         inicio: {
             html: "inicio/inicio.html",
             js: "inicio/inicio.js",
-            title: "Inicio"
+            title: "Agrovision Perú"
         },
         columnas: {
             html: "columnas/definicion.html",
@@ -78,7 +78,23 @@ document.addEventListener("DOMContentLoaded", () => {
             html: "esparrago/plagas-esparrago/plagas-esparrago.html",
             js: "esparrago/plagas-esparrago/plagas-esparrago.js",
             title: "Plagas Espárrago"
+        },
+        agvchile: {
+            html: "trazabilidad/chile/chile.html",
+            js: "trazabilidad/chile/chile.js",
+            title: "Trazabilidad Chile"
+        },
+        agvperu: {
+            html: "trazabilidad/peru/peru.html",
+            js: "trazabilidad/peru/peru.js",
+            title: "Trazabilidad Perú"
+        },
+        chilecartilla: {
+            html: "trazabilidad/cartilla/cartilla.html",
+            js: "trazabilidad/cartilla/cartilla.js",
+            title: "Cartillas Chile"
         }
+
 
     };
 
@@ -88,6 +104,79 @@ document.addEventListener("DOMContentLoaded", () => {
     function removeDynamicScripts() {
         document.querySelectorAll("script[data-dynamic]").forEach(s => s.remove());
     }
+
+    // 2. Modifica la carga inicial al final del archivo:
+    function initApp() {
+        const currentHash = location.hash.replace("#/", "");
+        
+        if (!currentHash || currentHash === "") {
+            // Si no hay hash, forzamos inicio y el menú ya estará abierto por el HTML
+            location.hash = "#/inicio"; 
+            loadPage("inicio");
+            highlightMenu("inicio");
+        } else {
+            // Si ya hay un hash (por un reload), la función lo cargará y expandirá el menú correspondiente
+            loadFromHash();
+        }
+    }
+
+    initApp();
+
+    // ====================================================================
+// LÓGICA DEL BUSCADOR
+// ====================================================================
+const searchInput = document.querySelector('.search-box input');
+const allMenuItems = document.querySelectorAll('.menu-item');
+const allSubmenuItems = document.querySelectorAll('.submenu-item');
+
+searchInput.addEventListener('input', (e) => {
+    const term = e.target.value.toLowerCase().trim();
+
+    // 1. Filtrar Submenu Items
+    allSubmenuItems.forEach(sub => {
+        const text = sub.textContent.toLowerCase();
+        const isMatch = text.includes(term);
+        sub.style.display = isMatch ? "flex" : "none";
+    });
+
+    // 2. Filtrar Menu Items Principales
+    allMenuItems.forEach(item => {
+        const text = item.querySelector('span').textContent.toLowerCase();
+        const isParentMatch = text.includes(term);
+        
+        // Verificar si es un padre y si alguno de sus hijos coincide
+        const hasVisibleChildren = item.classList.contains('has-submenu') && 
+            Array.from(item.nextElementSibling.querySelectorAll('.submenu-item'))
+                 .some(sub => sub.style.display !== "none");
+
+        if (isParentMatch || hasVisibleChildren) {
+            item.style.display = "flex";
+            
+            // Si hay coincidencia en hijos, expandir el menú automáticamente
+            if (hasVisibleChildren && term !== "") {
+                item.nextElementSibling.classList.add('active-submenu');
+                const arrow = item.querySelector('.submenu-arrow');
+                if (arrow) {
+                    arrow.classList.remove('fa-chevron-right');
+                    arrow.classList.add('fa-chevron-down');
+                }
+            }
+        } else {
+            item.style.display = "none";
+            // Ocultar el submenu si el padre no es visible
+            if (item.classList.contains('has-submenu')) {
+                item.nextElementSibling.classList.remove('active-submenu');
+            }
+        }
+
+        // Si el buscador se limpia, restauramos el estado (cerramos submenús no activos)
+        if (term === "") {
+            // Aquí puedes llamar a tu función de highlight actual para restaurar
+            const currentKey = location.hash.replace("#/", "");
+            highlightMenu(currentKey);
+        }
+    });
+});
 
     // ====================================================================
     // FUNCIÓN PARA CARGAR HTML + JS

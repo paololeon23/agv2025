@@ -1,0 +1,65 @@
+<div class="dashboard-wrapper">
+  <h2>Revisión de Trazabilidad AGV – Chile</h2>
+
+  <div class="trace-search-container">
+    <div class="input-control">
+      <label class="icon-label">
+        <i class="fi fi-rr-barcode"></i> Ingrese Código de Trazabilidad
+      </label>
+      <div class="search-group">
+        <input type="text" id="traceInput" placeholder="Ej: 6I559521B8021" maxlength="13">
+        <button id="btnProcess">Separar Código</button>
+        <button id="btnClearTrace" class="btn-secondary">Limpiar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="trace-display-grid">
+    <div class="trace-column">
+      <span class="digit-ref">1</span><span class="label-ref">YEAR</span>
+      <div class="box-value" id="val-year">-</div>
+    </div>
+    <div class="trace-column">
+      <span class="digit-ref">1</span><span class="label-ref">COUNTRY</span>
+      <div class="box-value" id="val-country">-</div>
+    </div>
+    <div class="trace-column">
+      <span class="digit-ref">2</span><span class="label-ref">PACKING</span>
+      <div class="box-value" id="val-packing">-</div>
+    </div>
+    <div class="trace-column">
+      <span class="digit-ref">1</span><span class="label-ref">GROWER</span>
+      <div class="box-value" id="val-grower">-</div>
+    </div>
+    <div class="trace-column">
+      <span class="digit-ref">2</span><span class="label-ref">SECTOR</span>
+      <div class="box-value" id="val-sector">-</div>
+    </div>
+    <div class="trace-column">
+      <span class="digit-ref">1</span><span class="label-ref">CROP</span>
+      <div class="box-value" id="val-crop">-</div>
+    </div>
+    <div class="trace-column">
+      <span class="digit-ref">2</span><span class="label-ref">VARIETY</span>
+      <div class="box-value" id="val-variety">-</div>
+    </div>
+    <div class="trace-column">
+      <span class="digit-ref">3</span><span class="label-ref">JULIAN DATE</span>
+      <div class="box-value" id="val-julian">-</div>
+    </div>
+  </div>
+
+  <div class="trace-details-container" id="detailsBox" style="display: none;">
+    <h3><i class="fi fi-rr-info"></i> Detalle de Información</h3>
+    <div class="details-grid">
+      <div class="detail-item"><strong>Año:</strong> <span id="det-year"></span></div>
+      <div class="detail-item"><strong>País:</strong> <span id="det-country"></span></div>
+      <div class="detail-item"><strong>Packing:</strong> <span id="det-packing"></span></div>
+      <div class="detail-item"><strong>Productor:</strong> <span id="det-grower"></span></div>
+      <div class="detail-item"><strong>Sector:</strong> <span id="det-sector"></span></div>
+      <div class="detail-item"><strong>Cultivo:</strong> <span id="det-crop"></span></div>
+      <div class="detail-item"><strong>Variedad:</strong> <span id="det-variety"></span></div>
+      <div class="detail-item"><strong>Fecha:</strong> <span id="det-julian"></span></div>
+    </div>
+  </div>
+</div>

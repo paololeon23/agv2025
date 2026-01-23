@@ -1,0 +1,121 @@
+/* Contenedor Principal con Sombra Suave */
+.cartilla-card {
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    margin-top: 20px;
+    border: 1px solid #f0f0f0;
+}
+
+/* Buscador Estilizado */
+.table-controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.search-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 350px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 20px;
+    border: 2px solid #eee;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background: #f9f9f9;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #f27121; /* Naranja AGV */
+    background: #fff;
+    box-shadow: 0 0 15px rgba(242, 113, 33, 0.1);
+}
+
+/* La Tabla */
+.cartilla-container {
+    border-radius: 12px;
+    overflow: hidden; /* Para que los bordes redondeados funcionen */
+    border: 1px solid #eee;
+}
+
+.agv-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.agv-table thead {
+    background: linear-gradient(90deg, #0E1B40 0%, #1a2a5a 100%);
+    color: white;
+}
+
+.agv-table th {
+    padding: 16px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    text-align: left;
+}
+
+.agv-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #f4f4f4;
+    vertical-align: middle;
+    color: #444;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+/* Hover en las filas */
+.agv-table tbody tr {
+    transition: background 0.3s;
+    cursor: pointer;
+}
+
+.agv-table tbody tr:hover {
+    background-color: #fff6f0; /* Naranja muy pálido */
+    transform: scale(1.002);
+}
+
+.agv-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Badges de Código (El "estilo cuadrito") */
+.badge-code {
+    background: linear-gradient(135deg, #f27121 0%, #e94e1b 100%);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    display: inline-block;
+    box-shadow: 0 4px 6px rgba(242, 113, 33, 0.2);
+    min-width: 40px;
+    text-align: center;
+}
+
+/* Etiquetas de Categoría */
+.tag-cat {
+    display: inline-block;
+    padding: 4px 10px;
+    background: #f0f2f5;
+    color: #555;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.desc-text {
+    font-weight: 500;
+    color: #222;
+}
