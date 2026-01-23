@@ -1,0 +1,73 @@
+<div class="dashboard-wrapper">
+
+  <h2>Revisión de Excel – Plagas Espárrago</h2>
+
+  <div class="controls">
+
+    <div class="file-box" id="boxPlagasEsparrago">
+      <label class="icon-label">
+        <i class="fi fi-rr-folder"></i> Excel Plagas Espárrago
+      </label><br />
+      <input type="file" id="filePlagasEsparrago" accept=".xlsx,.xls" multiple>
+    </div>
+
+    <div class="select-wrapper">
+      <label class="icon-label">
+        <i class="fi fi-rr-document"></i> Cartillas
+      </label><br />
+      <select id="inspectionTypePlagasEsparrago" disabled>
+        <option value="" selected disabled>Selecciona tipo</option>
+      </select>
+    </div>
+
+    <div class="select-wrapper">
+      <label class="icon-label">
+        <i class="fi fi-rr-calendar"></i> Fecha de inspección
+      </label><br />
+      <select id="inspectionDatePlagasEsparrago" class="styled-select" disabled>
+        <option value="" disabled selected>Selecciona fecha</option>
+      </select>
+    </div>
+
+  </div>
+
+  <div class="controls controls1">
+
+    <div class="select-wrapper">
+      <label class="icon-label">
+        <i class="fi fi-rr-calendar"></i> Fecha cosecha
+      </label><br />
+      <select id="updateDatePlagasEsparrago" class="styled-select disabled-select" disabled>
+        <option value="" selected>Auto-Fecha</option>
+      </select>
+    </div>
+
+    <div><button id="runReviewPlagasEsparrago" disabled>▶ Revisar Excel</button></div>
+    <button id="exportPlagasEsparrago" style="padding: 10px 14px;" disabled>Excel filtrado</button>
+    <div><button id="clearPlagasEsparrago" style="padding:10px 14px;">Limpiar</button></div>
+
+  </div>
+
+  <div class="info-box">
+    ⚠️ La revisión se habilita únicamente cuando:
+    <ul>
+      <li>Se han cargado los archivos Excel de Plagas Espárrago</li>
+      <li>Se ha seleccionado una fecha de inspección</li>
+      <li>La fecha de cosecha se sincroniza automáticamente</li>
+    </ul>
+  </div>
+
+  <div class="table-wrap">
+    <table id="resultsTablePlagasEsparrago">
+      <thead>
+        <tr id="resultsHeaderPlagasEsparrago"></tr>
+      </thead>
+      <tbody id="resultsBodyPlagasEsparrago"></tbody>
+    </table>
+
+    <div id="totalFilasPlagasEsparrago"
+         style="margin-top:10px; font-weight:600; color:#0E1B40;">
+    </div>
+  </div>
+
+</div>

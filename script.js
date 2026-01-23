@@ -73,7 +73,13 @@ document.addEventListener("DOMContentLoaded", () => {
             html: "esparrago/pt-esparrago/pt-esparrago.html",
             js: "esparrago/pt-esparrago/pt-esparrago.js",
             title: "Producto Terminado Espárrago"
+        },
+        plagasesparrago: {
+            html: "esparrago/plagas-esparrago/plagas-esparrago.html",
+            js: "esparrago/plagas-esparrago/plagas-esparrago.js",
+            title: "Plagas Espárrago"
         }
+
     };
 
     // ====================================================================

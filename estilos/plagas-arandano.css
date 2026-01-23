@@ -42,6 +42,7 @@
 /* ============================ SELECT INSPECCIÓN ============================ */
 #inspectionDatePlagasArandano {
     width: 100%;
+    min-width: 24ch;
     padding: 10px 15px;
     font-size: 14px;
     border-radius: 8px;
@@ -57,6 +58,7 @@
     background-position: right 12px center;
     background-size: 10px 7px;
     padding-right: 35px;
+    
 }
 
 #inspectionDatePlagasArandano:hover {
@@ -185,4 +187,21 @@
   font-weight: 600;
   font-size: 13px;
   color: #333;
+}
+
+#cosechaDatePlagasArandano {
+  width: 63%;
+  min-width: 20ch;
+  padding: 10px 15px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #f5f5f5;
+  color: #555;
+  cursor: not-allowed;
+  appearance: none;
+
+  text-align: center;
+  text-align-last: center;
+  
 }

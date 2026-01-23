@@ -61,7 +61,7 @@
       inspectionSelect.innerHTML=`<option disabled selected>Selecciona una fecha</option>`;
       inspectionSelect.disabled=true;
 
-      cosechaSelect.innerHTML=`<option selected>Se actualizará automáticamente</option>`;
+      cosechaSelect.innerHTML=`<option selected>Auto-Fecha</option>`;
       cosechaSelect.disabled=true;
       cosechaSelect.style.border="";
       cosechaSelect.style.color="";
@@ -91,7 +91,7 @@
       cosechaSelect.innerHTML = "";
       const o = document.createElement("option");
       o.value = cosecha;
-      o.textContent = cosecha || "Se actualizará automáticamente";
+      o.textContent = cosecha || "Auto-Fecha";
       cosechaSelect.appendChild(o);
       cosechaSelect.value = cosecha;
       cosechaSelect.disabled = true; // siempre disabled
