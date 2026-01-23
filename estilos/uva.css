@@ -291,14 +291,14 @@
 }
 
 .sticky-col-3 {
-  left: 332px;      /* Lote */
-  min-width: 90px;
+  left: 313px;      /* Lote */
+  min-width: 89px;
   z-index: 3;
 }
 
 .sticky-col-4 {
-  left: 421px;      /* Cant Muestra */
-  min-width: 90px;
+  left: 401px;      /* Cant Muestra */
+  min-width: 86px;
   z-index: 3;
 }
 
