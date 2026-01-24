@@ -208,9 +208,16 @@
         }
         
         // Lote (Col 10)
-        if (c === 9 && (val.length !== 10 || !val)) {
-            !val ? td.style.background = "red" : td.style.color = "red";
-        }
+// Lote (Col 10 -> índice 9)
+if (c === 9) {
+    if (!val || val.trim() === "") {
+        td.style.setProperty("background-color", "#ff0000", "important");
+        td.style.setProperty("color", "white", "important");
+    } else if (val.length !== 10) {
+        td.style.setProperty("color", "red", "important");
+    }
+}
+
 
         // Peso (Col 11)
         if (c === 10 && (nVal < 2000 || nVal > 3000)) td.style.color = "red";

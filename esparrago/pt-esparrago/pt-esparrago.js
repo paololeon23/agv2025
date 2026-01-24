@@ -18,49 +18,98 @@
     const VISUAL_COLS_PT = [0, 1, 3, 6, 9, 10, 11, 27, 36, 37, 45, 46, 49, 50, 51, 53, 55, 58, 59, 60, 61, 62, 64, 71];
     
     // BASE DE DATOS INTEGRAL (MERCADO -> CLIENTE -> FORMATO)
-    const DB_PESOS = {
-        "ASIA": {
-            "VALLE FRESH": { "10X500": { min: 515, max: 520, tipo: "ATADO" } },
-            "RAT TRADING": { "10X500": { min: 515, max: 520, tipo: "ATADO" } },
-            "OMSEM": { "10X500": { min: 515, max: 520, tipo: "ATADO" } }
+const DB_PESOS = {
+    "ASIA": {
+        "VALLE FRESH": { "10X500": { min: 515, max: 520, tipo: "ATADO" } },
+        "RAT TRADING": { "10X500": { min: 515, max: 520, tipo: "ATADO" } },
+        "OMSEM": { "10X500": { min: 515, max: 520, tipo: "ATADO" } }
+    },
+    "EUROPA": {
+        "AEI": { 
+            "10X250": { min: 250, max: 255, tipo: "ATADO" }, 
+            "20X250": { min: 250, max: 255, tipo: "ATADO" } 
         },
-        "EUROPA": {
-            "AEI": { "10X250": { min: 250, max: 255, tipo: "ATADO" }, "20X250": { min: 250, max: 255, tipo: "ATADO" } },
-            "BARRIOS & JOULE LTD": { 
-                "11X450": { min: 4950, max: 5049, tipo: "CAJA" }, "20X250": { min: 5000, max: 5100, tipo: "CAJA" },
-                "25X200": { min: 5000, max: 5100, tipo: "CAJA" }, "24X125": { min: 3000, max: 3060, tipo: "CAJA" }, "40X100": { min: 4080, max: 4160, tipo: "CAJA" }
-            },
-            "GARCIA MATEO": { 
-                "12X250": { min: 250, max: 258, tipo: "ATADO" }, "20X250": { min: 250, max: 258, tipo: "ATADO" },
-                "17X300": { min: 300, max: 309, tipo: "ATADO" }, "6X400": { min: 400, max: 412, tipo: "ATADO" }, "8X240": { min: 420, max: 433, tipo: "ATADO" }
-            },
-            "PAPAGALLO PRODUCE LLC": { "17X300": { min: 300, max: 306, tipo: "ATADO" }, "20X250": { min: 250, max: 255, tipo: "ATADO" } },
-            "AMS-EUROPEAN": { "8X420": { min: 420, max: 428, tipo: "ATADO" }, "12X250": { min: 250, max: 255, tipo: "ATADO" } },
-            "NATURE’S PRIDE B.V.": { 
-                "10X250": { min: 250, max: 255, tipo: "ATADO" }, "20X250": { min: 250, max: 255, tipo: "ATADO" },
-                "20X200": { min: 200, max: 204, tipo: "ATADO" }, "11X450": { min: 450, max: 459, tipo: "ATADO" }
-            },
-            "SPECIAL FRUIT NV": { "10X250": { min: 250, max: 255, tipo: "ATADO" }, "20X250": { min: 250, max: 255, tipo: "ATADO" }, "11X450": { min: 450, max: 459, tipo: "ATADO" } },
-            "EDEKA AG FRUCHTKONTOR WEST": { "10X250": { min: 255, max: 260, tipo: "ATADO" } },
-            "VERDE IMPORT": { "6X400": { min: 400, max: 408, tipo: "ATADO" }, "10X250": { min: 250, max: 255, tipo: "ATADO" }, "11X450": { min: 450, max: 459, tipo: "ATADO" } },
-            "TEBOZA": { "20X200": { min: 200, max: 204, tipo: "ATADO" }, "20X250": { min: 450, max: 459, tipo: "ATADO" }, "11X450": { min: 250, max: 459, tipo: "ATADO" } },
-            "COOP TRADING": { "10X250": { min: 250, max: 255, tipo: "ATADO" } },
-            "AARTSEN BREDA B.V.": { "11X450": { min: 450, max: 459, tipo: "ATADO" }, "10X250": { min: 250, max: 255, tipo: "ATADO" } },
-            "METRO": { "15X325": { min: 4875, max: 4875, tipo: "CAJA" }, "11X450": { min: 5170, max: 5170, tipo: "CAJA" } }
+        "BARFOOTS OF BOTLEY LTD": { 
+            "11X450": { min: 4950, max: 5049, tipo: "CAJA" }, 
+            "20X250": { min: 5000, max: 5100, tipo: "CAJA" },
+            "25X200": { min: 5000, max: 5100, tipo: "CAJA" }, 
+            "24X125": { min: 3000, max: 3060, tipo: "CAJA" }, 
+            "40X100": { min: 4080, max: 4160, tipo: "CAJA" }
         },
-        "USA": {
-            "FARM DIRECT SUPPLY LLC": { "11X450": { min: 4950, max: 4960, tipo: "CAJA" } },
-            "SQUARE ONE FARMS LLC": { "11X450": { min: 4950, max: 4960, tipo: "CAJA" }, "10X544": { min: 544, max: 545, tipo: "ATADO" } },
-            "HARVEST SENSATIONS LLC": { "11X450": { min: 4950, max: 4960, tipo: "CAJA" } },
-            "WALMART INC.": { "11X450": { min: 5000, max: 5010, tipo: "CAJA" } },
-            "PRIME TIME INTERNATIONAL": { "11X450": { min: 4950, max: 4960, tipo: "CAJA" } },
-            "JMB PRODUCE": { "11X450": { min: 4950, max: 4960, tipo: "CAJA" } },
-            "ALPINE FRESH": { "11X450": { min: 4950, max: 4960, tipo: "CAJA" } },
-            "ALPINE FRESH – SMALL": { "11X450": { min: 450, max: 470, tipo: "ATADO" } },
-            "FRUVEG MARKETING INC.": { "11X450": { min: 4950, max: 4960, tipo: "CAJA" }, "15X325": { min: 325, max: 332, tipo: "ATADO" }, "28X453": { min: 450, max: 453, tipo: "ATADO" } },
-            "METRO": { "15X325": { min: 4875, max: 4875, tipo: "CAJA" }, "11X450": { min: 5170, max: 5170, tipo: "CAJA" } }
+        "IPL ASDA": {
+            "27X180": { min: 180, max: 184, tipo: "ATADO", presentacion: "4.86 KG" },
+            "40X100": { min: 100, max: 102, tipo: "ATADO", presentacion: "4.86 KG" }
+        },
+        "GARCIA MATEO": { 
+            "12X250": { min: 250, max: 258, tipo: "ATADO" }, 
+            "20X250": { min: 250, max: 258, tipo: "ATADO" },
+            "17X300": { min: 300, max: 309, tipo: "ATADO" }, 
+            "6X400": { min: 400, max: 412, tipo: "ATADO" }, 
+            "8X240": { min: 420, max: 433, tipo: "ATADO" }
+        },
+        "PAPAGALLO PRODUCE LLC": { 
+            "17X300": { min: 300, max: 306, tipo: "ATADO" }, 
+            "20X250": { min: 250, max: 255, tipo: "ATADO" } 
+        },
+        "AMS-EUROPEAN": { 
+            "8X420": { min: 420, max: 428, tipo: "ATADO" }, 
+            "12X250": { min: 250, max: 255, tipo: "ATADO" } 
+        },
+        "NATURE’S PRIDE B.V.": { 
+            "10X250": { min: 250, max: 255, tipo: "ATADO" }, 
+            "20X250": { min: 250, max: 255, tipo: "ATADO" },
+            "20X200": { min: 200, max: 204, tipo: "ATADO" }, 
+            "11X450": { min: 450, max: 459, tipo: "ATADO" }
+        },
+        "SPECIAL FRUIT NV": { 
+            "10X250": { min: 250, max: 255, tipo: "ATADO" }, 
+            "20X250": { min: 250, max: 255, tipo: "ATADO" }, 
+            "11X450": { min: 450, max: 459, tipo: "ATADO" } 
+        },
+        "EDEKA AG FRUCHTKONTOR WEST": { "10X250": { min: 255, max: 260, tipo: "ATADO" } },
+        "VERDE IMPORT": { 
+            "6X400": { min: 400, max: 408, tipo: "ATADO" }, 
+            "10X250": { min: 250, max: 255, tipo: "ATADO" }, 
+            "11X450": { min: 450, max: 459, tipo: "ATADO" } 
+        },
+        "TEBOZA": { 
+            "20X200": { min: 200, max: 204, tipo: "ATADO" }, 
+            "20X250": { min: 250, max: 255, tipo: "ATADO" }, 
+            "11X450": { min: 450, max: 459, tipo: "ATADO" } 
+        },
+        "COOP TRADING": { "10X250": { min: 250, max: 255, tipo: "ATADO" } },
+        "AARTSEN BREDA B.V.": { 
+            "11X450": { min: 450, max: 459, tipo: "ATADO" }, 
+            "10X250": { min: 250, max: 255, tipo: "ATADO" } 
+        },
+        "METRO": { 
+            "15X325": { min: 4875, max: 4875, tipo: "CAJA" }, 
+            "11X450": { min: 5170, max: 5170, tipo: "CAJA" } 
         }
-    };
+    },
+    "USA": {
+        "FARM DIRECT SUPPLY, LLC": { "11X450": { min: 4950, max: 4960, tipo: "CAJA" } },
+        "Square One Farms, Llc": { 
+            "11X450": { min: 4950, max: 4960, tipo: "CAJA" }, 
+            "10X544": { min: 544, max: 545, tipo: "ATADO" } 
+        },
+        "HARVEST SENSATIONS LLC": { "11X450": { min: 4950, max: 4960, tipo: "CAJA" } },
+        "WALMART INC.": { "11X450": { min: 5000, max: 5010, tipo: "CAJA" } },
+        "PRIME TIME INTERNATIONAL": { "11X450": { min: 4950, max: 4960, tipo: "CAJA" } },
+        "JMB PRODUCE": { "11X450": { min: 4950, max: 4960, tipo: "CAJA" } },
+        "ALPINE FRESH": { "11X450": { min: 4950, max: 4960, tipo: "CAJA" } },
+        "ALPINE FRESH – SMALL": { "11X450": { min: 450, max: 470, tipo: "ATADO" } },
+        "FRU VEG MARKETING INC.": { 
+            "11X450": { min: 4950, max: 4960, tipo: "CAJA" }, 
+            "15X325": { min: 325, max: 332, tipo: "ATADO" }, 
+            "28X453": { min: 450, max: 453, tipo: "ATADO" } 
+        },
+        "METRO": { 
+            "15X325": { min: 4875, max: 4875, tipo: "CAJA" }, 
+            "11X450": { min: 5170, max: 5170, tipo: "CAJA" } 
+        }
+    }
+};
 
     // --- CARGA DE ARCHIVO ---
     fileInput.addEventListener("change", async e => {

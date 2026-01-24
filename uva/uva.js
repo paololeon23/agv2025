@@ -141,43 +141,67 @@
     fillSelect(inspectionDateSelect, inspectionDates);
     fillSelect(updateDateSelect, updateDates);
 
-          if (inspectionDates.length) inspectionDateSelect.disabled = false;
+if (inspectionDates.length) {
+  inspectionDateSelect.disabled = false;
+  inspectionDateSelect.value = formatDate(inspectionDates[0]); // 👈 asegura selección
+  validarLMRDinamico(); // 👈 LLAMADA MANUAL (FIX)
+}
           runReviewBtn.disabled = false;
           exportBtnMPUVA.disabled = false; // ✅ habilitar botón export
 
           inspectionDateSelect.addEventListener('change', () => {
-          const selectedInspection = inspectionDateSelect.value;
+              const selectedInspection = inspectionDateSelect.value;
 
-              // Filtrar solo filas de esta inspección
+              // 1. Filtrar filas que coinciden con la fecha de inspección seleccionada
               const matchingRows = rawData.slice(1).filter(r => formatDate(r[50]) === selectedInspection);
 
-              // Extraer todas las fechas LMR de estas filas
+              // 2. Extraer las fechas LMR únicas
               const lmrDates = [...new Set(matchingRows.map(r => formatDate(r[69])).filter(Boolean))];
 
-              // Mostrar la primera fecha LMR en el select
-              updateDateSelect.value = lmrDates[0] || "";
+              // 3. Llenar el select con las fechas LMR encontradas
+              fillSelect(updateDateSelect, lmrDates);
 
-              // Cambiar estilo si hay más de una fecha LMR
-              if(lmrDates.length > 1){
-                updateDateSelect.style.border = "2px solid red";
-                updateDateSelect.style.color = "red";
-
-                Swal.fire({
-                  icon: 'warning',
-                  title: 'Atención',
-                  html: `Se han encontrado <b>${lmrDates.length}</b> fechas LMR para esta inspección.<br>Consulta a la supervisora si es correcto.`,
-                  confirmButtonText: 'Aceptar'
-                });
-              } else {
-                updateDateSelect.style.border = "";
-                updateDateSelect.style.color = "";
+              // 4. Seleccionar la primera fecha LMR por defecto (formateada para el value)
+              if (lmrDates.length > 0) {
+                updateDateSelect.value = formatDate(lmrDates[0]);
               }
+
+              // 5. EJECUCIÓN EN TIEMPO REAL: Pintar de rojo y lanzar alerta si es necesario
+              validarLMRDinamico();
             });
 
         };
 
           reader.readAsArrayBuffer(f);
         });
+
+function validarLMRDinamico() {
+    const selectedInspection = inspectionDateSelect.value; // yyyy-mm-dd
+    if (!selectedInspection) return;
+
+    // Filtramos las filas del Excel
+    const matchingRows = rawData.slice(1).filter(r => formatDate(r[50]) === selectedInspection);
+    
+    // Obtenemos las fechas LMR tal cual vienen en el Excel (sin formatear a ISO todavía)
+    // para contar cuántas fechas reales diferentes hay.
+    const lmrDatesOriginales = [...new Set(matchingRows.map(r => r[69]).filter(Boolean))];
+
+    updateDateSelect.style.border = "";
+    updateDateSelect.style.color = "";
+
+    // Si hay más de una fecha LMR distinta en el Excel para esa inspección:
+    if (lmrDatesOriginales.length > 1) {
+        updateDateSelect.style.border = "2px solid red";
+        updateDateSelect.style.color = "red";
+
+        Swal.fire({
+            icon: 'warning',
+            title: 'Atención',
+            html: `Se han encontrado <b>${lmrDatesOriginales.length}</b> fechas LMR distintas para esta inspección.`,
+            confirmButtonText: 'Aceptar'
+        });
+    }
+}
 
         // ===============================
         // FUNCIÓN PARA LLENAR SELECT
@@ -213,278 +237,288 @@
         return `${day}-${month}-${year}`;
         }
 
-// ===============================
-// BOTÓN DE REVISIÓN
-// ===============================
-runReviewBtn.addEventListener('click', () => {
-  const selectedInspection = inspectionDateSelect.value; 
-  const selectedUpdate = updateDateSelect.value; 
+        // ===============================
+        // BOTÓN DE REVISIÓN
+        // ===============================
+        runReviewBtn.addEventListener('click', () => {
+           validarLMRDinamico();
+          const selectedInspection = inspectionDateSelect.value; 
+          const selectedUpdate = updateDateSelect.value; 
 
-  // 1️⃣ Revisar filas sin fecha de inspección
-  const filasSinFecha = rawData
-    .filter(r => !r[50] || r[50].toString().trim() === "")
-    .filter(r => !r[50] || r[50].toString().trim() === "")
-    .map(r => ({ id: r[0] || "", lote: r[9] || "" }));
+          // 1️⃣ Revisar filas sin fecha de inspección
+          const filasSinFecha = rawData
+            .filter(r => !r[50] || r[50].toString().trim() === "")
+            .filter(r => !r[50] || r[50].toString().trim() === "")
+            .map(r => ({ id: r[0] || "", lote: r[9] || "" }));
 
-  if (filasSinFecha.length > 0) {
-    const lista = filasSinFecha
-      .map(f => `<div style="color:red; font-weight:bold; text-align:center; margin-bottom:4px;">
-                    ID: ${f.id} | Lote: ${f.lote}
-                  </div>`)
-      .join("");
+          if (filasSinFecha.length > 0) {
+            const lista = filasSinFecha
+              .map(f => `<div style="color:red; font-weight:bold; text-align:center; margin-bottom:4px;">
+                            ID: ${f.id} | Lote: ${f.lote}
+                          </div>`)
+              .join("");
 
-    Swal.fire({
-      icon: "warning",
-      title: "Fila(s) sin fecha de inspección",
-      html: lista,
-      confirmButtonText: "Confirmar",
-      allowOutsideClick: false,
-      allowEscapeKey: false
-    }).then(() => {
-      // al confirmar, continuar con la revisión normal
-      procesarFilas(selectedInspection, selectedUpdate);
-    });
+            Swal.fire({
+              icon: "warning",
+              title: "Fila(s) sin fecha de inspección",
+              html: lista,
+              confirmButtonText: "Confirmar",
+              allowOutsideClick: false,
+              allowEscapeKey: false
+            }).then(() => {
+              // al confirmar, continuar con la revisión normal
+              procesarFilas(selectedInspection, selectedUpdate);
+            });
 
-    return; // no continuar hasta que el usuario confirme
-  }
+            return; // no continuar hasta que el usuario confirme
+          }
 
-  // 2️⃣ Si no hay filas sin fecha, mostrar info de revisión antes de procesar
-  Swal.fire({
-    title: 'Revisión de fechas',
-    html: `
-      <div style="line-height:1.0">
-      Se va a revisar:<br><br>
-      <b>Fecha inspección:</b> ${formatDateDMY(selectedInspection)}<br><br>
-      <b>Fecha LMR:</b> ${formatDateDMY(selectedUpdate)}
-      </div>
-    `,
-    icon: 'info',
-    confirmButtonText: 'Continuar'
-  }).then(result => {
-    if (result.isConfirmed) {
-      procesarFilas(selectedInspection, selectedUpdate);
-    }
-  });
-});
+          // 2️⃣ Si no hay filas sin fecha, mostrar info de revisión antes de procesar
+          Swal.fire({
+            title: 'Revisión de fechas',
+            html: `
+              <div style="line-height:1.0">
+              Se va a revisar:<br><br>
+              <b>Fecha inspección:</b> ${formatDateDMY(selectedInspection)}<br><br>
+              <b>Fecha LMR:</b> ${formatDateDMY(selectedUpdate)}
+              </div>
+            `,
+            icon: 'info',
+            confirmButtonText: 'Continuar'
+          }).then(result => {
+            if (result.isConfirmed) {
+              procesarFilas(selectedInspection, selectedUpdate);
+            }
+          });
+        });
 
-// ===============================
-// Función para procesar filas después de validar fechas
-// ===============================
-function procesarFilas(selectedInspection, selectedUpdate) {
-  const rowsWithErrors = validateRows(selectedInspection, selectedUpdate);
-  renderTable(rowsWithErrors);
+        // ===============================
+        // Función para procesar filas después de validar fechas
+        // ===============================
+        function procesarFilas(selectedInspection, selectedUpdate) {
+          const rowsWithErrors = validateRows(selectedInspection, selectedUpdate);
+          renderTable(rowsWithErrors);
 
-  if (rowsWithErrors.length === 0) {
-    Swal.fire({
-      title: '¡Todo correcto!',
-      text: 'No se encontraron errores en las filas seleccionadas.',
-      icon: 'success'
-    });
-  }
-  exportBtnMPUVA.disabled = false; // ✅ habilitar botón export
-}
+          if (rowsWithErrors.length === 0) {
+            Swal.fire({
+              title: '¡Todo correcto!',
+              text: 'No se encontraron errores en las filas seleccionadas.',
+              icon: 'success'
+            });
+          }
+          exportBtnMPUVA.disabled = false; // ✅ habilitar botón export
+        }
 
         // ===============================
         // VALIDACIONES Y FILTRADO POR FECHAS
         // ===============================
-        function validateRows(selectedInspection, selectedUpdate) {
-            const rowsWithErrors = [];
-            const lotSet = new Set();
+// ============================================================
+// VALIDACIONES Y FILTRADO POR FECHAS (Lógica 100% Intacta)
+// ============================================================
+function validateRows(selectedInspection, selectedUpdate) {
+    const rowsWithErrors = [];
+    const lotSet = new Set();
 
-            for (let r = 1; r < rawData.length; r++) {
-            const row = rawData[r];
+    for (let r = 1; r < rawData.length; r++) {
+        const row = rawData[r];
+        const inspection = formatDate(row[50] || "");
+        const update = formatDate(row[69] || "");
+        
+        // Filtrar solo por fecha de inspección
+        if (inspection !== selectedInspection) continue;
 
-            const inspection = formatDate(row[50] || "");
-            const update = formatDate(row[69] || "");
-            // Filtrar solo por fecha de inspección
-            if (inspection !== selectedInspection) continue;
+        const errors = [];
 
-            const errors = [];
+        // --- Lote ---
+        const lote = row[9] || "";
+        if (lote.length !== 10) {
+            errors.push("C10: El lote debe tener 10 caracteres");
+        } else if (lotSet.has(lote)) {
+            errors.push("C10: Este lote está duplicado en el archivo");
+        }
+        lotSet.add(lote);
 
-            const lote = row[9] || "";
-            if (lote.length !== 10 || lotSet.has(lote)) errors.push("Columna 10 inválida");
-            lotSet.add(lote);
-
-            for (let c = 10; c <= 17; c++) {
-                if (!row[c] || row[c].toString().trim() === "") errors.push(`Columna ${c+1} vacía`);
+        // --- Vacíos obligatorios (11 al 18) ---
+        for (let c = 10; c <= 17; c++) {
+            if (!row[c] || row[c].toString().trim() === "") {
+                errors.push(`C${c+1}: Campo obligatorio vacío`);
             }
-
-            if ((row[28] || "") != "59") errors.push("Columna 29 debe ser 59");
-            if ((row[29] || "") != "53") errors.push("Columna 30 debe ser 53");
-            for (let c = 30; c <= 32; c++) {
-                if (!row[c] || row[c].toString().trim() === "") errors.push(`Columna ${c+1} vacía`);
-            }
-
-            [38,54,65,68,88].forEach(c => {
-            const val = (row[c] || "").toString().trim().toUpperCase();
-
-            // ❌ vacío o NO CUMPLE = error
-            if (val === "" || val === "NO CUMPLE") {
-                errors.push(`Columna ${c+1} NO CUMPLE`);
-            }
-
-            // ❌ cualquier otro texto también es error
-            else if (val !== "CUMPLE") {
-                errors.push(`Columna ${c+1} inválida`);
-            }
-            });
-
-            const suma_tonalidades = row.slice(55,65).reduce((a,b)=>a+(parseFloat(b)||0),0);
-            row._suma_tonalidades = suma_tonalidades;
-            if(Math.abs(suma_tonalidades-parseFloat(row[10]||0))>0.01) errors.push("Suma tonalidades ≠ columna 11");
-
-            const suma_calibres = row.slice(133,138).reduce((a,b)=>a+(parseFloat(b)||0),0);
-            row._suma_calibres = suma_calibres;
-            if(Math.abs(suma_calibres-100)>0.1) errors.push("Suma calibres ≠ 100");
-
-            row._inspectionDate = inspection;
-            row._updateDate = update;
-
-            const cosecha = row[19]||"";
-            if(cosecha && inspection && new Date(cosecha)>new Date(inspection)) errors.push("Fecha cosecha > Fecha inspección");
-
-            const rawPulpa = (row[86] || "").toString().trim();
-            const tempPulpa = parseFloat(rawPulpa);
-
-            if (rawPulpa === "") {
-            errors.push("Columna 87 T° Pulpa vacía");
-            }
-            else if (isNaN(tempPulpa)) {
-            errors.push("Columna 87 T° Pulpa no numérica");
-            }
-            else if (tempPulpa > 30) {
-            errors.push("Columna 87 T° Pulpa > 30");
-            }
-            if(errors.length){
-                row._errors = errors;
-                rowsWithErrors.push(row);
-            }
-            }
-            return rowsWithErrors;
         }
 
-        // ===============================
-        // RENDER TABLA
-        // ===============================
-        function renderTable(rows){
-          if(!headerRow || !bodyRows) return;
-          headerRow.innerHTML = "";
-          bodyRows.innerHTML = "";
+        // --- Valores fijos (29 y 30) ---
+        if ((row[28] || "") != "59") errors.push("C29: Debe ser valor 59");
+        if ((row[29] || "") != "53") errors.push("C30: Debe ser valor 53");
 
-          // ===============================
-          // SI HAY FILAS → HEADERS + FILAS
-          // ===============================
-          if (rows.length) {
+        // --- Vacíos obligatorios (31 al 33) ---
+        for (let c = 30; c <= 32; c++) {
+            if (!row[c] || row[c].toString().trim() === "") {
+                errors.push(`C${c+1}: Campo obligatorio vacío`);
+            }
+        }
 
-            // ===============================
-            // HEADERS
-            // ===============================
-            const headers = ["ID"]
-              .concat(columnsToShow.map(idx => columns[idx]?.header || `Columna ${idx+1}`))
-              .concat(["suma_tonalidades", "suma_calibres"]);
+        // --- Cumplimiento (Columnas específicas) ---
+        [38, 54, 65, 68, 88].forEach(c => {
+            const val = (row[c] || "").toString().trim().toUpperCase();
+            if (val === "" || val === "NO CUMPLE") {
+                errors.push(`C${c+1}: El estado es NO CUMPLE`);
+            } else if (val !== "CUMPLE") {
+                errors.push(`C${c+1}: Valor inválido (Usar CUMPLE)`);
+            }
+        });
 
-            headers.forEach((h, i) => {
-              const th = document.createElement("th");
-              th.textContent = h;
+        // --- Cálculos de Tonalidades ---
+        const suma_tonalidades = row.slice(55, 65).reduce((a, b) => a + (parseFloat(b) || 0), 0);
+        row._suma_tonalidades = suma_tonalidades;
+        if (Math.abs(suma_tonalidades - parseFloat(row[10] || 0)) > 0.01) {
+            errors.push("SUMA_T: No coincide con Cant. Muestra (C11)");
+        }
 
-              // 🔒 columnas fijas (headers)
-              if (i === 0) th.classList.add("sticky-col", "sticky-col-1"); // ID
-              if (i === 1) th.classList.add("sticky-col", "sticky-col-2"); // Columna 7
-              if (i === 2) th.classList.add("sticky-col", "sticky-col-3"); // Lote
-              if (i === 3) th.classList.add("sticky-col", "sticky-col-4"); // Cant Muestra
+        // --- Cálculos de Calibres ---
+        const suma_calibres = row.slice(133, 138).reduce((a, b) => a + (parseFloat(b) || 0), 0);
+        row._suma_calibres = suma_calibres;
+        if (Math.abs(suma_calibres - 100) > 0.1) {
+            errors.push("SUMA_C: La suma debe ser exactamente 100");
+        }
 
-              headerRow.appendChild(th);
-            });
+        row._inspectionDate = inspection;
+        row._updateDate = update;
 
-            // ===============================
-            // FILAS
-            // ===============================
-            rows.forEach(row => {
-              const tr = document.createElement("tr");
+        // --- Validación de Fechas ---
+        const cosecha = row[19] || "";
+        if (cosecha && inspection && new Date(cosecha) > new Date(inspection)) {
+            errors.push("C20: Cosecha no puede ser posterior a Inspección");
+        }
 
-              // ---- ID ----
-              const tdId = document.createElement("td");
-              tdId.textContent = row[0] || "";
-              tdId.classList.add("sticky-col", "sticky-col-1");
-              tr.appendChild(tdId);
+        // --- Temperatura de Pulpa ---
+        const rawPulpa = (row[86] || "").toString().trim();
+        const tempPulpa = parseFloat(rawPulpa);
 
-              // ---- Columnas dinámicas ----
-              columnsToShow.forEach((idx, i) => {
+        if (rawPulpa === "") {
+            errors.push("C87: Temperatura vacía");
+        } else if (isNaN(tempPulpa)) {
+            errors.push("C87: Debe ser un número");
+        } else if (tempPulpa > 30) {
+            errors.push("C87: Temperatura excede los 30°C");
+        }
+
+        // --- Registro de Errores en la fila ---
+        if (errors.length) {
+            row._errors = errors;
+            rowsWithErrors.push(row);
+        }
+    }
+    return rowsWithErrors;
+}
+
+// ============================================================
+// RENDER TABLA (Con Tooltips amigables y conteo final)
+// ============================================================
+function renderTable(rows) {
+    if (!headerRow || !bodyRows) return;
+    headerRow.innerHTML = "";
+    bodyRows.innerHTML = "";
+
+    if (rows.length) {
+        // Headers
+        const headers = ["ID"]
+            .concat(columnsToShow.map(idx => columns[idx]?.header || `Columna ${idx + 1}`))
+            .concat(["Suma Tonalidades", "Suma Calibres"]);
+
+        headers.forEach((h, i) => {
+            const th = document.createElement("th");
+            th.textContent = h;
+            // Columnas fijas
+            if (i === 0) th.classList.add("sticky-col", "sticky-col-1");
+            if (i === 1) th.classList.add("sticky-col", "sticky-col-2");
+            if (i === 2) th.classList.add("sticky-col", "sticky-col-3");
+            if (i === 3) th.classList.add("sticky-col", "sticky-col-4");
+            headerRow.appendChild(th);
+        });
+
+        // Filas de datos
+        rows.forEach(row => {
+            const tr = document.createElement("tr");
+
+            // ID (Fijo)
+            const tdId = document.createElement("td");
+            tdId.textContent = row[0] || "";
+            tdId.classList.add("sticky-col", "sticky-col-1");
+            tr.appendChild(tdId);
+
+            // Columnas del cuerpo
+            columnsToShow.forEach((idx, i) => {
                 const td = document.createElement("td");
                 const val = row[idx] || "";
                 td.textContent = val;
 
-                // 🔒 columnas fijas (body)
+                // Estilo sticky
                 if (i === 0) td.classList.add("sticky-col", "sticky-col-2");
                 if (i === 1) td.classList.add("sticky-col", "sticky-col-3");
                 if (i === 2) td.classList.add("sticky-col", "sticky-col-4");
 
-                // ❌ errores
-                if (row._errors && row._errors.some(e => e.includes(`Columna ${idx+1}`))) {
-                  if (!val || val.toString().trim() === "") {
-                    td.style.backgroundColor = "red";
-                  } else {
-                    td.style.color = "red";
-                  }
+                // --- Lógica de Tooltips (TITLE) ---
+                if (row._errors) {
+                    const errorMsg = row._errors.find(e => e.startsWith(`C${idx + 1}:`));
+                    if (errorMsg) {
+                        td.title = errorMsg.split(": ")[1]; // Solo el mensaje amigable
+                        if (!val || val.toString().trim() === "") {
+                            td.style.backgroundColor = "red";
+                        } else {
+                            td.style.color = "red";
+                        }
+                    }
                 }
-
                 tr.appendChild(td);
-              });
-
-              // ---- Suma tonalidades ----
-              const tdSumaT = document.createElement("td");
-              tdSumaT.textContent = row._suma_tonalidades?.toFixed(2) || "";
-              if (row._errors && row._errors.some(e => e.includes("Suma tonalidades"))) {
-                tdSumaT.style.color = "red";
-              }
-              tr.appendChild(tdSumaT);
-
-              // ---- Suma calibres ----
-              const tdSumaC = document.createElement("td");
-              tdSumaC.textContent = row._suma_calibres?.toFixed(2) || "";
-              if (row._errors && row._errors.some(e => e.includes("Suma calibres"))) {
-                tdSumaC.style.color = "red";
-              }
-              tr.appendChild(tdSumaC);
-
-              bodyRows.appendChild(tr);
             });
 
-            table.hidden = false;
+            // Celda Suma Tonalidades
+            const tdSumaT = document.createElement("td");
+            tdSumaT.textContent = row._suma_tonalidades?.toFixed(2) || "";
+            const errT = row._errors?.find(e => e.startsWith("SUMA_T:"));
+            if (errT) {
+                tdSumaT.style.color = "red";
+                tdSumaT.title = errT.split(": ")[1];
+            }
+            tr.appendChild(tdSumaT);
 
-          } else {
-            // ===============================
-            // SI NO HAY FILAS → MENSAJE VERDE
-            // ===============================
-            const tr = document.createElement("tr");
-            const td = document.createElement("td");
+            // Celda Suma Calibres
+            const tdSumaC = document.createElement("td");
+            tdSumaC.textContent = row._suma_calibres?.toFixed(2) || "";
+            const errC = row._errors?.find(e => e.startsWith("SUMA_C:"));
+            if (errC) {
+                tdSumaC.style.color = "red";
+                tdSumaC.title = errC.split(": ")[1];
+            }
+            tr.appendChild(tdSumaC);
 
-            td.colSpan = columnsToShow.length + 3; // ID + sumas
-            td.textContent = "No se encontraron errores en esta inspección";
-            td.style.textAlign = "center";
-            td.style.fontWeight = "bold";
-            td.style.padding = "12px";
-            td.style.background = "#e8f5e9";
-            td.style.color = "#2e7d32";
-
-            tr.appendChild(td);
             bodyRows.appendChild(tr);
+        });
+        table.hidden = false;
 
-            table.hidden = false;
-          }
+    } else {
+        // Mensaje cuando no hay errores
+        const tr = document.createElement("tr");
+        const td = document.createElement("td");
+        td.colSpan = columnsToShow.length + 3;
+        td.textContent = "No se encontraron errores en esta inspección";
+        td.style.textAlign = "center";
+        td.style.fontWeight = "bold";
+        td.style.padding = "12px";
+        td.style.background = "#e8f5e9";
+        td.style.color = "#2e7d32";
+        tr.appendChild(td);
+        bodyRows.appendChild(tr);
+        table.hidden = false;
+    }
 
-          // ===============================
-          // TOTAL DE FILAS POR FECHA (igual)
-          // ===============================
-          const totalFilasDiv = document.getElementById("totalFilas");
-          if(totalFilasDiv) {
-            const selectedInspection = inspectionDateSelect.value;
-            const totalPorFecha = rawData.slice(1)
-              .filter(r => formatDate(r[50]) === selectedInspection).length;
-
-            totalFilasDiv.textContent = `Total filas: ${totalPorFecha}`;
-          }
-        }
+    // --- CONTEO FINAL (Manteniendo tu lógica original) ---
+    const totalFilasDiv = document.getElementById("totalFilas");
+    if (totalFilasDiv) {
+        const selectedInspection = inspectionDateSelect.value;
+        const totalPorFecha = rawData.slice(1).filter(r => formatDate(r[50]) === selectedInspection).length;
+        totalFilasDiv.textContent = `Total filas: ${totalPorFecha}`;
+    }
+}
 
 
       // ===============================

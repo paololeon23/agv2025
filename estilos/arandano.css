@@ -129,16 +129,18 @@ table {
   margin-top: 8px;
 }
 
-/* CABECERA Y CELDAS */
-th, td {
-  padding: 0px 8px;              /* Más espacio horizontal y vertical */
-  border: 1px solid var(--border, #ccc);  /* Línea clara por defecto */
+/* SOLO ARÁNDANO */
+#dashboardArandano th,
+#dashboardArandano td {
+  padding: 7px 9px;
+  border: 1px solid var(--border, #ccc);
   text-align: left;
   font-size: 12px;
   color: #2b2b2b;
   max-width: 250px;
   word-wrap: break-word;
 }
+
 
 /* CABECERA */
 th {
@@ -173,8 +175,13 @@ tr:hover {
 .arandano-col-0 { left: 0; min-width: 90px; z-index: 4; }
 .arandano-col-1 { left: 90px; min-width: 108px; z-index: 3; }
 .arandano-col-6 { left: 198px; min-width: 90px; z-index: 3; }
-.arandano-col-9 { left: 436px; min-width: 90px; z-index: 3; }
+.arandano-col-9 { left: 417px; min-width: 90px; z-index: 3; }
 
+
+#resultsTable {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
 
 /* columnas fijas */
 .dashboard-wrapper #runReviewArandano:disabled,

@@ -279,20 +279,20 @@
 
 /* posiciones exactas */
 .sticky-col-1 {
-  left: 0;          /* ID */
+  left: -1px;          /* ID */
   min-width: 90px;
   z-index: 4;
 }
 
 .sticky-col-2 {
-  left: 89px;       /* Columna 7 nueva */
+  left: 88px;       /* Columna 7 nueva */
   min-width: 108px;
   z-index: 3;
 }
 
 .sticky-col-3 {
-  left: 315px;      /* Lote */
-  min-width: 87px;
+  left: 314px;      /* Lote */
+  min-width: 88px;
   z-index: 3;
 }
 
