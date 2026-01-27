@@ -27,7 +27,7 @@
 
 /* Primera columna: handle + círculo + candado */
 #resultsTable tbody td:first-child {
-    width: 70px !important;      /* ancho para ☰ + círculo + candado */
+    width: 93px !important;      /* ancho para ☰ + círculo + candado */
     text-align: center;
 
     cursor: grab;
@@ -73,7 +73,78 @@
 }
 
 
+/* 1. Contenedor con scroll (con ID para que sea único) */
+#wrapperArandano {
+    max-height: 550px;
+    max-width: 100%;    /* No permite que el div sea más ancho que la pantalla */
+    overflow: auto;      /* Crea las barras de scroll internas */
+    position: relative;
+}
 
+/* 2. Encabezados Sticky */
+#resultsHeader1 th {
+    position: sticky;
+    top: 0;
 
+    background-color: #f1f3f5;
+    color: #0E1B40;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 10px 8px;
+    border-bottom: 2px solid #dee2e6;
+    white-space: nowrap;
+    /* Quitamos el shadow si sientes lentitud, o lo dejamos si va bien */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+}
 
+/* 3. Estructura de la tabla */
+#resultsTable {
+    border-collapse: separate; 
+    border-spacing: 0;
+    width: 100%;
+}
 
+/* 4. DOBLE FIJO: Columna Acciones (Header y Body) */
+/* Usamos el ID de la tabla para que sea directo y rápido */
+#resultsTable th:first-child,
+#resultsTable td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 101; 
+    background-color: #f8f9fa;
+    border-right: 1px solid #ddd;
+}
+
+/* 5. La Esquina (Acciones Header) - Top y Left */
+#resultsHeader1 th:first-child {
+    top: 0;
+    z-index: 20; /* Mayor que el 10 de las celdas de abajo */
+    left: 0;
+}
+
+/* 6. Fondo blanco para las celdas de acciones del cuerpo (para que no se traslapen) */
+#resultsTable tbody td:first-child {
+    background-color: #ffffff;
+    z-index: 19;
+}
+
+/* 7. Hover rápido */
+#resultsTable tbody tr:hover td:first-child {
+    background-color: #f8f9fa;
+}
+
+#inputBusquedaTable {
+    padding: 8px 15px;
+    width: 300px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+/* Color al presionar o buscar */
+#inputBusquedaTable:focus {
+    border-color: #0E1B40;
+    color: #0E1B40;
+    box-shadow: 0 0 5px rgba(14, 27, 64, 0.2);
+}

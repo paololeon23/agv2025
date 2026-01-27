@@ -62,10 +62,14 @@
     </ul>
   </div>
 
-    <div class="table-wrap">
+  <div id="containerBuscador" style="display: none; justify-content: flex-end;">
+      <input type="text" id="inputBusquedaTable" placeholder="Buscar por ID o Lote...">
+  </div>
+
+    <div class="table-wrap" id="wrapperArandano">
         <table id="resultsTable" class="resultsTable-compact-mode">
         <thead>
-            <tr id="resultsHeader"></tr>
+            <tr id="resultsHeader1"></tr>
         </thead>
         <tbody id="resultsBody"></tbody>
         </table>
