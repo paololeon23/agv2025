@@ -146,6 +146,23 @@
     "LINEA","FORMATO","ETIQUETA","FECHA COSECHA","TIPO DE BOLSA"
   ];
 
+
+
+// 🆕 ORDEN ESPECIAL PARA PTHPA Y PTLPA (índices JS, base 0)
+const ORDER_PTHPA_PTLPA = [
+  // 1-73 (JS: 0-72)
+  0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,
+  20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,
+  40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,
+  60,61,62,63,64,65,66,67,68,69,70,71,72,
+  // 77,74,75,76 (JS: 76,73,74,75)
+  76,73,74,75,
+  // 78-92 (JS: 77-91)
+  77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,
+  // 96,93,94,95,97 (JS: 95,92,93,94,96)
+  95,92,93,94,96
+];
+
   const tableSearch = document.getElementById("tableSearch");
 
   /* ===============================
@@ -154,7 +171,7 @@
   const fileInput = document.getElementById("fileArandano");
   const inspectionTypeSelect = document.getElementById("inspectionType");
   const inspectionDateSelect = document.getElementById("inspectionDate");
-  const updateDateSelect = document.getElementById("updateDate");
+  const updateDateSelect = document.getElementById("updateDatept");
   const runBtn = document.getElementById("runReviewArandano");
   const exportBtn = document.getElementById("exportArandano");
   const clearBtn = document.getElementById("clearArandano");
@@ -191,14 +208,14 @@
     };
   }
 
- /* ===============================
+
+/* ===============================
    CARGA MÚLTIPLE DE EXCEL
 =============================== */
 fileInput.addEventListener("change", async e => {
     const files = Array.from(e.target.files);
     if (!files.length) return;
     
-
     rawExcel = [];
     dataRows = [];
     currentCartilla = "";
@@ -252,23 +269,57 @@ fileInput.addEventListener("change", async e => {
             sheetData.splice(0, 5);
             if (!sheetData.length) continue;
 
-            // Guardamos headers solo si no existen
-            if (!headers.length) headers = sheetData[0];
+            // 🆕 REORDENAR COLUMNAS si es PTHPA o PTLPA
+            const needsReorder = (cartilla === "PTHPA");
+            
+            if (needsReorder) {
+                // Reordenar headers
+                const originalHeaders = sheetData[0];
+                const reorderedHeaders = ORDER_PTHPA_PTLPA.map(i => originalHeaders[i]);
+                
+                // Reordenar todas las filas de datos
+                const reorderedData = sheetData.slice(1).map(row => 
+                    ORDER_PTHPA_PTLPA.map(i => row[i] ?? "")
 
-            if (sheetData[0].length !== COLUMNAS_PERMITIDAS) {
-                Swal.fire(
-                    "Columnas incorrectas",
-                    `El archivo <b>${file.name}</b> tiene ${sheetData[0].length} columnas. Se requieren ${COLUMNAS_PERMITIDAS}.`,
-                    "error"
                 );
-                fileInput.value = "";
-                return;
+                
+                // Guardamos headers reordenados solo si no existen
+                if (!headers.length) headers = reorderedHeaders;
+                
+                // Validar columnas
+                if (reorderedHeaders.length !== COLUMNAS_PERMITIDAS) {
+                    Swal.fire(
+                        "Columnas incorrectas",
+                        `El archivo <b>${file.name}</b> tiene ${reorderedHeaders.length} columnas. Se requieren ${COLUMNAS_PERMITIDAS}.`,
+                        "error"
+                    );
+                    fileInput.value = "";
+                    return;
+                }
+                
+                // Guardamos filas reordenadas con info de cartilla
+                const filas = reorderedData.filter(r => r.some(c => c !== ""));
+                filas.forEach(r => r.__cartilla = cartilla);
+                dataRows.push(...filas);
+                
+            } else {
+                // PTBPA (sin reordenar)
+                if (!headers.length) headers = sheetData[0];
+                
+                if (sheetData[0].length !== COLUMNAS_PERMITIDAS) {
+                    Swal.fire(
+                        "Columnas incorrectas",
+                        `El archivo <b>${file.name}</b> tiene ${sheetData[0].length} columnas. Se requieren ${COLUMNAS_PERMITIDAS}.`,
+                        "error"
+                    );
+                    fileInput.value = "";
+                    return;
+                }
+                
+                const filas = sheetData.slice(1).filter(r => r.some(c => c !== ""));
+                filas.forEach(r => r.__cartilla = cartilla);
+                dataRows.push(...filas);
             }
-
-            // Guardamos filas con info de cartilla
-            const filas = sheetData.slice(1).filter(r => r.some(c => c !== ""));
-            filas.forEach(r => r.__cartilla = cartilla);
-            dataRows.push(...filas);
 
         } catch (err) {
             console.error("Error leyendo archivo", file.name, err);
@@ -281,6 +332,7 @@ fileInput.addEventListener("change", async e => {
             return;
         }
     }
+
 
     // --- Llenar select de cartillas ---
     inspectionTypeSelect.innerHTML = `<option disabled selected>Seleccione cartilla</option>`;
@@ -322,16 +374,40 @@ function actualizarFechasPorCartilla(cartillaSeleccionada) {
     updateDateSelect.innerHTML = `<option value="" selected>Se actualizará automáticamente</option>`;
     updateDateSelect.disabled = true;
 
-    runBtn.disabled = true;
+    runBtn.disabled = true; // 🆕 Asegurar que esté deshabilitado
 }
 
 /* ===============================
    CUANDO CAMBIA CARTILLA
 =============================== */
 inspectionTypeSelect.addEventListener("change", e => {
+    // 🆕 LIMPIAR TODO AL CAMBIAR DE CARTILLA
+    
+    // Limpiar tabla
+    headerRow.innerHTML = "";
+    bodyRows.innerHTML = "";
+    
+    // Ocultar buscador
+    document.getElementById("containerBuscador").style.display = "none";
+    const buscador = document.getElementById("inputBusquedaTable");
+    if (buscador) buscador.value = "";
+    
+    // Resetear select de fecha de inspección
+    inspectionDateSelect.innerHTML = `<option disabled selected>Seleccione fecha</option>`;
+    inspectionDateSelect.disabled = true;
+    inspectionDateSelect.value = ""; // 🆕 Limpiar valor
+    
+    // Resetear select de LMR
+    updateDateSelect.innerHTML = `<option value="" selected>Se actualizará automáticamente</option>`;
+    updateDateSelect.disabled = true;
+    
+    // Deshabilitar botones
+    runBtn.disabled = true;
+    exportBtn.disabled = true;
+    
+    // Ahora sí, actualizar las fechas de la nueva cartilla
     actualizarFechasPorCartilla(e.target.value);
 });
-
 
   /* ===============================
      FECHA INSPECCIÓN → LMR
@@ -407,10 +483,11 @@ inspectionTypeSelect.addEventListener("change", e => {
         bodyRows.innerHTML = "";
 
         const fecha = inspectionDateSelect.value;
+        const cartillaSeleccionada = inspectionTypeSelect.value; // 🆕 OBTENER CARTILLA SELECCIONADA
 
-        // --- Filtramos filas por fecha ---
-        const rows = dataRows
-            .filter(r => getFechaExcel(r[41]) === fecha);
+// --- 🆕 Filtramos filas por CARTILLA Y FECHA ---
+    const rows = dataRows
+        .filter(r => r.__cartilla === cartillaSeleccionada && getFechaExcel(r[41]) === fecha);
 
         // --- 1️⃣ Encabezado: columna Acciones ---
         const thAction = document.createElement("th");
@@ -608,19 +685,19 @@ inspectionTypeSelect.addEventListener("change", e => {
                     return Swal.fire({ icon: "info", title: "Fila Correcta", text: "Sin errores.", timer: 1000, showConfirmButton: false });
                 }
 
-                const listaIncidencias = incidencias.map(i => `      • ${i}`).join("\n");
+                const listaIncidencias = incidencias.map(i =>`- ${i}`).join("\n");
 
-                const mensajeFinal = `Usuario: ${usuario}
-            • ID: ${idInspeccion}
-            • Lote: ${lote}
-            • Incidencias:
-            ${listaIncidencias}
-            • Acción: Corregir inspección por favor.`;
+const mensajeFinal = `Usuario: ${usuario}
+• ID: ${idInspeccion}
+• Lote: ${lote}  
+• Incidencias:
+    ${listaIncidencias}
+• Acción: Corregir inspección por favor.`;
 
                 navigator.clipboard.writeText(mensajeFinal).then(() => {
                     Swal.fire({ 
                         icon: "success", 
-                        title: "Copiado", 
+                        title: "Copiado y listo para usarlo en whatsapp", 
                         text: `Se detectaron ${incidencias.length} errores`, 
                         timer: 1000, 
                         showConfirmButton: false 
@@ -860,8 +937,12 @@ inspectionTypeSelect.addEventListener("change", e => {
 
                 // --- IMPORTANTE: Sincronizar el array de datos filtrados ---
                 const fechaSeleccionada = inspectionDateSelect.value;
+                const cartillaSeleccionada = inspectionTypeSelect.value; // 🆕 AGREGAR FILTRO DE CARTILLA
+
                 // Obtenemos solo las filas de esa fecha
-                let filasFiltradas = dataRows.filter(r => getFechaExcel(r[41]) === fechaSeleccionada);
+                let filasFiltradas = dataRows.filter(r => 
+                    r.__cartilla === cartillaSeleccionada && getFechaExcel(r[41]) === fechaSeleccionada
+                );
                 
                 // Movemos el elemento en el array temporal
                 const movedRow = filasFiltradas.splice(dragRowIndex, 1)[0];
@@ -869,7 +950,9 @@ inspectionTypeSelect.addEventListener("change", e => {
 
                 // --- Actualizar dataRows global ---
                 // Eliminamos las viejas de esa fecha y metemos las nuevas en su lugar
-                dataRows = dataRows.filter(r => getFechaExcel(r[41]) !== fechaSeleccionada).concat(filasFiltradas);
+                    dataRows = dataRows.filter(r => 
+                    !(r.__cartilla === cartillaSeleccionada && getFechaExcel(r[41]) === fechaSeleccionada)
+                ).concat(filasFiltradas);
 
                 // Re-renderizamos solo el cuerpo para asegurar que el DOM y el Array coincidan 100%
                 runBtn.click(); 
@@ -884,66 +967,104 @@ inspectionTypeSelect.addEventListener("change", e => {
         });
 
         /* ===============================
-        EXPORT CON COLORES → FILTRADO POR FECHA
+        EXPORT CON COLORES → FILTRADO POR CARTILLA Y FECHA
         =============================== */
-        exportBtn.addEventListener("click", () => {
+      exportBtn.onclick = () => {
             const fechaSeleccionada = inspectionDateSelect.value;
-            const exportHeaders = headers.concat(COLUMNAS_EXPORT_EXTRA);
+            const cartillaSeleccionada = inspectionTypeSelect.value;
 
-            // Crear la hoja con los encabezados
+            if (!cartillaSeleccionada || !fechaSeleccionada) {
+                Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Debes seleccionar una cartilla y fecha antes de exportar."
+                });
+                return;
+            }
+
+            const exportHeaders = headers.concat(COLUMNAS_EXPORT_EXTRA);
             const ws = XLSX.utils.aoa_to_sheet([exportHeaders]);
 
-            // Filtrar filas (dataRows ya está ordenado por el Drag & Drop)
-            const rowsAExportar = dataRows.filter(r => getFechaExcel(r[41]) === fechaSeleccionada);
+            const rowsAExportar = dataRows.filter(r =>
+                r.__cartilla === cartillaSeleccionada &&
+                getFechaExcel(r[41]) === fechaSeleccionada
+            );
+
+            if (!rowsAExportar.length) {
+                Swal.fire({
+                icon: "warning",
+                title: "Sin datos",
+                text: "No hay filas para exportar."
+                });
+                return;
+            }
 
             rowsAExportar.forEach((r, rowIndex) => {
-                const rowData = r.concat(["", "", "", "", ""]);
-                const actualRowIndex = rowIndex + 1; // +1 por el encabezado
-                
-                XLSX.utils.sheet_add_aoa(ws, [rowData], { origin: actualRowIndex });
 
-                // --- Lógica de Colores ---
-                let fillColor = null;
+                const rowData = r.map((val, i) => {
 
-                if (r.__duplicado) {
-                    // Color para lotes duplicados (Rojo suave)
-                    fillColor = "FFCCCC";
-                } else if (r.__color) {
-                    // Colores manuales de los botones
-                    if (r.__color.includes("#afd8af")) fillColor = "AFD8AF"; // Verde
-                    if (r.__color.includes("#ff9900")) fillColor = "FF9900"; // Naranja
+                // ❌ no tocar columna Excel 10 (JS 9)
+                if (i === 9) return val ?? "";
+
+                // 📅 columnas fecha
+                if (i === 3 || i === 41 || i === 48) {
+                    if (typeof val === "number") {
+                    const d = new Date(Math.round((val - 25569) * 86400 * 1000));
+                    return `${d.getUTCDate()}/${d.getUTCMonth() + 1}/${d.getUTCFullYear()}`;
+                    }
+                    return val ?? "";
                 }
 
-                // Si hay un color que aplicar, recorremos las celdas de la fila
+                // 🔢 convertir a número si se puede
+                if (val === null || val === undefined || val === "") return "";
+                if (typeof val === "number") return val;
+                if (!isNaN(val)) return Number(val);
+
+                return val; // texto → no tocar
+                }).concat(["", "", "", "", ""]);
+
+                // ===============================
+                // (todo lo demás igual que tu código)
+                // ===============================
+                const actualRowIndex = rowIndex + 1;
+                XLSX.utils.sheet_add_aoa(ws, [rowData], { origin: actualRowIndex });
+
+                let fillColor = null;
+
+                if (r.__duplicado) fillColor = "FFCCCC";
+                else if (r.__color) {
+                if (r.__color.includes("#afd8af")) fillColor = "AFD8AF";
+                if (r.__color.includes("#ff9900")) fillColor = "FF9900";
+                }
+
                 if (fillColor) {
-                    for (let c = 0; c < rowData.length; c++) {
-                        const cellRef = XLSX.utils.encode_cell({ r: actualRowIndex, c: c });
-                        
-                        // Asegurar que la celda existe en el objeto de la hoja
-                        if (!ws[cellRef]) ws[cellRef] = { t: 's', v: rowData[c] || "" };
-                        
-                        // Aplicar estilo SIN bordes
-                        ws[cellRef].s = {
-                            fill: {
-                                patternType: "solid",
-                                fgColor: { rgb: fillColor }
-                            }
-                        };
+                for (let c = 0; c < rowData.length; c++) {
+                    const cellRef = XLSX.utils.encode_cell({ r: actualRowIndex, c });
+
+                    if (!ws[cellRef]) ws[cellRef] = { t: 's', v: rowData[c] ?? "" };
+
+                    ws[cellRef].s = {
+                    fill: {
+                        patternType: "solid",
+                        fgColor: { rgb: fillColor }
                     }
+                    };
+                }
                 }
             });
 
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "PT");
-            XLSX.writeFile(wb, `PT_Arandano_${fechaSeleccionada.replace(/\//g, "-")}.xlsx`);
+
+            const nombreArchivo = `PT_Arandano_${cartillaSeleccionada}_${fechaSeleccionada.replace(/\//g, "-")}.xlsx`;
+            XLSX.writeFile(wb, nombreArchivo);
 
             Swal.fire({
-            icon: "success",
-            title: "Exportación completa",
-            text: `El Excel de Arándanos (${fechaSeleccionada}) se generó correctamente.`
+                icon: "success",
+                title: "Exportación completa",
+                text: `El Excel de ${cartillaSeleccionada} (${fechaSeleccionada}) se generó correctamente con ${rowsAExportar.length} filas.`
             });
-        });
-
+            };
 
         /* ===============================
         LIMPIAR

@@ -422,7 +422,7 @@ function updateJooleanoCard() {
 
     // Solo actualizamos si cambió el día
     if (dia !== lastDay) {
-        jCard.textContent = `${dia}/${mes}/${anio}  - Jooleano = ${jooleano}`;
+        jCard.textContent = `${dia}/${mes}/${anio}  - Juliano = ${jooleano}`;
         lastDay = dia;
     }
 }
