@@ -539,6 +539,7 @@ inspectionTypeSelect.addEventListener("change", e => {
             dragIcon.style.display = "flex";
             dragIcon.style.alignItems = "center";
             dragIcon.style.justifyContent = "center";
+            dragIcon.title = "Arrastrar para reordenar fila"; // 🆕 TOOLTIP
             tdAction.appendChild(dragIcon);
 
             // verde
@@ -550,7 +551,7 @@ inspectionTypeSelect.addEventListener("change", e => {
             greenBtn.style.display = "inline-block";
             greenBtn.style.cursor = "pointer";
             greenBtn.style.background = "linear-gradient(to right, #afd8af, #afd8af)";
-            greenBtn.title = "Color verde";
+            greenBtn.title = "Marcar fila como correcta (verde)"; // 🆕 TOOLTIP MEJORADO
             greenBtn.addEventListener("click", () => {
                 r.__color = "linear-gradient(to right, #afd8af, #afd8af)";
                 tr.style.backgroundImage = r.__color;
@@ -566,7 +567,7 @@ inspectionTypeSelect.addEventListener("change", e => {
             orangeBtn.style.display = "inline-block";
             orangeBtn.style.cursor = "pointer";
             orangeBtn.style.background = "linear-gradient(to right, #ff9900, #ffcc66)";
-            orangeBtn.title = "Color naranja";
+            orangeBtn.title = "Marcar fila con advertencia (naranja)"; // 🆕 TOOLTIP MEJORADO
             orangeBtn.addEventListener("click", () => {
                 r.__color = "linear-gradient(to right, #ff9900, #ffcc66)";
                 tr.style.backgroundImage = r.__color;
@@ -587,7 +588,7 @@ inspectionTypeSelect.addEventListener("change", e => {
                 background: #25D366; 
                 box-shadow: 0 1px 3px rgba(0,0,0,0.2);
             `;
-            copyBtn.title = "Copiar reporte de errores detallado";
+            copyBtn.title = "Copiar reporte de errores detallado para WhatsApp"; // 🆕 TOOLTIP MEJORADO
             copyBtn.innerHTML = `
             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="white" viewBox="0 0 16 16">
             <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.06 3.973L0 16l4.104-1.076a7.863 7.863 0 0 0 3.89.593c4.365 0 7.923-3.559 7.923-7.928a7.858 7.858 0 0 0-2.316-5.563zM7.994 14.52a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
@@ -685,14 +686,14 @@ inspectionTypeSelect.addEventListener("change", e => {
                     return Swal.fire({ icon: "info", title: "Fila Correcta", text: "Sin errores.", timer: 1000, showConfirmButton: false });
                 }
 
-                const listaIncidencias = incidencias.map(i =>`- ${i}`).join("\n");
+                const listaIncidencias = incidencias.map(i =>`      • ${i}`).join("\n");
 
-const mensajeFinal = `Usuario: ${usuario}
-• ID: ${idInspeccion}
-• Lote: ${lote}  
-• Incidencias:
-    ${listaIncidencias}
-• Acción: Corregir inspección por favor.`;
+const mensajeFinal = `*Usuario:* ${usuario}
+*ID:* ${idInspeccion}
+*Lote:* ${lote}  
+*Incidencias:*
+${listaIncidencias}
+*Acción: Corregir inspección por favor.*`;
 
                 navigator.clipboard.writeText(mensajeFinal).then(() => {
                     Swal.fire({ 
@@ -715,6 +716,7 @@ const mensajeFinal = `Usuario: ${usuario}
             // aplicar color duplicado si la fila está marcada
             if (r.__duplicado) {
                 tr.style.background = "linear-gradient(to right, #ffcccc, #ff9999)";
+                tr.title = "⚠️ LOTE DUPLICADO EN SISTEMA"; // 🆕 TOOLTIP PARA FILA DUPLICADA
             }
 
             // --- trazabilidad ---
@@ -791,6 +793,7 @@ const mensajeFinal = `Usuario: ${usuario}
                             span.style.fontWeight = "bold";
                             td.appendChild(span);
                         }
+                        td.title = "❌ Calibre no coincide con Subgrupo o es inválido"; // 🆕 TOOLTIP
                     } else {
                         td.textContent = calibreDescVal;
                     }
@@ -815,20 +818,42 @@ const mensajeFinal = `Usuario: ${usuario}
                 /* ===============================
                 VALIDACIÓN DESTINO
                 =============================== */
-                if (c === 38 && !destino) td.style.background = "red";
-                if (c === 38 && destino && cliente === "THE FRUITIST CO" && destino !== "USA") td.style.color = "red";
-                if (c === 38 && destino && cliente === "COSTCO" && destino !== "USA" && destino !== "CANADA") td.style.color = "red";
+                if (c === 38 && !destino) {
+                    td.style.background = "red";
+                    td.title = "❌ Destino vacío (obligatorio)"; // 🆕 TOOLTIP
+                }
+                if (c === 38 && destino && cliente === "THE FRUITIST CO" && destino !== "USA") {
+                    td.style.color = "red";
+                    td.title = `❌ The Fruitist Co solo acepta destino USA (actual: ${destino})`; // 🆕 TOOLTIP
+                }
+                if (c === 38 && destino && cliente === "COSTCO" && destino !== "USA" && destino !== "CANADA") {
+                    td.style.color = "red";
+                    td.title = `❌ Costco solo acepta USA o CANADA (actual: ${destino})`; // 🆕 TOOLTIP
+                }
 
                 /* ===============================
                 VALIDACIÓN CLIENTE / SUBGRUPO / CALIBRE
                 =============================== */
                 if (esClienteEspecial) {
                     if (!subGrupo && !calibreAR) {
-                        if (c === 56 || c === 33) td.style.background = "red";
+                        if (c === 56) {
+                            td.style.background = "red";
+                            td.title = "❌ Subgrupo vacío (obligatorio para Fruitist/Costco)"; // 🆕 TOOLTIP
+                        }
+                        if (c === 33) {
+                            td.style.background = "red";
+                            td.title = "❌ Calibre AR vacío (obligatorio para Fruitist/Costco)"; // 🆕 TOOLTIP
+                        }
                     }
                 } else {
-                    if (!calibreAR && c === 33) td.style.background = "red";
-                    if (subGrupo && c === 56) td.style.background = "red";
+                    if (!calibreAR && c === 33) {
+                        td.style.background = "red";
+                        td.title = "❌ Calibre AR vacío (obligatorio)"; // 🆕 TOOLTIP
+                    }
+                    if (subGrupo && c === 56) {
+                        td.style.background = "red";
+                        td.title = "❌ Cliente regular NO debe tener Subgrupo"; // 🆕 TOOLTIP
+                    }
                 }
 
                 /* ===============================
@@ -840,8 +865,12 @@ const mensajeFinal = `Usuario: ${usuario}
 
                     if (!val) {
                         td.style.background = "red";
+                        td.title = "❌ Trazabilidad vacía (obligatorio)"; // 🆕 TOOLTIP
                     } else {
-                        if (trazCheck && trazCheck.juliano !== julianoFecha) td.style.color = "red";
+                        if (trazCheck && trazCheck.juliano !== julianoFecha) {
+                            td.style.color = "red";
+                            td.title = `❌ Día juliano (${trazCheck.juliano}) no coincide con fecha de inspección (${julianoFecha})`; // 🆕 TOOLTIP
+                        }
                         const variedadCodigo = trazCheck?.variedad;
                         const variedadEsperada = VAR_MAP[variedadCodigo]?.[0];
                         if (variedadEsperada) {
@@ -852,14 +881,19 @@ const mensajeFinal = `Usuario: ${usuario}
                             const letraEsperada = letraCorrectaPorVariedad[variedadEsperada];
                             if (letraEsperada && val.length >= 5) {
                                 let tdHTML = "";
+                                let tieneError = false;
                                 for (let i = 0; i < val.length; i++) {
                                     if (i === 4 && val[i] !== letraEsperada) {
                                         tdHTML += `<span style="color:red;font-weight:bold">${val[i]}</span>`;
+                                        tieneError = true;
                                     } else {
                                         tdHTML += val[i];
                                     }
                                 }
                                 td.innerHTML = tdHTML;
+                                if (tieneError) {
+                                    td.title = `❌ Posición 5 debe ser '${letraEsperada}' para ${variedadEsperada} (actual: '${val[4]}')`; // 🆕 TOOLTIP
+                                }
                             }
                         }
                     }
@@ -872,6 +906,7 @@ const mensajeFinal = `Usuario: ${usuario}
                         // Vacío → fondo rojo, texto vacío
                         td.style.background = "red";
                         td.textContent = "";
+                        td.title = "❌ Textura Pulpa vacía (obligatorio)"; // 🆕 TOOLTIP
                     } else if (isNaN(num) || num <= 0 || num > 5) {
                         // 0, negativo o >5 → letras rojo normal, fondo normal
                         td.innerHTML = "";
@@ -879,6 +914,7 @@ const mensajeFinal = `Usuario: ${usuario}
                         span.textContent = val;
                         span.style.color = "red"; // rojo normal
                         td.appendChild(span);
+                        td.title = `❌ Textura Pulpa debe estar entre 1 y 5 (actual: ${val})`; // 🆕 TOOLTIP
                     } else {
                         // Valor válido → normal
                         td.textContent = val;
@@ -888,26 +924,53 @@ const mensajeFinal = `Usuario: ${usuario}
                 /* ===============================
                 VALIDACIÓN CANTIDAD / UNIDADES
                 =============================== */
-                if (c === 10 && (!val || Number(val) <= 100)) td.style.color = !val ? "red" : "red";
-                if (c === 11 && !val) td.style.background = "red";
+                if (c === 10 && (!val || Number(val) <= 100)) {
+                    td.style.color = "red";
+                    td.title = `❌ Cantidad muestra debe ser mayor a 100 (actual: ${val || 0})`; // 🆕 TOOLTIP
+                }
+                if (c === 11 && !val) {
+                    td.style.background = "red";
+                    td.title = "❌ Med. Muestra vacía (debe ser UNIDADES)"; // 🆕 TOOLTIP
+                }
 
                 /* ===============================
                 OTROS CAMPOS VACÍOS
                 =============================== */
-                if ((c === 9  && !val) ||
-                    (c === 27 && !val) || 
-                    (c === 33 && !val && !esClienteEspecial) || 
-                    (c === 34 && !val)) td.style.background = "red";
+                if (c === 9 && !val) {
+                    td.style.background = "red";
+                    td.title = "❌ Lote vacío (obligatorio)"; // 🆕 TOOLTIP
+                }
+                if (c === 27 && !val) {
+                    td.style.background = "red";
+                    td.title = "❌ Nota Condición vacía (obligatorio)"; // 🆕 TOOLTIP
+                }
+                if (c === 33 && !val && !esClienteEspecial) {
+                    td.style.background = "red";
+                    td.title = "❌ Calibre AR vacío (obligatorio)"; // 🆕 TOOLTIP
+                }
+                if (c === 34 && !val) {
+                    td.style.background = "red";
+                    td.title = "❌ Cliente vacío (obligatorio)"; // 🆕 TOOLTIP
+                }
 
                 /* ===============================
                 OTROS TEXTOS INCORRECTOS
                 =============================== */
                 if (val) {
-                    if (c === 9 && val.length !== 12) td.style.color = "red";
-                    if (c === 58 && val.length > 13) td.style.color = "red";
+                    if (c === 9 && val.length !== 12) {
+                        td.style.color = "red";
+                        td.title = `❌ Lote debe tener 12 dígitos (actual: ${val.length})`; // 🆕 TOOLTIP
+                    }
+                    if (c === 58 && val.length > 13) {
+                        td.style.color = "red";
+                        td.title = `❌ Trazabilidad excede 13 caracteres (actual: ${val.length})`; // 🆕 TOOLTIP
+                    }
                     if (c === 58) {
                         const trazCheck = extraerTrazabilidad(val);
-                        if (!VAR_MAP[trazCheck?.variedad]) td.style.color = "red";
+                        if (!VAR_MAP[trazCheck?.variedad]) {
+                            td.style.color = "red";
+                            td.title = `❌ Código de variedad '${trazCheck?.variedad}' no existe en el sistema`; // 🆕 TOOLTIP
+                        }
                     }
                 }
 
