@@ -1,25 +1,49 @@
-<div class="cartilla-card">
-    <div class="table-controls">
-        <div class="search-wrapper">
-            <input type="text" id="searchInput" class="search-input" placeholder="Buscar por nombre, código o ID...">
-        </div>
+<div id="agv-main-card">
+    <div id="agv-controls-area-1">
+        <input type="text" id="agvSearchInput" placeholder="Buscar en Cultivos...">
     </div>
-
-    <div class="cartilla-container">
-        <table class="agv-table" id="dataTable">
+    <div id="agv-table-responsive-wrapper">
+        <table id="agvDataTable">
             <thead>
                 <tr>
                     <th>Id</th>
-                    <th>Código</th>
+                    <th>Codigo</th>
                     <th>Nombre</th>
                     <th>Estado</th>
-                    <th>Empresa</th>
-                    <th>Mandante</th>
-                    <th>Activo</th>
+                    <th>Cultivo Empresa Codigo</th>
+                    <th>Empresa Nombre</th>
+                    <th>Mandante Descripción</th>
                 </tr>
             </thead>
-            <tbody id="tableBody">
-                </tbody>
+            <tbody id="agvTableBody"></tbody>
         </table>
     </div>
+    <div id="agvPagination1"></div>
+</div>
+
+<br>
+
+<div id="agv-grupo-card">
+    <div id="agv-controls-area-2">
+        <input type="text" id="agvGrupoSearch" placeholder="Buscar en Grupo Inspección...">
+    </div>
+    <div id="agv-grupo-responsive-wrapper">
+        <table id="agvGrupoTable">
+            <thead>
+                <tr>
+                    <th>Id ▾</th>
+                    <th>Código ▾</th>
+                    <th>Nombre ▾</th>
+                    <th>Estado ▾</th>
+                    <th>Empresa Codigo ▾</th>
+                    <th>Empresa nombre ▾</th>
+                    <th>Mandante Id ▾</th>
+                    <th>Mandante descripción ▾</th>
+                    <th style="text-align:center">Mandante activo</th>
+                </tr>
+            </thead>
+            <tbody id="agvGrupoTableBody"></tbody>
+        </table>
+    </div>
+    <div id="agvPagination2"></div>
 </div>

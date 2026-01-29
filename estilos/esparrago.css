@@ -24,7 +24,7 @@
 }
 
 th, td {
-    padding: 7px 9px;
+    padding: 5px 9px;
     border: 1px solid var(--border, #ccc);
     text-align: left;
     font-size: 12px;

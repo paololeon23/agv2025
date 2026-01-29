@@ -65,6 +65,7 @@
       cosechaSelect.disabled=true;
       cosechaSelect.style.border="";
       cosechaSelect.style.color="";
+      cosechaSelect.title=""; // 🆕 LIMPIAR TOOLTIP
 
       runReviewBtn.disabled=true;
       exportBtn.disabled=true;
@@ -106,10 +107,12 @@
         if(fechaCosecha > fechaIns){
           cosechaSelect.style.border="2px solid red";
           cosechaSelect.style.color="red";
+          cosechaSelect.title=`❌ Fecha de cosecha (${cosecha}) es mayor que fecha de inspección (${sel})`; // 🆕 TOOLTIP
           Swal.fire("Atención","La fecha de cosecha es mayor que la fecha de inspección","warning");
         } else {
           cosechaSelect.style.border="";
           cosechaSelect.style.color="";
+          cosechaSelect.title=""; // 🆕 LIMPIAR TOOLTIP
         }
       }
     }
@@ -296,13 +299,20 @@ function procesarTodoExcel() {
     };
 
     const lote = (row[9] || "").toString().trim();
-    if (isEmpty(lote) || lote.length !== 10 || loteCount[lote] > 1) {
+    if (isEmpty(lote)) {
       row._errorLote = true;
+      addError(9, "Lote vacío");
+    } else if (lote.length !== 10) {
+      row._errorLote = true;
+      addError(9, `Lote debe tener 10 caracteres (actual: ${lote.length})`);
+    } else if (loteCount[lote] > 1) {
+      row._errorLote = true;
+      addError(9, "Lote duplicado");
     }
 
     for (let i = 10; i <= 18; i++) {
       if (i === 16) continue; // 🔹 Excluir columna 17 Excel
-      if (isEmpty(row[i])) addError(i, "Obligatorio");
+      if (isEmpty(row[i])) addError(i, "Campo obligatorio vacío");
     }
 
     const parseDate = d => {
@@ -314,18 +324,18 @@ function procesarTodoExcel() {
     const f20 = parseDate(row[19]);
     const f57 = parseDate(row[56]);
 
-    if (f20 && f57 && f20 > f57) addError(19, "Debe ser menor o igual a columna 57");
+    if (f20 && f57 && f20 > f57) addError(19, "Fecha cosecha debe ser ≤ fecha inspección");
 
     for (let i = 28; i <= 32; i++) {
-      if (isEmpty(row[i])) addError(i, "Obligatorio");
+      if (isEmpty(row[i])) addError(i, "Campo obligatorio vacío");
     }
 
-    if (isEmpty(row[28]) || row[28].toString().trim() !== "59") addError(28, "Debe ser 59");
-    if (isEmpty(row[29]) || row[29].toString().trim() !== "53") addError(29, "Debe ser 53");
+    if (isEmpty(row[28]) || row[28].toString().trim() !== "59") addError(28, "Debe ser valor 59");
+    if (isEmpty(row[29]) || row[29].toString().trim() !== "53") addError(29, "Debe ser valor 53");
 
     for (let i = 79; i <= 104; i++) {
       if (i === 92) continue;
-      if (isEmpty(row[i])) addError(i, "No debe estar vacío");
+      if (isEmpty(row[i])) addError(i, "Campo obligatorio vacío");
     }
   });
 
@@ -359,31 +369,34 @@ function procesarTodoExcel() {
           let val = r[i]||"";
           if(i===19 || i===56) val=formatExcelDate(val);
           td.textContent=val;
-          // LOTE
+          
           // LOTE (columna 10 Excel)
           if (i === 9 && r._errorLote) {
-            if (!val || val.toString().trim() === "") {
-              // VACÍO → fondo rojo + texto blanco
-              td.style.backgroundColor = "red";
-              td.style.color = "white";
-            } else {
-              // NO vacío pero inválido ( <10, >10 o duplicado )
-              td.style.color = "red";
+            const errorMsg = r._errors.find(e => e.startsWith("Columna 10:"));
+            if (errorMsg) {
+              td.title = `❌ ${errorMsg.split(": ")[1]}`; // 🆕 TOOLTIP
+              if (!val || val.toString().trim() === "") {
+                // VACÍO → fondo rojo + texto blanco
+                td.style.backgroundColor = "red";
+                td.style.color = "white";
+              } else {
+                // NO vacío pero inválido ( <10, >10 o duplicado )
+                td.style.color = "red";
+              }
             }
           }
 
-
           // OTRAS VALIDACIONES
-          if (
-            columnasARevisar.includes(i) &&
-            r._errors &&
-            r._errors.some(e => e.includes(`Columna ${i + 1}`))
-          ) {
-            if (!val || val.toString().trim() === "") {
-              td.style.backgroundColor = "red";
-              td.style.color = "white";
-            } else {
-              td.style.color = "red";
+          if (columnasARevisar.includes(i) && r._errors) {
+            const errorMsg = r._errors.find(e => e.startsWith(`Columna ${i + 1}:`));
+            if (errorMsg) {
+              td.title = `❌ ${errorMsg.split(": ")[1]}`; // 🆕 TOOLTIP
+              if (!val || val.toString().trim() === "") {
+                td.style.backgroundColor = "red";
+                td.style.color = "white";
+              } else {
+                td.style.color = "red";
+              }
             }
           }
           tr.appendChild(td);
@@ -522,7 +535,7 @@ function procesarTodoExcel() {
   // ===============================
   clearBtn.addEventListener("click", ()=>{
     resetDashboard();
-    Swal.fire({icon:"success", title:"Datos limpiados", text:"Ya puedes cargar otro Excel.", timer:1200, showConfirmButton:false});
+    Swal.fire({icon:"success", title:"Datos limpiados", text:"Ya puedes cargar otro Excel.", timer:1000, showConfirmButton:false});
   });
 
   // INIT

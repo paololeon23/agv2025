@@ -56,6 +56,16 @@ fileInput.addEventListener("change", async e => {
   columnsByCartilla = {};
   cartillaStatus = { MPHA:false, MPBA:false, MPGA:false };
   resetAll();
+  // Limpieza extra por si antes hubo LMR doble
+  inspectionDateSelect.style.border = "";
+  inspectionDateSelect.style.color = "";
+  updateDateSelect.style.border = "";
+  updateDateSelect.style.color = "";
+  inspectionDateSelect.value = "";
+  updateDateSelect.value = "";
+  inspectionDateSelect.innerHTML = `<option value="" disabled selected>Selecciona</option>`;
+  updateDateSelect.innerHTML = `<option value="" disabled selected>Se actualizará automáticamente</option>`;
+
 
   const cartillasCargadas = new Set();
 
@@ -220,7 +230,7 @@ inspectionTypeSelect.addEventListener("change", () => {
 });
 
 /* ===============================
-   FECHA → LMR
+   FECHA → LMR (AUTOMÁTICO CON MAYORÍA)
 =============================== */
 inspectionDateSelect.addEventListener("change", () => {
   const tipo = inspectionTypeSelect.value;
@@ -235,29 +245,47 @@ inspectionDateSelect.addEventListener("change", () => {
     .filter(Boolean);
 
   const unique = [...new Set(lmrDates)];
+  
+  // 🔍 DETECTAR FECHA MAYORITARIA
+  const conteo = {};
+  lmrDates.forEach(f => {
+    conteo[f] = (conteo[f] || 0) + 1;
+  });
+
+  const fechaMayoritaria = Object.entries(conteo)
+    .sort((a, b) => b[1] - a[1])[0]?.[0];
+
   updateDateSelect.innerHTML = "";
 
-  if (unique[0]) {
+  if (fechaMayoritaria) {
     const o = document.createElement("option");
-    o.value = unique[0];
-    o.textContent = formatISOToDMY(unique[0]);
+    o.value = fechaMayoritaria;
+    o.textContent = formatISOToDMY(fechaMayoritaria);
     updateDateSelect.appendChild(o);
   }
 
+  // ⚠️ ALERTA SI HAY MÚLTIPLES FECHAS
   if (unique.length > 1) {
     updateDateSelect.style.border = "2px solid red";
     updateDateSelect.style.color = "red";
 
+    const detalles = Object.entries(conteo)
+      .map(([fecha, count]) => 
+        `${formatISOToDMY(fecha)}: <b>${count} registros</b> ${fecha === fechaMayoritaria ? '(MAYORITARIA)' : ''}`
+      )
+      .join("<br>");
+
     Swal.fire({
       icon: "warning",
-      title: "Atención",
+      title: "Múltiples fechas LMR detectadas",
       html: `
-        <div style="line-height:1.0">
-          Se han encontrado <b>${unique.length}</b> fechas LMR.<br><br>
-          Consulta a la supervisora si es correcto.
+        <div style="line-height:1.6; text-align:left">
+          Se detectaron <b>${unique.length}</b> fechas LMR diferentes:<br><br>
+          ${detalles}<br><br>
+          Se usará la fecha mayoritaria. Las filas con fechas minoritarias se marcarán como error.
         </div>
       `,
-      confirmButtonText: "Aceptar"
+      confirmButtonText: "Entendido"
     });
   } else {
     updateDateSelect.style.border = "";
@@ -360,7 +388,7 @@ Swal.fire({
     <div style="line-height:1.0">
       Se va a revisar:<br><br>
       <b>Fecha inspección:</b> ${formatISOToDMY(selectedInspection)}<br><br>
-      <b>Fecha LMR:</b> ${formatISOToDMY(selectedUpdate)}
+      <b>Fecha LMR (mayoritaria):</b> ${formatISOToDMY(selectedUpdate)}
     </div>
   `,
   icon: 'info',
@@ -376,7 +404,7 @@ Swal.fire({
 
 
 /* ===============================
-   VALIDAR Y RENDER (CON DUPLICADOS)
+   VALIDAR Y RENDER (CON DUPLICADOS Y FECHA LMR)
 =============================== */
 function validarYRender(rows, tipo, fechaISO) {
   headerRow.innerHTML = "";
@@ -387,6 +415,21 @@ function validarYRender(rows, tipo, fechaISO) {
   const columns = columnsByCartilla[tipo];
 
   const STICKY_COLUMNS = [0, 1, 6, 9];
+
+  // ===============================
+  // DETECTAR FECHA LMR MAYORITARIA
+  // ===============================
+  const lmrDates = rows
+    .map(r => parseExcelDateISO(r[50]))
+    .filter(Boolean);
+
+  const conteoLMR = {};
+  lmrDates.forEach(f => {
+    conteoLMR[f] = (conteoLMR[f] || 0) + 1;
+  });
+
+  const fechaLMRMayoritaria = Object.entries(conteoLMR)
+    .sort((a, b) => b[1] - a[1])[0]?.[0];
 
   // ===============================
   // DETECTAR LOTES DUPLICADOS
@@ -405,7 +448,7 @@ function validarYRender(rows, tipo, fechaISO) {
   // FILAS A MOSTRAR
   // ===============================
   const filasParaMostrar = rows.filter(
-    r => filaTieneError(r, tipo, fechaISO) || duplicados.includes(r[9])
+    r => filaTieneError(r, tipo, fechaISO, fechaLMRMayoritaria) || duplicados.includes(r[9])
   );
 
   // ===============================
@@ -419,6 +462,9 @@ function validarYRender(rows, tipo, fechaISO) {
     headers.forEach((h, i) => {
       const th = document.createElement("th");
       th.textContent = h;
+
+      // 💡 AGREGAR TITLE CON EXPLICACIÓN
+      th.title = obtenerTituloColumna(i, tipo);
 
       if (STICKY_COLUMNS.includes(i)) {
         th.classList.add("arandano-col", `arandano-col-${i}`);
@@ -436,6 +482,9 @@ function validarYRender(rows, tipo, fechaISO) {
         const val = r[c] ?? "";
         td.textContent = val;
 
+        // 💡 AGREGAR TITLE CON EXPLICACIÓN
+        td.title = obtenerTituloColumna(c, tipo);
+
         // Reset estilos
         td.style.background = "#fff";
         td.style.color = "#000";
@@ -451,7 +500,7 @@ function validarYRender(rows, tipo, fechaISO) {
         }
 
         // 🔴 TEXTO ROJO → valor incorrecto
-        if (celdaValorIncorrecto(r, c, val, tipo, fechaISO, duplicados)) {
+        if (celdaValorIncorrecto(r, c, val, tipo, fechaISO, duplicados, fechaLMRMayoritaria)) {
           td.style.color = "red";
         }
 
@@ -508,9 +557,43 @@ function validarYRender(rows, tipo, fechaISO) {
 
 
 // ===================================================
-// FILA CON ERROR (LÓGICA)
+// OBTENER TITLE PARA COLUMNAS (TOOLTIPS)
 // ===================================================
-function filaTieneError(r, tipo, fechaISO) {
+function obtenerTituloColumna(c, tipo) {
+  const titles = {
+    9: "Lote: Debe tener exactamente 10 caracteres",
+    10: "No debe superar 505",
+    18: "Variedad: Campo obligatorio",
+    19: "Fecha Cosecha: Debe coincidir con la fecha de inspección",
+    28: tipo === "MPHA" ? "No debe ser 59 ni 69" : 
+        tipo === "MPBA" ? "Debe ser 69" : 
+        tipo === "MPGA" ? "Debe ser 59" : "",
+    29: (tipo === "MPBA" || tipo === "MPGA") ? "Debe ser 53" : "",
+    33: "Debe ser 'CUMPLE'",
+    46: "Debe ser 'CUMPLE'",
+    48: "Debe ser 'CUMPLE'",
+    49: "Debe ser 'CUMPLE'",
+    50: "Fecha LMR: Debe coincidir con la fecha mayoritaria",
+    58: "T° Ambiente: Debe ser menor a 30. La pulpa no puede estar más de 11° por debajo del ambiente",
+    59: "T° Pulpa: Debe ser menor a 30. La pulpa no puede estar más de 11° por debajo del ambiente",
+    60: "Debe ser 'CUMPLE'"
+  };
+
+  // Columnas vacías obligatorias
+  if ((c >= 10 && c <= 18 && c !== 16) || 
+      (c >= 30 && c <= 32) || 
+      (c >= 63 && c <= 100)) {
+    return "Campo obligatorio";
+  }
+
+  return titles[c] || "";
+}
+
+
+// ===================================================
+// FILA CON ERROR (LÓGICA ACTUALIZADA)
+// ===================================================
+function filaTieneError(r, tipo, fechaISO, fechaLMRMayoritaria) {
 
   if (!r[9] || r[9].length !== 10) return true;
 
@@ -521,7 +604,9 @@ function filaTieneError(r, tipo, fechaISO) {
 
   if (r[10] && +r[10] > 505) return true;
 
-  if (r[19] && parseExcelDateISO(r[19]) > fechaISO) return true;
+  // 🆕 VALIDAR: Fecha Cosecha (col 19 JS) = Fecha Inspección (col 40 JS)
+  const fechaCosecha = parseExcelDateISO(r[19]);
+  if (!fechaCosecha || fechaCosecha !== fechaISO) return true;
 
   if (!r[28]) return true;
   if (
@@ -540,11 +625,19 @@ function filaTieneError(r, tipo, fechaISO) {
     if (!r[c] || r[c].toUpperCase() !== "CUMPLE") return true;
   }
 
-  if (!r[50]) return true;
+  // 🔴 FECHA LMR: vacía o minoritaria
+  const fechaLMR = parseExcelDateISO(r[50]);
+  if (!fechaLMR || fechaLMR !== fechaLMRMayoritaria) return true;
 
   // 👉 COLUMNAS EXCEL 59–60
   if (!r[58] || !r[59]) return true;
   if (+r[58] >= 30 || +r[59] >= 30) return true;
+
+  // 🆕 VALIDAR: T° PULPA no puede estar más de 11° POR DEBAJO del ambiente
+  // (si pulpa > ambiente está OK, porque se alteró con ventiladores)
+  const tempAmbiente = parseFloat(r[58]) || 0;
+  const tempPulpa = parseFloat(r[59]) || 0;
+  if (tempAmbiente - tempPulpa > 11) return true;
 
   for (let c = 63; c <= 100; c++) {
     if (!r[c]) return true;
@@ -577,7 +670,7 @@ function celdaVaciaObligatoria(c, val, tipo) {
 // ===================================================
 // CELDA CON VALOR INCORRECTO → TEXTO ROJO
 // ===================================================
-function celdaValorIncorrecto(r, c, val, tipo, fechaISO, duplicados) {
+function celdaValorIncorrecto(r, c, val, tipo, fechaISO, duplicados, fechaLMRMayoritaria) {
   if (!val) return false;
 
   if (c === 9 && val.length !== 10) return true;
@@ -585,7 +678,8 @@ function celdaValorIncorrecto(r, c, val, tipo, fechaISO, duplicados) {
 
   if (c === 10 && +val > 505) return true;
 
-  if (c === 19 && parseExcelDateISO(val) > fechaISO) return true;
+  // 🆕 VALIDAR: Fecha Cosecha debe = Fecha Inspección
+  if (c === 19 && parseExcelDateISO(val) !== fechaISO) return true;
 
   if (c === 28) {
     if (
@@ -599,8 +693,19 @@ function celdaValorIncorrecto(r, c, val, tipo, fechaISO, duplicados) {
 
   if ([33, 46, 48, 49, 60].includes(c) && val.toUpperCase() !== "CUMPLE") return true;
 
+  // 🔴 FECHA LMR MINORITARIA (columna 50)
+  if (c === 50 && parseExcelDateISO(val) !== fechaLMRMayoritaria) return true;
+
   // 👉 COLUMNAS EXCEL 59–60 → < 30
   if ([58, 59].includes(c) && Number(val) >= 30) return true;
+
+  // 🆕 VALIDAR: Diferencia de temperatura (pulpa NO puede estar más de 11° por debajo)
+  if (c === 58 || c === 59) {
+    const tempAmbiente = parseFloat(r[58]) || 0;
+    const tempPulpa = parseFloat(r[59]) || 0;
+    // Solo error si pulpa está MÁS FRÍA que ambiente por más de 11°
+    if (tempAmbiente - tempPulpa > 11) return true;
+  }
 
   return false;
 }
@@ -656,7 +761,9 @@ function formatISOToDMY(iso) {
 
 function parseExcelDateISO(v) {
   if (!v) return "";
+  // Formato 20251110 → 2025-11-10
   if (/^\d{8}$/.test(v)) return `${v.slice(0,4)}-${v.slice(4,6)}-${v.slice(6,8)}`;
+  // Formato 10/11/2025 → 2025-11-10
   if (/^\d{2}\/\d{2}\/\d{4}$/.test(v)) {
     const [d,m,y] = v.split("/");
     return `${y}-${m}-${d}`;
@@ -740,15 +847,18 @@ exportBtnArandano.addEventListener("click", () => {
 });
 
 // ===============================
-// GENERAR EXCEL ARÁNDANOS (JS PURO)
+// GENERAR EXCEL ARÁNDANOS (FORMATO NUMÉRICO)
 // ===============================
 function generarExcelArandano(data, fechaISO) {
 
   const exportArray = [];
   const mergeRanges = [];
-  const separatorRows = [];   // solo separadores
-  const headerRows = [];      // solo encabezados
+  const separatorRows = [];
+  const headerRows = [];
   const formattedDate = formatISOToDMY(fechaISO);
+
+  // 🔢 COLUMNAS QUE NO SE CONVIERTEN A NUMÉRICO (JS index)
+  const COLUMNAS_TEXTO = [3, 4, 9, 18, 19, 40, 50];
 
   // ===== ESTILO SEPARADOR
   const separatorStyle = {
@@ -789,22 +899,33 @@ function generarExcelArandano(data, fechaISO) {
         .map(i => columns[i]?.header || "")
     );
 
-    headerRows.push(exportArray.length - 1); // guardar fila header
+    headerRows.push(exportArray.length - 1);
   };
 
   // ===============================
-  // FILAS DE DATA
+  // FILAS DE DATA (CON FORMATO NUMÉRICO)
   // ===============================
   const addRows = (rows, headers, order = null) => {
     rows.forEach(r => {
-      exportArray.push(
-        (order || headers.map((_, i) => i))
-          .map(i => {
-            let val = r[i] ?? "";
-            if (i === 40) val = formatISOToDMY(parseExcelDateISO(val));
-            return val;
-          })
-      );
+      const row = (order || headers.map((_, i) => i)).map(i => {
+        let val = r[i] ?? "";
+
+        // 📅 FORMATEAR FECHAS (COLUMNAS DE TEXTO)
+        if (i === 40 || i === 50) {
+          return formatISOToDMY(parseExcelDateISO(val));
+        }
+
+        // 📝 MANTENER COMO TEXTO
+        if (COLUMNAS_TEXTO.includes(i)) {
+          return String(val);
+        }
+
+        // 🔢 CONVERTIR A NUMÉRICO
+        const num = parseFloat(val);
+        return isNaN(num) ? val : num;
+      });
+
+      exportArray.push(row);
     });
   };
 
@@ -950,13 +1071,10 @@ function limpiarTodoArandano() {
   notificationErrors = [];
 
   notificationCount.textContent = "0";
-  notificationCount.classList.add("visible"); // 👈 SUAVE, SIN BRUSQUEDAD
+  notificationCount.classList.add("visible");
 
   notificationIcon.classList.remove("has-error", "error");
   notificationIcon.classList.add("ok");
-
-  // ❌ NO tocar display
-  // ❌ notificationCount.style.display = "block";
 
   // ===============================
   // ALERTA FINAL

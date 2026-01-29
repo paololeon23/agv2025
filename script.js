@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
         chilecartilla: {
             html: "trazabilidad/cartilla/cartilla.html",
             js: "trazabilidad/cartilla/cartilla.js",
-            title: "Cartillas Chile"
+            title: "Cartillas Perú"
         }
 
 

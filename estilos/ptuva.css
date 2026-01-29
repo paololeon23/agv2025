@@ -13,17 +13,17 @@
     background: #f0f4f8;
     font-weight: 600;
     color: #1c1c1c;
-    padding: 1px 14px;
+    padding: 6px 14px;
     border: 1px solid var(--border);
     text-align: left;
     font-size: 12px;
 }
 
 #resultsTablePT td {
-    padding: 1px 14px;
+    padding: 11px 14px;
     border: 1px solid var(--border);
     text-align: left;
-    font-size: 12px;
+    font-size: 11px;
     color: #2b2b2b;
 }
 
@@ -147,4 +147,23 @@
 
 .info-box .info-list li {
   margin-bottom: 12px; /* espacio entre ítems */
+}
+
+
+/* Aplicar ancho a la cabecera y a las celdas de la columna 40 */
+#resultsTablePT th:nth-child(8), 
+#resultsTablePT td:nth-child(8) {
+    min-width: 140px;       /* Ajusta este valor según necesites */
+}
+
+/* Aplicar ancho a la cabecera y a las celdas de la columna 40 */
+#resultsTablePT th:nth-child(19), 
+#resultsTablePT td:nth-child(19) {
+    min-width: 140px;       /* Ajusta este valor según necesites */
+}
+
+/* Aplicar ancho a la cabecera y a las celdas de la columna 40 */
+#resultsTablePT th:nth-child(18), 
+#resultsTablePT td:nth-child(18) {
+    min-width: 140px;       /* Ajusta este valor según necesites */
 }

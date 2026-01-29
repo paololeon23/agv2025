@@ -84,6 +84,7 @@
     // ✅ Limpiar estilos de alerta de updateSelect
     updateSelect.style.border = "";
     updateSelect.style.color = "";
+    updateSelect.title = ""; // 🆕 LIMPIAR TOOLTIP
 
     // ✅ Limpiar total de filas
     const totalFilasDiv = document.getElementById("totalFilas");
@@ -235,6 +236,7 @@ function normalizeDate(value) {
       if(lmrDates.length > 1){  // >1 significa 2 o más fechas
           updateSelect.style.border = "2px solid red";
           updateSelect.style.color = "red";
+          updateSelect.title = `⚠️ Se encontraron ${lmrDates.length} fechas LMR distintas para esta inspección`; // 🆕 TOOLTIP
           // Mostrar alerta con Swal
           Swal.fire({
               icon: 'warning',
@@ -245,7 +247,7 @@ function normalizeDate(value) {
       } else {
           updateSelect.style.border = "";
           updateSelect.style.color = "";
-          updateSelect.title = "";
+          updateSelect.title = ""; // 🆕 LIMPIAR TOOLTIP
       }
       });
 
@@ -300,7 +302,10 @@ function normalizeDate(value) {
 
       const td = document.createElement("td");
       td.textContent = r._sumaTonalidades.toFixed(2);
-      if(!r._sumaCorrecta) td.style.color = "red";
+      if(!r._sumaCorrecta) {
+        td.style.color = "red";
+        td.title = `❌ La suma de tonalidades (${r._sumaTonalidades.toFixed(2)}) no coincide con Cant. Muestra (${r[10]})`; // 🆕 TOOLTIP
+      }
       tr.appendChild(td);
 
       resultsBody.appendChild(tr);

@@ -188,11 +188,13 @@ function validarLMRDinamico() {
 
     updateDateSelect.style.border = "";
     updateDateSelect.style.color = "";
+    updateDateSelect.title = ""; // 🆕 LIMPIAR TOOLTIP
 
     // Si hay más de una fecha LMR distinta en el Excel para esa inspección:
     if (lmrDatesOriginales.length > 1) {
         updateDateSelect.style.border = "2px solid red";
         updateDateSelect.style.color = "red";
+        updateDateSelect.title = `⚠️ Se encontraron ${lmrDatesOriginales.length} fechas LMR distintas`; // 🆕 TOOLTIP
 
         Swal.fire({
             icon: 'warning',
@@ -460,7 +462,7 @@ function renderTable(rows) {
                 if (row._errors) {
                     const errorMsg = row._errors.find(e => e.startsWith(`C${idx + 1}:`));
                     if (errorMsg) {
-                        td.title = errorMsg.split(": ")[1]; // Solo el mensaje amigable
+                        td.title = `❌ ${errorMsg.split(": ")[1]}`; // 🆕 TOOLTIP CON ICONO
                         if (!val || val.toString().trim() === "") {
                             td.style.backgroundColor = "red";
                         } else {
@@ -477,7 +479,7 @@ function renderTable(rows) {
             const errT = row._errors?.find(e => e.startsWith("SUMA_T:"));
             if (errT) {
                 tdSumaT.style.color = "red";
-                tdSumaT.title = errT.split(": ")[1];
+                tdSumaT.title = `❌ ${errT.split(": ")[1]}`; // 🆕 TOOLTIP CON ICONO
             }
             tr.appendChild(tdSumaT);
 
@@ -487,7 +489,7 @@ function renderTable(rows) {
             const errC = row._errors?.find(e => e.startsWith("SUMA_C:"));
             if (errC) {
                 tdSumaC.style.color = "red";
-                tdSumaC.title = errC.split(": ")[1];
+                tdSumaC.title = `❌ ${errC.split(": ")[1]}`; // 🆕 TOOLTIP CON ICONO
             }
             tr.appendChild(tdSumaC);
 
@@ -620,6 +622,7 @@ function renderTable(rows) {
         // Quitar borde y color rojo del select LMR
       updateDateSelect.style.border = "";
       updateDateSelect.style.color = "";
+      updateDateSelect.title = ""; // 🆕 LIMPIAR TOOLTIP
 
       // Reset input file
       fileInput.value = "";
