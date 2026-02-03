@@ -37,7 +37,7 @@
 
 /* Botón Procesar (Rojo Perú) */
 #pe-btnProcess {
-    background-color: #D91E18;
+    background-color: #2f7cc0;
     color: white;
     border: none;
     padding: 0 20px;
@@ -103,7 +103,7 @@
     text-align: center;
     font-size: 1.8rem;
     font-weight: bold;
-    color: #D91E18 !important;
+    color: #2f7cc0 !important;
     border-top: 1px solid #ccc;
 }
 
@@ -111,8 +111,8 @@
 .trace-details-container {
     margin-top: 25px;
     padding: 20px;
-    background-color: #fcf2f2; /* Fondo sutil para Perú */
-    border-left: 5px solid #D91E18;
+    background-color: #ffffff; /* Fondo sutil para Perú */
+    border-left: 5px solid #2f7cc0;
     border-radius: 4px;
 }
 
@@ -138,7 +138,7 @@
 }
 
 .detail-item span {
-    color: #D91E18;
+    color: #0E1B40;
     font-weight: bold;
     margin-left: 5px;
 }
