@@ -634,7 +634,11 @@ inspectionTypeSelect.addEventListener("change", e => {
                 const tPulpa       = r[57];             
                 const trazCode     = r[58];             
                 
-                const esClienteEspecial = (cliente === "THE FRUITIST CO" || cliente === "COSTCO");
+                const esClienteEspecial = (
+                    cliente === "THE FRUITIST CO" || 
+                    cliente === "TF INTERNATIONAL" || 
+                    cliente === "COSTCO"
+                );
                 let incidencias = [];
 
                 // --- VALIDACIONES BÁSICAS ---
@@ -764,10 +768,14 @@ ${listaIncidencias}
                 const calibreAR = r[33]; // col 34 Excel
                 const subGrupo  = r[56]; // col 57 Excel
                 const destino   = r[38]; // col 39 Excel
-                const esClienteEspecial = cliente === "THE FRUITIST CO" || cliente === "COSTCO";
+                const esClienteEspecial = (
+                    cliente === "THE FRUITIST CO" || 
+                    cliente === "TF INTERNATIONAL" || 
+                    cliente === "COSTCO"
+                );
 
                 // --- CALIBRE_DESC (LÓGICA ACTUALIZADA CON J=JUMBO / M=MIXED) ---
-                if (c === "CALIBRE_DESC") {
+                if (c === "CALIBRE") {
                     const td = document.createElement("td");
                     let calibreDescVal = "";
                     let colorRojo = false;
@@ -867,19 +875,21 @@ ${listaIncidencias}
                 }
 
                 /* ===============================
-                VALIDACIÓN CLIENTE / SUBGRUPO / CALIBRE
-                =============================== */
-                if (esClienteEspecial) {
-                    if (!subGrupo && !calibreAR) {
-                        if (c === 56) {
-                            td.style.background = "red";
-                            td.title = "❌ Subgrupo vacío (obligatorio para Fruitist/Costco)"; // 🆕 TOOLTIP
-                        }
-                        if (c === 33) {
-                            td.style.background = "red";
-                            td.title = "❌ Calibre AR vacío (obligatorio para Fruitist/Costco)"; // 🆕 TOOLTIP
-                        }
-                    }
+            VALIDACIÓN CLIENTE / SUBGRUPO / CALIBRE
+            =============================== */
+            if (esClienteEspecial) {
+                // ✅ VALIDAR CALIBRE (OBLIGATORIO - INDIVIDUAL)
+                if (!calibreAR && c === 33) {
+                    td.style.background = "red";
+                    td.title = "❌ Calibre AR vacío (obligatorio para Fruitist/Costco)";
+                }
+                
+                // ✅ VALIDAR SUBGRUPO (OBLIGATORIO - INDIVIDUAL)
+                if (!subGrupo && c === 56) {
+                    td.style.background = "red";
+                    td.title = "❌ Subgrupo vacío (obligatorio para Fruitist/Costco)";
+                }
+
                 } else {
                     if (!calibreAR && c === 33) {
                         td.style.background = "red";
