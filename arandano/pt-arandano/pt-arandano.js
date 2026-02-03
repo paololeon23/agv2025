@@ -135,7 +135,7 @@
     };
 
   const COLUMNAS_FRONT = [
-    0,1,3,6,9,10,27,33,
+    0,1,6,9,10,27,33,
     "CALIBRE",
     34,38,41,56,57,58,
     "E_C",
@@ -300,6 +300,14 @@ fileInput.addEventListener("change", async e => {
                 // Guardamos filas reordenadas con info de cartilla
                 const filas = reorderedData.filter(r => r.some(c => c !== ""));
                 filas.forEach(r => r.__cartilla = cartilla);
+                
+                // 🆕 ORDENAR POR USUARIO (columna 6 en JS)
+                filas.sort((a, b) => {
+                    const usuarioA = (a[6] || "").toString().toUpperCase();
+                    const usuarioB = (b[6] || "").toString().toUpperCase();
+                    return usuarioA.localeCompare(usuarioB);
+                });
+                
                 dataRows.push(...filas);
                 
             } else {
@@ -318,6 +326,14 @@ fileInput.addEventListener("change", async e => {
                 
                 const filas = sheetData.slice(1).filter(r => r.some(c => c !== ""));
                 filas.forEach(r => r.__cartilla = cartilla);
+                
+                // 🆕 ORDENAR POR USUARIO (columna 6 en JS)
+                filas.sort((a, b) => {
+                    const usuarioA = (a[6] || "").toString().toUpperCase();
+                    const usuarioB = (b[6] || "").toString().toUpperCase();
+                    return usuarioA.localeCompare(usuarioB);
+                });
+                
                 dataRows.push(...filas);
             }
 

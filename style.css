@@ -163,7 +163,16 @@ body {
 .icon-left {
     width: 20px;
     margin-right: 10px;
-    font-size: 1rem; 
+    font-size: 1rem;
+}
+
+/* Cuando el toggle NO está activado (clase sidebar-collapsed presente) */
+body.sidebar-collapsed .icon-left {
+    width: 20px;
+    margin-right: 0px; /* Quitamos margen para que no se descentre en la burbuja */
+    font-size: 1rem;
+    padding-top: 7px;
+
 }
 
 .icon-right {
@@ -426,3 +435,95 @@ body {
     letter-spacing: 0.3px;
     margin-top: 2px;
 }
+
+/* --- Estilo del Botón de Hamburguesa --- */
+#toggle-sidebar {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+}
+
+#toggle-sidebar i {
+    color: #0e1b40 !important;
+    font-size: 22px;
+}
+
+/* ============================================================
+   MODO "SOLO ICONOS" (SIN TRANSICIONES - CAMBIO SECO)
+   ============================================================ */
+
+/* Quitar animaciones para que no se vea el efecto de abrir/cerrar */
+.sidebar, .content-area, .top-header-logo-area, .menu-item, .icon-left {
+    transition: none !important;
+}
+
+/* Anchos fijos al colapsar */
+body.sidebar-collapsed .sidebar,
+body.sidebar-collapsed .top-header-logo-area {
+    width: 75px !important;
+}
+
+body.sidebar-collapsed .content-area {
+    margin-left: 75px !important;
+}
+
+/* Ocultar elementos */
+body.sidebar-collapsed .menu-item span,
+body.sidebar-collapsed .icon-right,
+body.sidebar-collapsed .search-box, 
+body.sidebar-collapsed .user-card-info,
+body.sidebar-collapsed .submenu,
+body.sidebar-collapsed .lang-switch,
+body.sidebar-collapsed .top-logo-spacer,
+body.sidebar-collapsed .top-header-logo-area span {
+    display: none !important;
+}
+
+/* Burbujas de los iconos */
+body.sidebar-collapsed .menu-item {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin: 10px auto !important;
+    width: 45px !important;
+    height: 45px !important;
+    border-radius: 50% !important;
+}
+
+body.sidebar-collapsed .icon-left {
+    margin: 0 !important;
+    font-size: 1.3rem !important;
+}
+
+/* Icono Activo */
+body.sidebar-collapsed .menu-item.active {
+    background-color: #7de2ff !important;
+    color: #0E1B40 !important;
+}
+
+/* Avatar Footer */
+body.sidebar-collapsed .user-card-fixed {
+    padding: 0 !important;
+    bottom: 15px !important;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+body.sidebar-collapsed .user-card-body {
+    width: 45px !important;
+    height: 45px !important;
+    justify-content: center !important;
+    border-radius: 12px !important;
+    background-color: #164c7c !important;
+}
+
+
+
+.user-info {
+    margin-left: auto; /* 👈 empuja todo a la derecha */
+}
+

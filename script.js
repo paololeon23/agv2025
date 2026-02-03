@@ -178,6 +178,14 @@ searchInput.addEventListener('input', (e) => {
     });
 });
 
+// TOGGLE SIMPLE: No guarda en localStorage, al refresh vuelve a estar abierto
+const btnToggle = document.getElementById('toggle-sidebar');
+if (btnToggle) {
+    btnToggle.addEventListener('click', function() {
+        document.body.classList.toggle('sidebar-collapsed');
+    });
+}
+
     // ====================================================================
     // FUNCIÓN PARA CARGAR HTML + JS
     // ====================================================================
