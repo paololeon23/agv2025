@@ -614,17 +614,18 @@ inspectionTypeSelect.addEventListener("change", e => {
 
                 // --- VALIDACIONES BÁSICAS ---
                 if (!cliente) incidencias.push("Cliente no definido");
+                if (cliente === "TF INTERNATIONAL") incidencias.push("Cliente incorrecto (debe ser THE FRUITIST CO)");
                 if (!lote) incidencias.push("Lote vacío");
                 else if (String(lote).length !== 12) incidencias.push(`Lote incorrecto (${String(lote).length} dígitos)`);
-                if (r.__duplicado) incidencias.push("Lote duplicado en sistema");
-
+ 
                 if (!cantMuestra || Number(cantMuestra) <= 100) incidencias.push("Cantidad muestra insuficiente (≤ 100)");
                 if (!medMuestra || medMuestra.toString().toUpperCase() !== "UNIDADES") incidencias.push("Med. Muestra debe ser 'UNIDADES'");
                 if (!notaCond) incidencias.push("Falta Nota Condición (Col 28)");
 
                 if (!destino) incidencias.push("Falta Destino");
                 else if (cliente === "THE FRUITIST CO" && destino !== "USA") incidencias.push(`Destino ${destino} no permitido para Fruitist`);
-                else if (cliente === "COSTCO" && !["USA", "CANADA"].includes(destino)) incidencias.push(`Destino ${destino} no permitido para Costco`);
+                else if (cliente === "FRUITIST SHANGHAI" && destino !== "ASIA") incidencias.push(`Destino ${destino} no permitido para Fruitist Shanghai`);
+                else if (cliente === "COSTCO" && !["USA", "CANADA" ,"EUROPA"].includes(destino)) incidencias.push(`Destino ${destino} no permitido para Costco`);
 
                 // --- LÓGICA DE CALIBRE Y SUBGRUPO (ACTUALIZADA J, M, E) ---
                 if (esClienteEspecial) {
@@ -824,11 +825,15 @@ ${listaIncidencias}
                 }
                 if (c === 38 && destino && cliente === "THE FRUITIST CO" && destino !== "USA") {
                     td.style.color = "red";
-                    td.title = `❌ The Fruitist Co solo acepta destino USA (actual: ${destino})`; // 🆕 TOOLTIP
+                    td.title = `❌ The Fruitist Co solo acepta destino USA (actual: ${destino})`;
                 }
-                if (c === 38 && destino && cliente === "COSTCO" && destino !== "USA" && destino !== "CANADA") {
+                if (c === 38 && destino && cliente === "FRUITIST SHANGHAI" && destino !== "ASIA") {
                     td.style.color = "red";
-                    td.title = `❌ Costco solo acepta USA o CANADA (actual: ${destino})`; // 🆕 TOOLTIP
+                    td.title = `❌ Fruitist Shanghai solo acepta destino ASIA (actual: ${destino})`;
+                }
+                if (c === 38 && destino && cliente === "COSTCO" && destino !== "USA" && destino !== "CANADA" && destino !== "EUROPA") {
+                    td.style.color = "red";
+                    td.title = `❌ Costco solo acepta USA - CANADA - EUROPA (actual: ${destino})`; // 🆕 TOOLTIP
                 }
 
                 /* ===============================
@@ -951,6 +956,10 @@ ${listaIncidencias}
                 if (c === 34 && !val) {
                     td.style.background = "red";
                     td.title = "❌ Cliente vacío (obligatorio)"; // 🆕 TOOLTIP
+                }
+                if (c === 34 && val === "TF INTERNATIONAL") {
+                    td.style.color = "red";
+                    td.title = "❌ Cliente incorrecto: debe ser 'THE FRUITIST CO'";
                 }
 
                 /* ===============================
