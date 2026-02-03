@@ -1148,6 +1148,16 @@ document.addEventListener('contextmenu', function(e) {
     }
 });
 
+// Cerrar el menú si se hace clic izquierdo fuera de él
+document.addEventListener('click', function(e) {
+    const menu = document.getElementById('customContextMenu');
+    // Solo actuamos si el menú existe y está visible
+    if (menu && menu.style.display === 'block') {
+        if (!menu.contains(e.target)) {
+            menu.style.display = 'none';
+        }
+    }
+});
         /* ===============================
         EXPORT CON COLORES → FILTRADO POR CARTILLA Y FECHA
         =============================== */
