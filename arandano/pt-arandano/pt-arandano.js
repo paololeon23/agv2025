@@ -135,10 +135,10 @@
     };
 
   const COLUMNAS_FRONT = [
-    0,1,2,3,6,9,10,11,27,33,
-    "CALIBRE_DESC",
+    0,1,3,6,9,10,27,33,
+    "CALIBRE",
     34,38,41,56,57,58,
-    "ETAPA_CAMPO",
+    "E_C",
     "VARIEDAD"
   ];
 
@@ -497,7 +497,16 @@ inspectionTypeSelect.addEventListener("change", e => {
         // --- 2️⃣ Encabezados normales ---
         COLUMNAS_FRONT.forEach(c => {
             const th = document.createElement("th");
-            th.textContent = typeof c === "number" ? headers[c] : c;
+            let headerText = typeof c === "number" ? headers[c] : c;
+            
+            // 🎯 RENOMBRAR COLUMNAS PARA EL FRONTEND
+            if (c === 27) headerText = "Nota C.";
+            if (c === 1) headerText = "Cartilla";
+            if (c === 41) headerText = "Fecha Insp.";
+            if (c === 33) headerText = "Calibre";
+            if (c === 10) headerText = "Cant. M.";
+            
+            th.textContent = headerText;
             headerRow.appendChild(th);
         });
 
@@ -618,7 +627,12 @@ inspectionTypeSelect.addEventListener("change", e => {
                 if (!lote) incidencias.push("Lote vacío");
                 else if (String(lote).length !== 12) incidencias.push(`Lote incorrecto (${String(lote).length} dígitos)`);
  
-                if (!cantMuestra || Number(cantMuestra) <= 100) incidencias.push("Cantidad muestra insuficiente (≤ 100)");
+                const cantNum = Number(cantMuestra);
+                if (!cantMuestra || cantNum <= 100) {
+                    incidencias.push("Cantidad muestra insuficiente (≤ 100)");
+                } else if (cantNum > 530) {
+                    incidencias.push(`Cantidad muestra excede límite (${cantNum} > 530)`);
+                }
                 if (!medMuestra || medMuestra.toString().toUpperCase() !== "UNIDADES") incidencias.push("Med. Muestra debe ser 'UNIDADES'");
                 if (!notaCond) incidencias.push("Falta Nota Condición (Col 28)");
 
@@ -726,7 +740,7 @@ ${listaIncidencias}
             const etapaCampo = traz ? `${traz.sector.etapa}-${traz.sector.campo}` : "";
             const variedad = VAR_MAP[traz?.variedad]?.[0] || "";
             const calibreDesc = CALIBRES_MAP[r[33]] || "";
-            const ext = { CALIBRE_DESC: calibreDesc, ETAPA_CAMPO: etapaCampo, VARIEDAD: variedad };
+            const ext = { CALIBRE: calibreDesc, E_C: etapaCampo, VARIEDAD: variedad };
 
             // --- celdas normales ---
             COLUMNAS_FRONT.forEach(c => {
@@ -929,9 +943,16 @@ ${listaIncidencias}
                 /* ===============================
                 VALIDACIÓN CANTIDAD / UNIDADES
                 =============================== */
-                if (c === 10 && (!val || Number(val) <= 100)) {
-                    td.style.color = "red";
-                    td.title = `❌ Cantidad muestra debe ser mayor a 100 (actual: ${val || 0})`; // 🆕 TOOLTIP
+                if (c === 10) {
+                    const cantidadNum = Number(val);
+                    if (!val || cantidadNum <= 100 || cantidadNum > 530) {
+                        td.style.color = "red";
+                        if (!val || cantidadNum <= 100) {
+                            td.title = `❌ Cantidad muestra debe ser mayor a 100 (actual: ${val || 0})`;
+                        } else if (cantidadNum > 530) {
+                            td.title = `❌ Cantidad muestra no puede exceder 530 (actual: ${cantidadNum})`;
+                        }
+                    }
                 }
                 if (c === 11 && !val) {
                     td.style.background = "red";
@@ -1038,10 +1059,83 @@ ${listaIncidencias}
             exportBtn.disabled = false;
         });
 
+/* ============================================================
+   LÓGICA BLINDADA: EXCLUYENDO COLUMNA "ACCIONES"
+============================================================ */
+
+document.addEventListener('contextmenu', function(e) {
+    const th = e.target.closest('th');
+    
+    // 1. VALIDACIÓN EXTRA: Si es la columna "Acciones", no hacer nada
+    if (th && (th.cellIndex === 0 || th.textContent.trim() === "Acciones")) {
+        return; // Salimos de la función, ignorando el clic derecho
+    }
+
+    if (th && (th.closest('#resultsHeader1') || th.parentElement.id === "resultsHeader1")) {
+        e.preventDefault();
+
+        let menu = document.getElementById('customContextMenu');
+        if (!menu) {
+            menu = document.createElement('div');
+            menu.id = 'customContextMenu';
+            document.body.appendChild(menu);
+        }
+
+        const tabla = th.closest('table');
+        const hayOcultos = Array.from(tabla.querySelectorAll('thead th'))
+                                .some(el => el.style.display === 'none');
+
+        let menuHTML = `<div id="btnOcultarColumna">🚫 Ocultar esta columna</div>`;
+        
+        if (hayOcultos) {
+            menuHTML += `<div id="btnMostrarColumnas">✅ Mostrar todas las columnas</div>`;
+        }
+
+        menu.innerHTML = menuHTML;
+        
+        // EVENTO OCULTAR (Con protección para que no se oculte el index 0 por si acaso)
+        const btnOcultar = document.getElementById('btnOcultarColumna');
+        if(btnOcultar) {
+            btnOcultar.onclick = function() {
+                const index = th.cellIndex;
+                
+                // Doble seguridad: No ocultar si es la primera columna
+                if (index === 0) {
+                    menu.style.display = 'none';
+                    return;
+                }
+
+                th.style.display = 'none';
+                const filas = tabla.querySelectorAll('tbody tr');
+                filas.forEach(f => {
+                    if (f.cells[index]) f.cells[index].style.display = 'none';
+                });
+                menu.style.display = 'none';
+            };
+        }
+
+        // EVENTO MOSTRAR TODO
+        const btnMostrar = document.getElementById('btnMostrarColumnas');
+        if(btnMostrar) {
+            btnMostrar.onclick = function() {
+                tabla.querySelectorAll('th, td').forEach(el => el.style.display = '');
+                menu.style.display = 'none';
+            };
+        }
+
+        menu.style.top = `${e.pageY}px`;
+        menu.style.left = `${e.pageX}px`;
+        menu.style.display = 'block';
+    } else {
+        const menuExistente = document.getElementById('customContextMenu');
+        if (menuExistente) menuExistente.style.display = 'none';
+    }
+});
+
         /* ===============================
         EXPORT CON COLORES → FILTRADO POR CARTILLA Y FECHA
         =============================== */
-      exportBtn.onclick = () => {
+        exportBtn.onclick = () => {
             const fechaSeleccionada = inspectionDateSelect.value;
             const cartillaSeleccionada = inspectionTypeSelect.value;
 
