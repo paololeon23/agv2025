@@ -855,7 +855,7 @@ ${listaIncidencias}
                         td.style.background = "red";
                         td.title = "❌ Calibre AR vacío (obligatorio)"; // 🆕 TOOLTIP
                     }
-                    if (subGrupo && c === 56) {
+                    if (subGrupo && subGrupo.toUpperCase() !== "N/A" && subGrupo.trim() !== "" && c === 56) {
                         td.style.background = "red";
                         td.title = "❌ Cliente regular NO debe tener Subgrupo"; // 🆕 TOOLTIP
                     }
