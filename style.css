@@ -382,6 +382,16 @@ body {
     margin-bottom: 85px; 
 }
 
+/* Cuando el toggle NO está activado (clase sidebar-collapsed presente) */
+body.sidebar-collapsed .nav-menu {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    direction: rtl;
+    /* Dejamos espacio abajo para que el último ítem (Calidad) sea visible sobre la tarjeta */
+    padding-top: 33px;
+}
+
 /* --- ESTILO DE LA TARJETA FIJA (CARD) --- */
 .user-card-fixed {
     position: absolute;

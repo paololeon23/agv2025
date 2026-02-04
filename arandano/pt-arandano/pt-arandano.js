@@ -663,31 +663,38 @@ inspectionTypeSelect.addEventListener("change", e => {
 
                 // --- LÓGICA DE CALIBRE Y SUBGRUPO (ACTUALIZADA J, M, E) ---
                 if (esClienteEspecial) {
-                    if (!subGrupo && !calibreAR) {
-                        incidencias.push("Falta Calibre AR y Subgrupo (Obligatorios)");
-                    } else if (calibreAR && subGrupo) {
+                    // ✅ VALIDACIÓN INDIVIDUAL (obligatorios)
+                    //if (!calibreAR) incidencias.push("Calibre AR vacío (obligatorio)");   //---13 enero comienza la validacion ocmo tal en calibre para clientes especiales
+                    if (!subGrupo) incidencias.push("Subgrupo vacío (obligatorio)");
+                    
+                    // ✅ VALIDACIÓN DE COINCIDENCIA (solo si ambos existen)
+                    if (calibreAR && subGrupo) {
                         
-                        // Traducimos la letra a nombre completo (J -> JUMBO, E -> SUPER JUMBO)
+                        // Traducimos la letra a nombre completo (J -> JUMBO, M -> MEDIUM, E -> SUPER JUMBO)
                         let categoriaReal = CALIBRES_MAP[calibreAR] || calibreAR;
                         
                         // Ajuste para MEDIUM que es MIXED en categorías
                         if (categoriaReal === "MEDIUM") categoriaReal = "MIXED";
 
-                        // Validamos si es una Categoría (Palabras)
+                        // Validamos si es una Categoría (Palabras: JUMBO, MIXED, REGULAR, SUPER JUMBO)
                         if (CATEGORIAS_FRUTIST[categoriaReal]) {
                             if (!CATEGORIAS_FRUTIST[categoriaReal].includes(subGrupo)) {
-                                incidencias.push(`Subgrupo ${subGrupo} no pertenece a categoría ${categoriaReal}`);
+                                incidencias.push(`Subgrupo ${subGrupo} no pertenece a ${categoriaReal}`);
                             }
                         } 
-                        // Validamos si es por Milímetros (Letras como K, B, A)
+                        // Validamos si es por Milímetros (Letras como K, B, A, C, D)
                         else if (CALIBRES_MAP[calibreAR]) {
-                            const descAR = CALIBRES_MAP[calibreAR];
-                            const mmLetra = parseInt(descAR.replace(/\D/g, ''), 10);
+                            const descAR = CALIBRES_MAP[calibreAR]; // Ej: "+15mm"
+                            const mmLetra = parseInt(descAR.replace(/\D/g, ''), 10); // 15
                             const mmSub = CALIBRES_SUBGRUPO[subGrupo] ? parseInt(CALIBRES_SUBGRUPO[subGrupo].replace(/\D/g, ''), 10) : null;
                             
-                            if (mmSub && mmLetra !== mmSub) {
-                                incidencias.push(`Calibre ${descAR} no coincide con Subgrupo ${subGrupo}`);
+                            if (!mmSub) {
+                                incidencias.push(`Subgrupo ${subGrupo} no válido`);
+                            } else if (mmLetra !== mmSub) {
+                                incidencias.push(`Calibre ${descAR} no coincide con Subgrupo ${subGrupo} (${CALIBRES_SUBGRUPO[subGrupo]})`);
                             }
+                        } else {
+                            incidencias.push(`Calibre AR "${calibreAR}" no reconocido`);
                         }
                     }
                 } else if (cliente) {

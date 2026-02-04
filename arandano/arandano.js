@@ -648,11 +648,11 @@
             const tempPulpa = parseFloat(r[59]) || 0;
 
             // ❌ rango válido 15–37
-            if (tempAmbiente < 15 || tempAmbiente > 37) return true;
-            if (tempPulpa < 15 || tempPulpa > 37) return true;
+            if (tempAmbiente < 15 || tempAmbiente > 38.5) return true;
+            if (tempPulpa < 15 || tempPulpa > 38.5) return true;
 
             // ❌ diferencia máxima 11
-            if (Math.abs(tempPulpa - tempAmbiente) > 11) return true;
+            if (Math.abs(tempPulpa - tempAmbiente) >= 11.5) return true;
 
             for (let c = 63; c <= 100; c++) {
               if (!r[c]) return true;
@@ -717,13 +717,13 @@
           if (c === 50 && parseExcelDateISO(val) !== fechaLMRMayoritaria) return true;
 
          // 👉 COLUMNAS 59–60: validar rango por celda
-          if ([58, 59].includes(c) && (Number(val) < 15 || Number(val) > 37)) return true;
+          if ([58, 59].includes(c) && (Number(val) < 15 || Number(val) > 38.5)) return true;
 
           // 👉 diferencia (visual)
           if (c === 58 || c === 59) {
             const tA = Number(r[58]);
             const tP = Number(r[59]);
-            if (Math.abs(tP - tA) > 11) return true;
+            if (Math.abs(tP - tA) >= 11.5 ) return true;
           }
 
           // ❌ COLUMNAS 22–27 deben estar vacías
