@@ -97,9 +97,9 @@
 
 /* Estilo activo para paginación (#2db7b0) */
 #agvPagination1 button.active, #agvPagination2 button.active {
-    background-color: #2db7b0;
+    background-color: #2f7cc0;
     color: white;
-    border-color: #2db7b0;
+    border-color: #2f7cc0;
 }
 
 #agvPagination1 button:disabled, #agvPagination2 button:disabled {

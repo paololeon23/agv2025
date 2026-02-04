@@ -93,7 +93,13 @@ document.addEventListener("DOMContentLoaded", () => {
             html: "trazabilidad/cartilla/cartilla.html",
             js: "trazabilidad/cartilla/cartilla.js",
             title: "Cartillas Perú"
+        },
+        calidad: {
+            html: "calidad/calidad.html",
+            js: "calidad/calidad.js",
+            title: "Calidad"
         }
+
 
 
     };
@@ -417,28 +423,31 @@ menuItems.forEach(item => {
     }
 
 const jCard = document.getElementById("jooleanoCard");
-
 let lastDay = null;
 
 function updateJooleanoCard() {
     const today = new Date();
     const dia = today.getDate();
-    const mes = String(today.getMonth() + 1).padStart(2, "0");
+    const mes = today.getMonth(); // 0 para Enero, 1 para Febrero...
     const anio = today.getFullYear();
 
-    const jooleano = String(dia).padStart(3, "0");
+    // Cálculo del día del año (Juliano)
+    const inicioDeAnio = new Date(anio, 0, 0); // Seteamos al "día 0" de enero
+    const dif = today - inicioDeAnio; // Diferencia en milisegundos
+    const unDiaEnMs = 1000 * 60 * 60 * 24;
+    const diaDelAnio = Math.floor(dif / unDiaEnMs);
 
-    // Solo actualizamos si cambió el día
+    // Formateamos a 3 dígitos (ej: 034)
+    const jooleano = String(diaDelAnio).padStart(3, "0");
+    const mesFormateado = String(mes + 1).padStart(2, "0");
+
     if (dia !== lastDay) {
-        jCard.textContent = `${dia}/${mes}/${anio}  - Juliano = ${jooleano}`;
+        jCard.textContent = `${dia}/${mesFormateado}/${anio} - Juliano = ${jooleano}`;
         lastDay = dia;
     }
 }
 
-// Actualizar al cargar
 updateJooleanoCard();
-
-// Revisar cada minuto si cambió el día
 setInterval(updateJooleanoCard, 60000);
 
     
