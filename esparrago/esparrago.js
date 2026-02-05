@@ -251,9 +251,9 @@ if (c === 9) {
     }
 
 /* ============================================================
-   6. EXPORTAR (FILTRADO POR FECHA SELECCIONADA)
+   6. EXPORTAR (FILTRADO POR FECHA SELECCIONADA + CONVERSIÓN A NÚMEROS)
    ============================================================ */
-exportBtn.addEventListener("click", () => {
+exportBtn.onclick = () => {
     const fechaSeleccionada = inspectionDateSelect.value;
 
     if (!fechaSeleccionada) {
@@ -281,7 +281,7 @@ exportBtn.addEventListener("click", () => {
         27, 28,            // Col 28, 29
         null,              // Vacío
         29,                // Col 30
-        null        // Vacíos hasta llegar a la 33
+        null               // Vacíos hasta llegar a la 33
     ];
 
     // 3. Agregar correlativo: Desde Col 33 hasta 146 (Índices JS 32 hasta 145)
@@ -289,21 +289,46 @@ exportBtn.addEventListener("click", () => {
         indicesExcel.push(i);
     }
 
-    // 4. Mapear los datos de las filas filtradas
+    // 4. Definir columnas que NO se deben convertir a número
+    const columnasTexto = new Set([9, 18, 47, 48, 57]);
+
+    // 5. Mapear los datos de las filas filtradas CON CONVERSIÓN A NÚMEROS
     const matrixFinal = filasAExportar.map(fila => {
-        return indicesExcel.map(idx => (idx === null ? "" : (fila[idx] || "")));
+        return indicesExcel.map(idx => {
+            if (idx === null) return "";
+            
+            const valorOriginal = fila[idx] || "";
+            
+            // Si la columna está en la lista de texto, mantenerla como texto
+            if (columnasTexto.has(idx)) {
+                return valorOriginal;
+            }
+            
+            // Si no está en la lista de texto, intentar convertir a número
+            const valorString = valorOriginal.toString().trim();
+            
+            // Si está vacío, devolver vacío
+            if (valorString === "") return "";
+            
+            // Intentar convertir a número
+            const valorNumero = Number(valorString);
+            
+            // Si es un número válido, devolverlo como número
+            // Si no es válido, devolver el texto original
+            return isNaN(valorNumero) ? valorOriginal : valorNumero;
+        });
     });
 
-    // 5. Preparar los encabezados (Mapear headersOriginal con el mismo orden)
+    // 6. Preparar los encabezados (Mapear headersOriginal con el mismo orden)
     const encabezadosMapeados = indicesExcel.map(idx => (idx === null ? "" : (headersOriginal[idx] || "")));
 
-    // 6. Generar el archivo
+    // 7. Generar el archivo
     const ws = XLSX.utils.aoa_to_sheet([encabezadosMapeados, ...matrixFinal]);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Data_Export");
 
     XLSX.writeFile(wb, `Reporte_Esparrago_${fechaSeleccionada}.xlsx`);
-});
+};
 
     /* ============================================================
        7. LIMPIEZA COMPLETA (ESTILO ARÁNDANOS)

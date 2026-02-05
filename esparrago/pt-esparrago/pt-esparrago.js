@@ -62,7 +62,7 @@ const DB_PESOS = {
             "12X250": { min: 250, max: 255, tipo: "ATADO", presentacion: "no validar" }
         },
 
-        "NATURE’S PRIDE B.V.": {
+        "NATURE'S PRIDE B.V.": {
             "10X250": { min: 250, max: 255, tipo: "ATADO", presentacion: "Box 2.50 Kg" },
             "20X250": { min: 250, max: 255, tipo: "ATADO", presentacion: "Box 5.00 Kg" },
             "20X200": { min: 200, max: 204, tipo: "ATADO", presentacion: "Box 4.00 Kg" },
@@ -202,6 +202,77 @@ const DB_PESOS = {
             // 1. Filtrado inicial por fecha
             const filtradas = rawRows.filter(r => r[46]?.toString().trim() === fSel);
             
+            // **VALIDACIONES PARA MOSTRAR ADVERTENCIA**
+            let errorSAP = false;
+            let errorDefectos = false;
+            let errorCalidad = false;
+
+            filtradas.forEach((fila) => {
+                // Validar columnas 13-27 y 29-33 (Excel) = 12-26 y 28-32 (JS)
+                for (let i = 12; i <= 26; i++) {
+                    if (fila[i] !== undefined && fila[i] !== null && fila[i].toString().trim() !== "") {
+                        errorSAP = true;
+                        break;
+                    }
+                }
+                for (let i = 28; i <= 32; i++) {
+                    if (fila[i] !== undefined && fila[i] !== null && fila[i].toString().trim() !== "") {
+                        errorSAP = true;
+                        break;
+                    }
+                }
+
+                // Validar columna 41 (Excel) = 40 (JS): debe estar entre 0 y 20
+                const val40 = parseFloat(fila[40]);
+                if (fila[40] !== undefined && fila[40] !== null && fila[40].toString().trim() !== "") {
+                    if (!isNaN(val40) && (val40 < 0 || val40 > 20)) {
+                        errorDefectos = true;
+                    }
+                }
+
+                // Validar columna 43 (Excel) = 42 (JS): debe estar entre 0 y 70
+                const val42 = parseFloat(fila[42]);
+                if (fila[42] !== undefined && fila[42] !== null && fila[42].toString().trim() !== "") {
+                    if (!isNaN(val42) && (val42 < 0 || val42 > 70)) {
+                        errorDefectos = true;
+                    }
+                }
+
+                // Validar columna 67 (Excel) = 66 (JS): debe estar entre 0 y 80
+                const val66 = parseFloat(fila[66]);
+                if (fila[66] !== undefined && fila[66] !== null && fila[66].toString().trim() !== "") {
+                    if (!isNaN(val66) && (val66 < 0 || val66 > 80)) {
+                        errorDefectos = true;
+                    }
+                }
+
+                // Validar columnas 78-133 (Excel) = 77-132 (JS): No deben estar vacías
+                for (let i = 77; i <= 132; i++) {
+                    const val = fila[i];
+                    if (val === undefined || val === null || val.toString().trim() === "") {
+                        errorCalidad = true;
+                        break;
+                    }
+                }
+            });
+
+            // **MOSTRAR SWARALERT SI HAY ERRORES**
+            if (errorSAP || errorDefectos || errorCalidad) {
+                let mensajes = [];
+                if (errorSAP) mensajes.push("❌ Error en datos SAP (revisar columnas 13-27 y 29-33)");
+                if (errorDefectos) mensajes.push("❌ Error en defectos (revisar columnas 41, 43 y 67)");
+                if (errorCalidad) mensajes.push("❌ Error en datos de calidad (revisar columnas 78-133)");
+                
+                Swal.fire({
+                    icon: "warning",
+                    title: "⚠️ AVISO IMPORTANTE",
+                    html: `<div style="text-align: left; font-size: 14px; line-height: 1.8;">${mensajes.join("<br>")}</div>`,
+                    confirmButtonText: "Entendido",
+                    confirmButtonColor: "#f39c12",
+                    allowOutsideClick: false
+                });
+            }
+            
             // 2. Renderizar Encabezados (Esto limpia automáticamente los selects anteriores)
             headerRow.innerHTML = "";
             VISUAL_COLS_PT.forEach(idx => {
@@ -334,6 +405,49 @@ const DB_PESOS = {
             return;
         }
 
+        // **NUEVA VALIDACIÓN: Columna 41 (Excel) = 40 (JS) - Debe estar entre 0 y 20**
+        if (colIdx === 40 && valStr !== "") {
+            if (!isNaN(valNum)) {
+                if (valNum < 0 || valNum > 20) {
+                    td.style.color = "red";
+                    td.style.fontWeight = "bold";
+                    td.title = "El valor debe estar entre 0 y 20";
+                }
+            }
+        }
+
+        // **NUEVA VALIDACIÓN: Columna 43 (Excel) = 42 (JS) - Debe estar entre 0 y 70**
+        if (colIdx === 42 && valStr !== "") {
+            if (!isNaN(valNum)) {
+                if (valNum < 0 || valNum > 70) {
+                    td.style.color = "red";
+                    td.style.fontWeight = "bold";
+                    td.title = "El valor debe estar entre 0 y 70";
+                }
+            }
+        }
+
+        // **NUEVA VALIDACIÓN: Columna 67 (Excel) = 66 (JS) - Debe estar entre 0 y 80**
+        if (colIdx === 66 && valStr !== "") {
+            if (!isNaN(valNum)) {
+                if (valNum < 0 || valNum > 80) {
+                    td.style.color = "red";
+                    td.style.fontWeight = "bold";
+                    td.title = "El valor debe estar entre 0 y 80";
+                }
+            }
+        }
+
+        // **NUEVA VALIDACIÓN: Columnas 78-133 (Excel) = 77-132 (JS) - No deben estar vacías**
+        if (colIdx >= 77 && colIdx <= 132) {
+            if (valStr === "") {
+                td.style.backgroundColor = "#ffcccc";
+                td.style.color = "#cc0000";
+                td.style.fontWeight = "bold";
+                td.title = "Este campo no debe estar vacío (columnas de datos obligatorios)";
+            }
+        }
+
         // --- LÓGICA DE IDENTIFICACIÓN DE CLIENTE Y RANGO ---
         let clienteKey = Object.keys(DB_PESOS[mercado] || {}).find(k => 
             cliente.includes(k.toUpperCase())
@@ -395,59 +509,60 @@ const DB_PESOS = {
         }
 
 
-        // 6. Lote (Columna 10 / idx 9) - LÓGICA FILTRADA
-if (colIdx === 9) {
-    // Si llegamos aquí es porque valStr TIENE DATA (el return de vacíos de arriba ya filtró)
-    
-    let msgError = "";
+        // 7. Lote (Columna 10 / idx 9) - LÓGICA FILTRADA
+        if (colIdx === 9) {
+            // Si llegamos aquí es porque valStr TIENE DATA (el return de vacíos de arriba ya filtró)
+            
+            let msgError = "";
 
-    // PASO 1: Revisar longitud (Si falla, ya no calculamos el Juliano para no perder tiempo)
-    if (valStr.length !== 13) {
-        msgError = `El lote debe tener exactamente 13 dígitos (Detectados: ${valStr.length})`;
-    } 
-    // PASO 2: Solo si tiene los 13 dígitos, calculamos y comparamos el Día Juliano
-    else {
-        const fechaInspeccionStr = (fila[46] || "").toString().trim();
-        if (fechaInspeccionStr) {
-            const partes = fechaInspeccionStr.split("/");
-            if (partes.length === 3) {
-                const fechaObj = new Date(partes[2], partes[1] - 1, partes[0]);
-                const inicioAnio = new Date(fechaObj.getFullYear(), 0, 0);
-                const unDia = 1000 * 60 * 60 * 24;
-                
-                // Cálculo del día juliano
-                const julianoEsperado = Math.floor((fechaObj - inicioAnio) / unDia).toString().padStart(3, '0');
-                const julianoEnLote = valStr.slice(-3);
+            // PASO 1: Revisar longitud (Si falla, ya no calculamos el Juliano para no perder tiempo)
+            if (valStr.length !== 13) {
+                msgError = `El lote debe tener exactamente 13 dígitos (Detectados: ${valStr.length})`;
+            } 
+            // PASO 2: Solo si tiene los 13 dígitos, calculamos y comparamos el Día Juliano
+            else {
+                const fechaInspeccionStr = (fila[46] || "").toString().trim();
+                if (fechaInspeccionStr) {
+                    const partes = fechaInspeccionStr.split("/");
+                    if (partes.length === 3) {
+                        const fechaObj = new Date(partes[2], partes[1] - 1, partes[0]);
+                        const inicioAnio = new Date(fechaObj.getFullYear(), 0, 0);
+                        const unDia = 1000 * 60 * 60 * 24;
+                        
+                        // Cálculo del día juliano
+                        const julianoEsperado = Math.floor((fechaObj - inicioAnio) / unDia).toString().padStart(3, '0');
+                        const julianoEnLote = valStr.slice(-3);
 
-                if (julianoEnLote !== julianoEsperado) {
-                    msgError = `Día Juliano incorrecto: Para ${fechaInspeccionStr} debe terminar en ${julianoEsperado}`;
+                        if (julianoEnLote !== julianoEsperado) {
+                            msgError = `Día Juliano incorrecto: Para ${fechaInspeccionStr} debe terminar en ${julianoEsperado}`;
+                        }
+                    }
                 }
             }
+
+            // Aplicar estilo de error si algo falló en los pasos anteriores
+            if (msgError) {
+                td.style.color = "red";
+                td.style.fontWeight = "bold";
+                td.title = msgError;
+            }
         }
-    }
 
-    // Aplicar estilo de error si algo falló en los pasos anteriores
-    if (msgError) {
-        td.style.color = "red";
-        td.style.fontWeight = "bold";
-        td.title = msgError;
-    }
-}
-
-        // 7. Muestra (Columna 11 / idx 10)
+        // 8. Muestra (Columna 11 / idx 10)
         if (colIdx === 10 && valNum < 100) {
             td.style.color = "red";
             td.title = "La muestra mínima es de 100 unidades";
         }
         
-        // 8. Destino (Columna 54 / idx 53)
+        // 9. Destino (Columna 54 / idx 53)
         if (colIdx === 53 && !["USA", "EUROPA", "ASIA"].includes(valStr)) {
             td.style.backgroundColor = "#f51700";
             td.style.color = "white";
             td.title = "Mercado no válido. Solo se permite USA, EUROPA o ASIA";
         }
     }
-// --- EXPORTAR CON ORDEN PERSONALIZADO ---
+
+    // --- EXPORTAR CON ORDEN PERSONALIZADO Y VALIDACIONES ---
     exportBtn.addEventListener("click", () => {
         const fSel = inspectionDateSelect.value;
 
@@ -460,7 +575,6 @@ if (colIdx === 9) {
         }
 
         // 2. DEFINIR EL NUEVO ORDEN DE COLUMNAS (Índices JS = Excel - 1)
-        // Pedido: 37, 5, 10, 11, 28, 34, 35, 36, 38, 39... hasta 133
         const nuevoOrdenIndices = [
             36, // Excel 37
             4,  // Excel 5
@@ -481,15 +595,41 @@ if (colIdx === 9) {
         // 3. MAPEAR LOS ENCABEZADOS (Para que el título del Excel coincida con el orden)
         const encabezadosNuevos = nuevoOrdenIndices.map(idx => headersOriginal[idx] || `Col ${idx + 1}`);
 
-        // 4. MAPEAR LOS DATOS
+        // **COLUMNAS QUE DEBEN MANTENERSE COMO TEXTO (índices JS)**
+        const columnasTexto = new Set([3, 9, 45, 46, 51]);
+
+        // 4. MAPEAR LOS DATOS CON CONVERSIÓN A NUMÉRICO
         const matrizDataNuevos = filasAExportar.map(fila => {
             return nuevoOrdenIndices.map(idx => {
                 let valor = fila[idx];
+                
                 // Si es la columna de fecha (índice 3), la convertimos a formato legible
                 if (idx === 3 && typeof valor === 'number') {
                     return serialExcelAFecha(valor);
                 }
-                return valor === undefined || valor === null ? "" : valor;
+                
+                // Si el valor está vacío, retornar vacío
+                if (valor === undefined || valor === null || valor === "") {
+                    return "";
+                }
+
+                // **SI LA COLUMNA DEBE SER TEXTO, NO CONVERTIR**
+                if (columnasTexto.has(idx)) {
+                    return valor.toString();
+                }
+
+                // **CONVERTIR A NÚMERO SI ES POSIBLE**
+                const valorStr = valor.toString().trim();
+                
+                // Si está vacío después del trim, devolver vacío
+                if (valorStr === "") return "";
+                
+                // Intentar convertir a número
+                const valorNum = Number(valorStr);
+                
+                // Si es un número válido, devolverlo como número
+                // Si no es válido, devolver el texto original
+                return isNaN(valorNum) ? valor : valorNum;
             });
         });
 
@@ -500,9 +640,17 @@ if (colIdx === 9) {
 
         const timestamp = new Date().getTime().toString().slice(-4);
         XLSX.writeFile(wb, `Reporte_PT_Esparrago_${fSel}_ID${timestamp}.xlsx`);
+
+        Swal.fire({
+            icon: "success",
+            title: "Exportación exitosa",
+            text: "El archivo se descargó correctamente",
+            timer: 2000,
+            showConfirmButton: false
+        });
     });
 
-        const clearBtn = document.getElementById("clearDataPTEsparrago"); // O el ID que uses en tu HTML
+    const clearBtn = document.getElementById("clearDataPTEsparrago");
     /* ============================================================
     7. LIMPIEZA COMPLETA (ESTILO ARÁNDANOS)
     ============================================================ */
@@ -521,7 +669,7 @@ if (colIdx === 9) {
         // --- 3. LIMPIAR TABLA (Encabezados y Cuerpo) ---
         headerRow.innerHTML = "";
         bodyRows.innerHTML = "";
-        totalFilasDiv.innerHTML = ""; // <--- Eliminado el texto "Esperando revisión"
+        totalFilasDiv.innerHTML = "";
 
         // --- 4. RESET SELECTS (CONTENIDO + ESTILOS) ---
         // Fecha Inspección

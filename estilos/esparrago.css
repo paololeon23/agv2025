@@ -28,7 +28,7 @@ th, td {
     border: 1px solid var(--border, #ccc);
     text-align: left;
     font-size: 12px;
-    color: #2b2b2b;
+    color: #000000;
     max-width: 250px;
     word-wrap: break-word;
 }
@@ -61,11 +61,33 @@ border-right: 1px solid #d1d5db !important;
 /* Posiciones exactas */
 .esparrago-col-0 { left: 0; min-width: 90px; border-left: 1px solid #f0f4f8 !important; }
 .esparrago-col-1 { left: 90px; min-width: 108px; }
-.esparrago-col-6 { left: 198px; min-width: 90px; }
+.esparrago-col-6 { left: 198px; min-width: 228px; }
 .esparrago-col-9 { left: 426px; min-width: 89px; }
 
 
 #resultsTableEsparrago {
   border-collapse: separate !important;
   border-spacing: 0 !important;
+}
+
+
+#updateDateEsparrago {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: #f5f5f5;
+    color: #555;
+    cursor: not-allowed;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 10px 7px;
+    padding-right: 35px;
+    user-select: none;
+    pointer-events: none;
 }
