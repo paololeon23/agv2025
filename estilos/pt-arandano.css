@@ -4,7 +4,7 @@
     padding: 2px 8px !important;    /* Espacio interno mínimo */
     line-height: 1 !important;      /* El texto no tiene aire arriba/abajo */
     white-space: nowrap !important; /* TODO el texto en una sola línea (clave) */
-    font-size: 11.5px !important;   /* Letra compacta pero legible */
+    /*font-size: 11.5px !important;   /* Letra compacta pero legible */
     vertical-align: middle !important;
     border: 1px solid #e0e0e0 !important;
     overflow: hidden;               /* No deja que nada "empuje" la celda */

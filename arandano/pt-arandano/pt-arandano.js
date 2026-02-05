@@ -146,6 +146,112 @@
     "LINEA","FORMATO","ETIQUETA","FECHA COSECHA","TIPO DE BOLSA"
   ];
 
+  // 🆕 EQUIVALENCIAS DE DESTINOS (para aceptar variaciones)
+  const DESTINO_EQUIVALENCIAS = {
+    "MEDIO ORIENTE": "ASIA",
+    "ASIA": "ASIA",
+    "EUROPA": "EUROPA",
+    "CANADA": "CANADA",
+    "USA": "USA",
+    "BRASIL": "BRASIL"
+  };
+
+  const PAIS_DESTINO = [
+  { cliente: "THE FRUITIST CO", destino: "CANADA" },
+  { cliente: "BENASSI", destino: "BRASIL" },
+  { cliente: "WISH FARMS INC.", destino: "USA" },
+  { cliente: "GIUMARRA INTERNATIONAL BERRY, LLC", destino: "USA" },
+  { cliente: "SUNBELLE", destino: "USA" },
+  { cliente: "THE FRUITIST CO", destino: "USA" },
+  { cliente: "SUN BELLE INC", destino: "USA" },
+  { cliente: "TF INTERNATIONAL", destino: "USA" },
+  { cliente: "DRISCOLL´S INC.", destino: "USA" },
+
+  { cliente: "LUCKY BERRY LTD", destino: "MEDIO ORIENTE" },
+  { cliente: "NATIV BUSINESS CONSULTING LTD", destino: "MEDIO ORIENTE" },
+  { cliente: "KIBSONS INTERNATIONAL LLC", destino: "MEDIO ORIENTE" },
+  { cliente: "ET OCEAN TRADING", destino: "MEDIO ORIENTE" },
+  { cliente: "FARZANA LLC", destino: "MEDIO ORIENTE" },
+  { cliente: "SPINNEYS DUBAI LLC", destino: "MEDIO ORIENTE" },
+  { cliente: "BERRY MOUNT ARABIO", destino: "MEDIO ORIENTE" },
+  { cliente: "FRANCAISE FOOD CO", destino: "MEDIO ORIENTE" },
+  { cliente: "SHARBATLY FRUIT", destino: "MEDIO ORIENTE" },
+  { cliente: "BARAKAT VEGETABLES AND FRUITS CO.LLC", destino: "MEDIO ORIENTE" },
+  { cliente: "BERRY MOUNT V&F", destino: "MEDIO ORIENTE" },
+  { cliente: "CARREFOUR", destino: "MEDIO ORIENTE" },
+  { cliente: "FRESH FRUIT", destino: "MEDIO ORIENTE" },
+  { cliente: "PURE HARVEST", destino: "MEDIO ORIENTE" },
+  { cliente: "SUMA FRUITS INTERNATIONAL", destino: "MEDIO ORIENTE" },
+  { cliente: "AL SHAHABI TRADING CO", destino: "MEDIO ORIENTE" },
+
+  { cliente: "AGROVISION EUROPE B.V.", destino: "EUROPA" },
+  { cliente: "AARTSEN BREDA B.V.", destino: "EUROPA" },
+  { cliente: "EDEKA AG FRUCHTKONTOR WEST", destino: "EUROPA" },
+  { cliente: "ALDI", destino: "EUROPA" },
+  { cliente: "CARREFOUR", destino: "EUROPA" },
+  { cliente: "BC NATURE AGV EU", destino: "EUROPA" },
+  { cliente: "AMETLLER ORIGIN", destino: "EUROPA" },
+  { cliente: "BIEDRONKA", destino: "EUROPA" },
+  { cliente: "BYBLUE", destino: "EUROPA" },
+  { cliente: "COLINA", destino: "EUROPA" },
+  { cliente: "CONSUM", destino: "EUROPA" },
+  { cliente: "COOP NORDICS (GRAPEHUB)", destino: "EUROPA" },
+  { cliente: "DAY", destino: "EUROPA" },
+  { cliente: "DOLE", destino: "EUROPA" },
+  { cliente: "TESCO DPS", destino: "EUROPA" },
+  { cliente: "REWE-WOF", destino: "EUROPA" },
+  { cliente: "PRIMAFRUITS", destino: "EUROPA" },
+  { cliente: "COOP DOLE", destino: "EUROPA" },
+  { cliente: "VTO (METRO)", destino: "EUROPA" },
+  { cliente: "AGROVISION UK", destino: "EUROPA" },
+  { cliente: "COSTCO UK", destino: "EUROPA" },
+  { cliente: "GLOBAL PACIFIC", destino: "EUROPA" },
+  { cliente: "MARK & SPENCER", destino: "EUROPA" },
+  { cliente: "ABBGROWERS B.V", destino: "EUROPA" },
+  { cliente: "MARKS & SPENCER", destino: "EUROPA" },
+  { cliente: "COOP NORDICS", destino: "EUROPA" },
+  { cliente: "MINORI BUAH NUSANTARA", destino: "EUROPA" },
+  { cliente: "COOP TRADING", destino: "EUROPA" },
+  { cliente: "DRISCOLL’S OF EUROPE", destino: "EUROPA" },
+
+  { cliente: "DRISCOLL´S INC.", destino: "ASIA" },
+  { cliente: "DRISCOLL´S SALAH AL AMOUDI", destino: "ASIA" },
+  { cliente: "AARTSEN ASIA", destino: "ASIA" },
+  { cliente: "JIAXING HI GO IMPORT", destino: "ASIA" },
+  { cliente: "FRUITIST SHANGHAI", destino: "ASIA" },
+  { cliente: "HEMA", destino: "ASIA" },
+  { cliente: "RAINDEW", destino: "ASIA" },
+  { cliente: "RIVERKING INTERNATIONAL", destino: "ASIA" },
+  { cliente: "SAM´S", destino: "ASIA" },
+  { cliente: "XINPU", destino: "ASIA" },
+  { cliente: "XINQIN", destino: "ASIA" },
+  { cliente: "DAILY HARVEST", destino: "ASIA" },
+  { cliente: "DJ EXPORTS", destino: "ASIA" },
+  { cliente: "NKG TRADING COMPANY", destino: "ASIA" },
+  { cliente: "PT. MINORI BUAH NUSANTARA", destino: "ASIA" },
+  { cliente: "D´FRESH", destino: "ASIA" },
+  { cliente: "KHAISHEN TRADING", destino: "ASIA" },
+  { cliente: "HUPCO", destino: "ASIA" },
+  { cliente: "GLOBAL TRADE", destino: "ASIA" },
+  { cliente: "COSTCO TW", destino: "ASIA" },
+  { cliente: "FULLBLOOM", destino: "ASIA" },
+  { cliente: "POMINA ENTERPRISE", destino: "ASIA" },
+  { cliente: "HUPCO PTE LTD", destino: "ASIA" },
+  { cliente: "TAIWAN FULLBLOOM INT’L LTD.", destino: "ASIA" },
+  { cliente: "POMINA", destino: "ASIA" },
+  { cliente: "D.J. EXPORTS PVT. LTD.", destino: "ASIA" },
+  { cliente: "AGROVISION CHINA", destino: "ASIA" },
+  { cliente: "RIVERKING INTERNATIONAL CO., LTD", destino: "ASIA" },
+  { cliente: "AARTSEN ASIA LIMITED", destino: "ASIA" },
+  { cliente: "COSTCO WHOLESALE TAIWAN, INC.", destino: "ASIA" },
+  { cliente: "SAM'S", destino: "ASIA" },
+  { cliente: "BERRY MOUNT VEGETABLES AND FRUIT", destino: "ASIA" },
+  { cliente: "FRESH FRUIT", destino: "ASIA" },
+  { cliente: "NGK TRADING", destino: "ASIA" },
+  { cliente: "D'FRESH SDN BHD", destino: "ASIA" },
+  { cliente: "SHARBATLY FRUIT", destino: "ASIA" }
+];
+
 
 
 // 🆕 ORDEN ESPECIAL PARA PTHPA Y PTLPA (índices JS, base 0)
@@ -368,6 +474,44 @@ fileInput.addEventListener("change", async e => {
     }
     
 });
+
+/* ===============================
+   CLIENTE-DESTINO VALIDATION
+=============================== */
+
+ // 🆕 FUNCIÓN PARA NORMALIZAR DESTINOS
+  function normalizarDestino(destino) {
+    if (!destino) return "";
+    const destinoUpper = destino.toString().toUpperCase().trim();
+    return DESTINO_EQUIVALENCIAS[destinoUpper] || destinoUpper;
+  }
+
+  // 🆕 FUNCIÓN PARA VALIDAR CLIENTE-DESTINO
+  function validarClienteDestino(cliente, destino) {
+    if (!cliente || !destino) return { valido: false, mensaje: "" };
+
+    const clienteUpper = cliente.toString().toUpperCase().trim();
+    const destinoNormalizado = normalizarDestino(destino);
+
+    // Buscar todas las combinaciones válidas para este cliente
+    const destinosPermitidos = PAIS_DESTINO
+      .filter(pd => pd.cliente.toUpperCase().trim() === clienteUpper)
+      .map(pd => normalizarDestino(pd.destino));
+
+    if (destinosPermitidos.length === 0) {
+      // Cliente no tiene restricciones
+      return { valido: true, mensaje: "" };
+    }
+
+    const esValido = destinosPermitidos.includes(destinoNormalizado);
+
+    return {
+      valido: esValido,
+      mensaje: esValido 
+        ? "" 
+        : `${cliente} solo acepta: ${destinosPermitidos.join(", ")} (actual: ${destino})`
+    };
+  }
 
 /* ===============================
    ACTUALIZAR FECHAS POR CARTILLA
@@ -656,10 +800,34 @@ inspectionTypeSelect.addEventListener("change", e => {
                 if (!medMuestra || medMuestra.toString().toUpperCase() !== "UNIDADES") incidencias.push("Med. Muestra debe ser 'UNIDADES'");
                 if (!notaCond) incidencias.push("Falta Nota Condición (Col 28)");
 
-                if (!destino) incidencias.push("Falta Destino");
-                else if (cliente === "THE FRUITIST CO" && destino !== "USA") incidencias.push(`Destino ${destino} no permitido para Fruitist`);
-                else if (cliente === "FRUITIST SHANGHAI" && destino !== "ASIA") incidencias.push(`Destino ${destino} no permitido para Fruitist Shanghai`);
-                else if (cliente === "COSTCO" && !["USA", "CANADA" ,"EUROPA"].includes(destino)) incidencias.push(`Destino ${destino} no permitido para Costco`);
+                // 🔥 VALIDACIONES DE DESTINO (COMPLETA)
+                if (!destino) {
+                    incidencias.push("Falta Destino");
+                } else if (cliente) {
+                    let errorDestinoEncontrado = false;
+                    
+                    // 🔥 VALIDACIONES ESPECIALES (mantienen prioridad)
+                    if (cliente === "THE FRUITIST CO" && !["USA", "CANADA"].includes(destino)) {
+                        incidencias.push(`Destino ${destino} no permitido para Fruitist (debe ser USA o CANADA)`);
+                        errorDestinoEncontrado = true;
+                    }
+                    else if (cliente === "FRUITIST SHANGHAI" && destino !== "ASIA") {
+                        incidencias.push(`Destino ${destino} no permitido para Fruitist Shanghai (debe ser ASIA)`);
+                        errorDestinoEncontrado = true;
+                    } 
+                    else if (cliente === "COSTCO" && !["USA", "CANADA", "EUROPA"].includes(destino)) {
+                        incidencias.push(`Destino ${destino} no permitido para Costco (debe ser USA/CANADA/EUROPA)`);
+                        errorDestinoEncontrado = true;
+                    }
+                    
+                    // 🆕 VALIDACIÓN DINÁMICA (para el resto de clientes)
+                    if (!errorDestinoEncontrado) {
+                        const validacion = validarClienteDestino(cliente, destino);
+                        if (!validacion.valido) {
+                            incidencias.push(validacion.mensaje);
+                        }
+                    }
+                }
 
                 // --- LÓGICA DE CALIBRE Y SUBGRUPO (ACTUALIZADA J, M, E) ---
                 if (esClienteEspecial) {
@@ -862,23 +1030,45 @@ ${listaIncidencias}
                 td.textContent = val ?? "";
 
                 /* ===============================
-                VALIDACIÓN DESTINO
+                VALIDACIÓN DESTINO (COMPLETA)
                 =============================== */
-                if (c === 38 && !destino) {
-                    td.style.background = "red";
-                    td.title = "❌ Destino vacío (obligatorio)"; // 🆕 TOOLTIP
-                }
-                if (c === 38 && destino && cliente === "THE FRUITIST CO" && destino !== "USA") {
-                    td.style.color = "red";
-                    td.title = `❌ The Fruitist Co solo acepta destino USA (actual: ${destino})`;
-                }
-                if (c === 38 && destino && cliente === "FRUITIST SHANGHAI" && destino !== "ASIA") {
-                    td.style.color = "red";
-                    td.title = `❌ Fruitist Shanghai solo acepta destino ASIA (actual: ${destino})`;
-                }
-                if (c === 38 && destino && cliente === "COSTCO" && destino !== "USA" && destino !== "CANADA" && destino !== "EUROPA") {
-                    td.style.color = "red";
-                    td.title = `❌ Costco solo acepta USA - CANADA - EUROPA (actual: ${destino})`; // 🆕 TOOLTIP
+                if (c === 38) {
+                    if (!destino) {
+                        td.style.background = "red";
+                        td.title = "❌ Destino vacío (obligatorio)";
+                    } else if (cliente) {
+                        let errorEncontrado = false;
+                        
+                        // 🔥 VALIDACIONES ESPECIALES (mantienen prioridad)
+                        if (cliente === "THE FRUITIST CO" && !["USA", "CANADA"].includes(destino)) {
+                            td.style.color = "red";
+                            td.style.fontWeight = "bold";
+                            td.title = `❌ The Fruitist Co solo acepta USA o CANADA (actual: ${destino})`;
+                            errorEncontrado = true;
+                        }
+                        else if (cliente === "FRUITIST SHANGHAI" && destino !== "ASIA") {
+                            td.style.color = "red";
+                            td.style.fontWeight = "bold";
+                            td.title = `❌ Fruitist Shanghai solo acepta destino ASIA (actual: ${destino})`;
+                            errorEncontrado = true;
+                        } 
+                        else if (cliente === "COSTCO" && !["USA", "CANADA", "EUROPA"].includes(destino)) {
+                            td.style.color = "red";
+                            td.style.fontWeight = "bold";
+                            td.title = `❌ Costco solo acepta USA - CANADA - EUROPA (actual: ${destino})`;
+                            errorEncontrado = true;
+                        }
+                        
+                        // 🆕 VALIDACIÓN DINÁMICA (para el resto de clientes)
+                        if (!errorEncontrado) {
+                            const validacion = validarClienteDestino(cliente, destino);
+                            if (!validacion.valido) {
+                                td.style.color = "red";
+                                td.style.fontWeight = "bold";
+                                td.title = `❌ ${validacion.mensaje}`;
+                            }
+                        }
+                    }
                 }
 
                 /* ===============================
