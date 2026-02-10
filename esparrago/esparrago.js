@@ -197,35 +197,68 @@
     /* ============================================================
        5. HELPERS Y VALIDACIONES
        ============================================================ */
-    function aplicarValidaciones(td, r, c, val, valInsp) {
-        const nVal = Number(val);
-        
-        // Validación Cosecha vs Inspección
-        if (c === 47) {
-            const fCos = parseExcelDateISO(val);
-            const fIns = parseExcelDateISO(valInsp);
-            if (fCos && fIns && fCos > fIns) td.style.color = "red";
+function aplicarValidaciones(td, r, c, val, valInsp) {
+    const nVal = Number(val);
+    
+    // ============================================================
+    // VALIDACIÓN DE CAMPOS VACÍOS OBLIGATORIOS (FONDO ROJO)
+    // ============================================================
+    const columnasObligatorias = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 27, 28, 29, 30, 31, 32, 33, 38, 47, 48, 51, 56, 57];
+    
+    if (columnasObligatorias.includes(c)) {
+        if (!val || val.trim() === "") {
+            td.style.setProperty("background-color", "#ff0000", "important");
+            td.style.color = "white";
+            td.title = "❌ Este campo es obligatorio y no puede estar vacío";
+            return; // Detener otras validaciones si está vacío
         }
-        
-        // Lote (Col 10)
-// Lote (Col 10 -> índice 9)
-if (c === 9) {
-    if (!val || val.trim() === "") {
-        td.style.setProperty("background-color", "#ff0000", "important");
-        td.style.setProperty("color", "white", "important");
-    } else if (val.length !== 10) {
-        td.style.setProperty("color", "red", "important");
+    }
+    
+    // ============================================================
+    // VALIDACIONES ESPECÍFICAS POR COLUMNA
+    // ============================================================
+    
+    // Validación Cosecha vs Inspección
+    if (c === 47) {
+        const fCos = parseExcelDateISO(val);
+        const fIns = parseExcelDateISO(valInsp);
+        if (fCos && fIns && fCos > fIns) {
+            td.style.color = "red";
+            td.title = "⚠️ La fecha de cosecha es posterior a la fecha de inspección";
+        }
+    }
+    
+    // Lote (Col 10 -> índice 9) - Ya validado vacío arriba, ahora solo longitud
+    if (c === 9) {
+        if (val.length !== 10) {
+            td.style.setProperty("color", "red", "important");
+            td.title = `⚠️ El lote debe tener exactamente 10 caracteres (actual: ${val.length})`;
+        }
+    }
+
+    // Peso (Col 11 -> índice 10)
+    if (c === 10) {
+        if (nVal < 2000 || nVal > 3000) {
+            td.style.color = "red";
+            td.title = "⚠️ El peso debe estar entre 2000 y 3000 gramos";
+        }
+    }
+
+    // Rangos con mensajes específicos
+    const rangos = {
+        45: { max: 42, nombre: "Turiones Exportable" },
+        52: { max: 64, nombre: "Calibre S" },
+        54: { max: 34, nombre: "Calibre M" },
+        71: { max: 10, nombre: "Defectos Generales" },
+        72: { max: 19, nombre: "Defectos Color" },
+        73: { max: 25, nombre: "Defectos Forma" }
+    };
+    
+    if (rangos[c] && nVal > rangos[c].max) {
+        td.style.color = "red";
+        td.title = `⚠️ ${rangos[c].nombre}: el valor no debe superar ${rangos[c].max} (actual: ${nVal})`;
     }
 }
-
-
-        // Peso (Col 11)
-        if (c === 10 && (nVal < 2000 || nVal > 3000)) td.style.color = "red";
-
-        // Rangos
-        const rangos = { 45: 42, 52: 64, 54: 34, 71: 10, 72: 19, 73: 25 };
-        if (rangos[c] && nVal > rangos[c]) td.style.color = "red";
-    }
 
     function sumarColumnas(row, indices) {
         return indices.reduce((acc, curr) => acc + (Number(row[curr]) || 0), 0);
@@ -235,7 +268,10 @@ if (c === 9) {
         const td = document.createElement("td");
         td.textContent = suma;
         td.style.fontWeight = "bold";
-        if (suma !== Number(comparador)) td.style.color = "red";
+        if (suma !== Number(comparador)) {
+            td.style.color = "red";
+            td.title = `⚠️ La suma calculada (${suma}) no coincide con el peso registrado (${comparador})`;
+        }
         return td;
     }
 
@@ -250,85 +286,85 @@ if (c === 9) {
         return isNaN(d.getTime()) ? null : d.toISOString().split("T")[0];
     }
 
-/* ============================================================
-   6. EXPORTAR (FILTRADO POR FECHA SELECCIONADA + CONVERSIÓN A NÚMEROS)
-   ============================================================ */
-exportBtn.onclick = () => {
-    const fechaSeleccionada = inspectionDateSelect.value;
+    /* ============================================================
+       6. EXPORTAR (FILTRADO POR FECHA SELECCIONADA + CONVERSIÓN A NÚMEROS)
+       ============================================================ */
+    exportBtn.onclick = () => {
+        const fechaSeleccionada = inspectionDateSelect.value;
 
-    if (!fechaSeleccionada) {
-        Swal.fire("Error", "Primero debes seleccionar una fecha y revisar los datos", "error");
-        return;
-    }
+        if (!fechaSeleccionada) {
+            Swal.fire("Error", "Primero debes seleccionar una fecha y revisar los datos", "error");
+            return;
+        }
 
-    // 1. Filtrar solo las filas que coinciden con la fecha de inspección seleccionada
-    const filasAExportar = rawRows.filter(r => (r[48] || "").toString().trim() === fechaSeleccionada);
+        // 1. Filtrar solo las filas que coinciden con la fecha de inspección seleccionada
+        const filasAExportar = rawRows.filter(r => (r[48] || "").toString().trim() === fechaSeleccionada);
 
-    if (filasAExportar.length === 0) {
-        Swal.fire("Aviso", "No hay datos para exportar con la fecha seleccionada", "warning");
-        return;
-    }
+        if (filasAExportar.length === 0) {
+            Swal.fire("Aviso", "No hay datos para exportar con la fecha seleccionada", "warning");
+            return;
+        }
 
-    // 2. Definir el mapa de columnas (Basado en tu lista)
-    // null = columna vacía en el Excel de salida
-    const indicesExcel = [
-        0,                 // Col 1
-        null, null, null, null, // Vacíos (2, 3, 4, 5)
-        9, 10, 12,         // Col 10, 11, 13
-        null,              // Vacío (Col en medio)
-        13, 14, 15, 16, 17, 18, // Col 14, 15, 16, 17, 18, 19
-        null,              // Vacío
-        27, 28,            // Col 28, 29
-        null,              // Vacío
-        29,                // Col 30
-        null               // Vacíos hasta llegar a la 33
-    ];
+        // 2. Definir el mapa de columnas (Basado en tu lista)
+        // null = columna vacía en el Excel de salida
+        const indicesExcel = [
+            0,                 // Col 1
+            null, null, null, null, // Vacíos (2, 3, 4, 5)
+            9, 10, 12,         // Col 10, 11, 13
+            null,              // Vacío (Col en medio)
+            13, 14, 15, 16, 17, 18, // Col 14, 15, 16, 17, 18, 19
+            null,              // Vacío
+            27, 28,            // Col 28, 29
+            null,              // Vacío
+            29,                // Col 30
+            null               // Vacíos hasta llegar a la 33
+        ];
 
-    // 3. Agregar correlativo: Desde Col 33 hasta 146 (Índices JS 32 hasta 145)
-    for (let i = 32; i <= 145; i++) {
-        indicesExcel.push(i);
-    }
+        // 3. Agregar correlativo: Desde Col 33 hasta 146 (Índices JS 32 hasta 145)
+        for (let i = 32; i <= 145; i++) {
+            indicesExcel.push(i);
+        }
 
-    // 4. Definir columnas que NO se deben convertir a número
-    const columnasTexto = new Set([9, 18, 47, 48, 57]);
+        // 4. Definir columnas que NO se deben convertir a número
+        const columnasTexto = new Set([9, 18, 47, 48, 57]);
 
-    // 5. Mapear los datos de las filas filtradas CON CONVERSIÓN A NÚMEROS
-    const matrixFinal = filasAExportar.map(fila => {
-        return indicesExcel.map(idx => {
-            if (idx === null) return "";
-            
-            const valorOriginal = fila[idx] || "";
-            
-            // Si la columna está en la lista de texto, mantenerla como texto
-            if (columnasTexto.has(idx)) {
-                return valorOriginal;
-            }
-            
-            // Si no está en la lista de texto, intentar convertir a número
-            const valorString = valorOriginal.toString().trim();
-            
-            // Si está vacío, devolver vacío
-            if (valorString === "") return "";
-            
-            // Intentar convertir a número
-            const valorNumero = Number(valorString);
-            
-            // Si es un número válido, devolverlo como número
-            // Si no es válido, devolver el texto original
-            return isNaN(valorNumero) ? valorOriginal : valorNumero;
+        // 5. Mapear los datos de las filas filtradas CON CONVERSIÓN A NÚMEROS
+        const matrixFinal = filasAExportar.map(fila => {
+            return indicesExcel.map(idx => {
+                if (idx === null) return "";
+                
+                const valorOriginal = fila[idx] || "";
+                
+                // Si la columna está en la lista de texto, mantenerla como texto
+                if (columnasTexto.has(idx)) {
+                    return valorOriginal;
+                }
+                
+                // Si no está en la lista de texto, intentar convertir a número
+                const valorString = valorOriginal.toString().trim();
+                
+                // Si está vacío, devolver vacío
+                if (valorString === "") return "";
+                
+                // Intentar convertir a número
+                const valorNumero = Number(valorString);
+                
+                // Si es un número válido, devolverlo como número
+                // Si no es válido, devolver el texto original
+                return isNaN(valorNumero) ? valorOriginal : valorNumero;
+            });
         });
-    });
 
-    // 6. Preparar los encabezados (Mapear headersOriginal con el mismo orden)
-    const encabezadosMapeados = indicesExcel.map(idx => (idx === null ? "" : (headersOriginal[idx] || "")));
+        // 6. Preparar los encabezados (Mapear headersOriginal con el mismo orden)
+        const encabezadosMapeados = indicesExcel.map(idx => (idx === null ? "" : (headersOriginal[idx] || "")));
 
-    // 7. Generar el archivo
-    const ws = XLSX.utils.aoa_to_sheet([encabezadosMapeados, ...matrixFinal]);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Data_Export");
+        // 7. Generar el archivo
+        const ws = XLSX.utils.aoa_to_sheet([encabezadosMapeados, ...matrixFinal]);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Data_Export");
 
-    XLSX.writeFile(wb, `Reporte_Esparrago_${fechaSeleccionada}.xlsx`);
-};
+        XLSX.writeFile(wb, `Reporte_Esparrago_${fechaSeleccionada}.xlsx`);
+    };
 
     /* ============================================================
        7. LIMPIEZA COMPLETA (ESTILO ARÁNDANOS)
