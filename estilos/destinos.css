@@ -1,0 +1,260 @@
+/* Select LMR deshabilitado pero visible */
+#destinationUpdateDate {
+  width: 63%;
+  min-width: 20ch;
+  padding: 0px 10px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #f5f5f5;
+  color: #555;
+  cursor: not-allowed;
+  pointer-events: auto;
+  appearance: none;
+  text-align: center;
+  text-align-last: center;
+}
+
+.dashboard-wrapper .controls > div {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ============================================================
+   🎯 SELECT2 CONTENEDORES - SIN BUSCADOR
+   ============================================================ */
+
+/* Contenedor principal */
+#destinocontenedor-wrapper {
+    flex: 0 0 auto;
+    width: 284px;
+    position: relative;
+}
+
+/* OCULTAR BUSCADOR SIEMPRE */
+.select2-search--inline,
+.select2-search__field {
+    display: none !important;
+}
+
+/* Estado DESHABILITADO (como select normal) */
+#destinocontenedor-wrapper .select2-container--disabled .select2-selection--multiple {
+    background-color: #f5f5f5 !important;
+    border: 1px solid #ccc !important;
+    cursor: not-allowed !important;
+    min-height: 40px !important;
+    padding: 10px 15px !important;
+
+    align-items: center !important;
+    font-size: 14px !important;
+}
+
+/* Placeholder cuando disabled */
+#destinocontenedor-wrapper .select2-container--disabled .select2-selection__rendered {
+    color: #999 !important;
+}
+
+/* Estado HABILITADO (con scroll y chips) */
+#destinocontenedor-wrapper .select2-container:not(.select2-container--disabled) .select2-selection--multiple {
+    background-color: #ffffff !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 6px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding: 4px 8px !important;
+    display: block !important;
+    transition: all 0.3s ease;
+}
+
+/* Contenedor de chips */
+#destinocontenedor-wrapper .select2-selection__rendered {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    list-style: none !important;
+}
+
+/* Chips seleccionados */
+#destinocontenedor-wrapper .select2-selection__choice {
+    background: #1e6cb1 !important;
+    border: none !important;
+    border-radius: 4px !important;
+    color: #ffffff !important;
+    padding: 7px 1px 5px 13px !important;
+    margin: 2px 0 !important;
+    font-size: 12px !important;
+    display: flex !important;
+    align-items: center !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2) !important;
+}
+
+#destinocontenedor-wrapper .select2-selection__choice:hover {
+    background: #2f7cc0 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 2px 4px rgba(47, 124, 192, 0.3) !important;
+}
+
+/* Botón X eliminar */
+#destinocontenedor-wrapper .select2-selection__choice__remove {
+    color: rgb(255, 255, 255) !important;
+    margin-left: 0px !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    border: none !important;
+    background: none !important;
+    margin-top: 4px !important;
+}
+
+#destinocontenedor-wrapper .select2-selection__choice__remove:hover {
+    color: #ffffff !important;
+}
+
+
+/* ===============================
+   📋 DROPDOWN
+=============================== */
+
+.select2-container--default .select2-dropdown {
+    border: 1px solid #d1d5db !important;
+    border-radius: 6px !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+    margin-top: 4px !important;
+    background-color: #ffffff !important;
+    z-index: 9999 !important;
+}
+
+.select2-container--default .select2-results__options {
+    max-height: 250px !important;
+    overflow-y: auto !important;
+    padding: 4px 0 !important;
+}
+
+
+.select2-container--default .select2-results__option {
+    padding: 9px 16px !important;
+    font-size: 12px !important;
+    color: #000000 !important;
+    cursor: pointer !important;
+    transition: background-color 0.15s ease !important;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: #f3f4f6 !important;
+    color: #0E1B40 !important;
+}
+
+.select2-container--default .select2-results__option[aria-selected=true] {
+    background-color: #1e6cb1 !important;
+    color: #ffffff !important;
+    font-weight: 500 !important;
+}
+
+.select2-container--default .select2-results__option[aria-selected=true]::before {
+    content: "Contenedor: " !important;
+    margin-right: 8px !important;
+    color: #ffffff !important;
+    font-weight: bold !important;
+}
+
+/* PLACEHOLDER VISIBLE siempre cuando está disabled */
+#destinocontenedor-wrapper .select2-container--disabled .select2-selection__rendered::before {
+    content: "Selecciona contenedor(es)" !important;
+    color: #999 !important;
+    display: block !important;
+    position: absolute !important;
+    font-size: 14px !important;
+}
+
+/* PLACEHOLDER VISIBLE cuando está enabled pero vacío */
+#destinocontenedor-wrapper .select2-container:not(.select2-container--disabled) .select2-selection__rendered:empty::before {
+    content: "Selecciona contenedor(es)" !important;
+    color: #999 !important;
+    display: block !important;
+    padding: 7px !important;
+    font-size: 14px !important;
+}
+
+/* Ocultar placeholder solo cuando hay chips seleccionados */
+#destinocontenedor-wrapper .select2-selection__rendered .select2-selection__choice ~ ::before {
+    display: none !important;
+}
+
+/* 🔹 Wrapper más ancho */
+#destinocontenedor-wrapper{
+  width: 100%;
+  max-width: 355px;   /* ← cámbialo al ancho que quieras */
+}
+
+/* 🔹 Select2 ocupa todo el wrapper */
+#destinocontenedor-wrapper .select2-container{
+  width: 100% !important;
+}
+
+/* 🔹 Caja del select */
+#destinocontenedor-wrapper .select2-selection--multiple{
+  min-height: 42px !important;
+  padding: 6px !important;
+}
+
+/* 🔹 separación del label */
+#destinocontenedor-wrapper .icon-label{
+  display: block;
+  margin-bottom: 2px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+    cursor: default;
+    padding-left: 2px !important;
+    padding-right: 5px !important;
+    padding-bottom: 2px !important;
+}
+
+#destinationResultsTable th {
+    position: sticky;
+    top: 0;
+    background: #f0f4f8;
+    font-weight: 600;
+    color: #1c1c1c;
+    padding: 0px 12px;
+    border: 1px solid var(--border);
+    text-align: left;
+    font-size: 12px;
+}
+
+/* CONTADOR TOTAL */
+#destinationTotalFilas {
+  margin-top: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #333;
+}
+
+
+/* columnas fijas solo para arándano */
+.destino-col {
+  position: sticky;
+  background: #fff;
+}
+
+.destino-col-0 { left: 0; min-width: 90px; z-index: 4; }
+.destino-col-6 { left: 90px; min-width: 244px; z-index: 3; }
+.destino-col-8 { left: 333px; min-width: 100px; z-index: 3; }
+.destino-col-9 { left: 433px; min-width: 90px; z-index: 3; }
+
+
+#destinationResultsTable {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}   
+
+/* columnas fijas */
+.dashboard-wrapper #runReviewDestino:disabled,
+.dashboard-wrapper #exportDestino:disabled {
+  background: #b8c2cc;
+  cursor: not-allowed;
+  opacity: 0.7; /* opcional, recomendado */
+}

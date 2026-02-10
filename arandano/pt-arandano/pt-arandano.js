@@ -479,131 +479,131 @@ fileInput.addEventListener("change", async e => {
    CLIENTE-DESTINO VALIDATION
 =============================== */
 
- // 🆕 FUNCIÓN PARA NORMALIZAR DESTINOS
-  function normalizarDestino(destino) {
-    if (!destino) return "";
-    const destinoUpper = destino.toString().toUpperCase().trim();
-    return DESTINO_EQUIVALENCIAS[destinoUpper] || destinoUpper;
-  }
-
-  // 🆕 FUNCIÓN PARA VALIDAR CLIENTE-DESTINO
-  function validarClienteDestino(cliente, destino) {
-    if (!cliente || !destino) return { valido: false, mensaje: "" };
-
-    const clienteUpper = cliente.toString().toUpperCase().trim();
-    const destinoNormalizado = normalizarDestino(destino);
-
-    // Buscar todas las combinaciones válidas para este cliente
-    const destinosPermitidos = PAIS_DESTINO
-      .filter(pd => pd.cliente.toUpperCase().trim() === clienteUpper)
-      .map(pd => normalizarDestino(pd.destino));
-
-    if (destinosPermitidos.length === 0) {
-      // Cliente no tiene restricciones
-      return { valido: true, mensaje: "" };
+    // 🆕 FUNCIÓN PARA NORMALIZAR DESTINOS
+    function normalizarDestino(destino) {
+        if (!destino) return "";
+        const destinoUpper = destino.toString().toUpperCase().trim();
+        return DESTINO_EQUIVALENCIAS[destinoUpper] || destinoUpper;
     }
 
-    const esValido = destinosPermitidos.includes(destinoNormalizado);
+    // 🆕 FUNCIÓN PARA VALIDAR CLIENTE-DESTINO
+    function validarClienteDestino(cliente, destino) {
+        if (!cliente || !destino) return { valido: false, mensaje: "" };
 
-    return {
-      valido: esValido,
-      mensaje: esValido 
-        ? "" 
-        : `${cliente} solo acepta: ${destinosPermitidos.join(", ")} (actual: ${destino})`
-    };
-  }
+        const clienteUpper = cliente.toString().toUpperCase().trim();
+        const destinoNormalizado = normalizarDestino(destino);
+
+        // Buscar todas las combinaciones válidas para este cliente
+        const destinosPermitidos = PAIS_DESTINO
+        .filter(pd => pd.cliente.toUpperCase().trim() === clienteUpper)
+        .map(pd => normalizarDestino(pd.destino));
+
+        if (destinosPermitidos.length === 0) {
+        // Cliente no tiene restricciones
+        return { valido: true, mensaje: "" };
+        }
+
+        const esValido = destinosPermitidos.includes(destinoNormalizado);
+
+        return {
+        valido: esValido,
+        mensaje: esValido 
+            ? "" 
+            : `${cliente} solo acepta: ${destinosPermitidos.join(", ")} (actual: ${destino})`
+        };
+    }
 
 /* ===============================
    ACTUALIZAR FECHAS POR CARTILLA
 =============================== */
-function actualizarFechasPorCartilla(cartillaSeleccionada) {
-    if (!cartillaSeleccionada) return;
+    function actualizarFechasPorCartilla(cartillaSeleccionada) {
+        if (!cartillaSeleccionada) return;
 
-    const filasFiltradas = dataRows.filter(r => r.__cartilla === cartillaSeleccionada);
+        const filasFiltradas = dataRows.filter(r => r.__cartilla === cartillaSeleccionada);
 
-    const fechas = Array.from(
-        new Set(filasFiltradas.map(r => getFechaExcel(r[41])).filter(Boolean))
-    );
+        const fechas = Array.from(
+            new Set(filasFiltradas.map(r => getFechaExcel(r[41])).filter(Boolean))
+        );
 
-    inspectionDateSelect.innerHTML =
-        `<option disabled selected>Seleccione fecha</option>` +
-        fechas.map(f => `<option>${f}</option>`).join("");
-    inspectionDateSelect.disabled = false;
+        inspectionDateSelect.innerHTML =
+            `<option disabled selected>Seleccione fecha</option>` +
+            fechas.map(f => `<option>${f}</option>`).join("");
+        inspectionDateSelect.disabled = false;
 
-    // Limpiar LMR
-    updateDateSelect.innerHTML = `<option value="" selected>Se actualizará automáticamente</option>`;
-    updateDateSelect.disabled = true;
+        // Limpiar LMR
+        updateDateSelect.innerHTML = `<option value="" selected>Se actualizará automáticamente</option>`;
+        updateDateSelect.disabled = true;
 
-    runBtn.disabled = true; // 🆕 Asegurar que esté deshabilitado
-}
+        runBtn.disabled = true; // 🆕 Asegurar que esté deshabilitado
+    }
 
 /* ===============================
    CUANDO CAMBIA CARTILLA
 =============================== */
-inspectionTypeSelect.addEventListener("change", e => {
-    // 🆕 LIMPIAR TODO AL CAMBIAR DE CARTILLA
-    
-    // Limpiar tabla
-    headerRow.innerHTML = "";
-    bodyRows.innerHTML = "";
-    
-    // Ocultar buscador
-    document.getElementById("containerBuscador").style.display = "none";
-    const buscador = document.getElementById("inputBusquedaTable");
-    if (buscador) buscador.value = "";
-    
-    // Resetear select de fecha de inspección
-    inspectionDateSelect.innerHTML = `<option disabled selected>Seleccione fecha</option>`;
-    inspectionDateSelect.disabled = true;
-    inspectionDateSelect.value = ""; // 🆕 Limpiar valor
-    
-    // Resetear select de LMR
-    updateDateSelect.innerHTML = `<option value="" selected>Se actualizará automáticamente</option>`;
-    updateDateSelect.disabled = true;
-    
-    // Deshabilitar botones
-    runBtn.disabled = true;
-    exportBtn.disabled = true;
-    
-    // Ahora sí, actualizar las fechas de la nueva cartilla
-    actualizarFechasPorCartilla(e.target.value);
-});
+    inspectionTypeSelect.addEventListener("change", e => {
+        // 🆕 LIMPIAR TODO AL CAMBIAR DE CARTILLA
+        
+        // Limpiar tabla
+        headerRow.innerHTML = "";
+        bodyRows.innerHTML = "";
+        
+        // Ocultar buscador
+        document.getElementById("containerBuscador").style.display = "none";
+        const buscador = document.getElementById("inputBusquedaTable");
+        if (buscador) buscador.value = "";
+        
+        // Resetear select de fecha de inspección
+        inspectionDateSelect.innerHTML = `<option disabled selected>Seleccione fecha</option>`;
+        inspectionDateSelect.disabled = true;
+        inspectionDateSelect.value = ""; // 🆕 Limpiar valor
+        
+        // Resetear select de LMR
+        updateDateSelect.innerHTML = `<option value="" selected>Se actualizará automáticamente</option>`;
+        updateDateSelect.disabled = true;
+        
+        // Deshabilitar botones
+        runBtn.disabled = true;
+        exportBtn.disabled = true;
+        
+        // Ahora sí, actualizar las fechas de la nueva cartilla
+        actualizarFechasPorCartilla(e.target.value);
+    });
 
   /* ===============================
      FECHA INSPECCIÓN → LMR
   =============================== */
-  inspectionDateSelect.addEventListener("change",()=>{
-    const f = inspectionDateSelect.value;
+    inspectionDateSelect.addEventListener("change",()=>{
+        const f = inspectionDateSelect.value;
 
-    const lmr = [...new Set(
-      dataRows.filter(r=>getFechaExcel(r[41])===f).map(r=>getFechaExcel(r[48]))
-    )].filter(Boolean);
+        const lmr = [...new Set(
+        dataRows.filter(r=>getFechaExcel(r[41])===f).map(r=>getFechaExcel(r[48]))
+        )].filter(Boolean);
 
-    updateDateSelect.innerHTML = lmr.map(d=>`<option>${d}</option>`).join("");
-    updateDateSelect.disabled = false;
+        updateDateSelect.innerHTML = lmr.map(d=>`<option>${d}</option>`).join("");
+        updateDateSelect.disabled = false;
 
-    if(lmr.length > 1) {
-    Swal.fire({
-        icon: 'warning',
-        title: '⚠️ Atención',
-        text: `Se detectaron ${lmr.length} fechas LMR distintas para la inspección seleccionada.`,
-        confirmButtonText: 'OK'
+        if(lmr.length > 1) {
+        Swal.fire({
+            icon: 'warning',
+            title: '⚠️ Atención',
+            text: `Se detectaron ${lmr.length} fechas LMR distintas para la inspección seleccionada.`,
+            confirmButtonText: 'OK'
+        });
+    }
+
+        runBtn.disabled = false;
     });
-}
 
-    runBtn.disabled = false;
-  });
-
-  function getJulianoFromDate(fecha) {
-    if (!fecha) return null;
-    const [dd, mm, yyyy] = fecha.split("/").map(Number);
-    const fechaObj = new Date(yyyy, mm-1, dd);
-    const start = new Date(yyyy, 0, 0);
-    const diff = fechaObj - start;
-    const oneDay = 1000 * 60 * 60 * 24;
-    const dayOfYear = Math.floor(diff / oneDay);
-    return String(dayOfYear).padStart(3, "0"); // devuelve 3 dígitos, ej: 335
-}
+    function getJulianoFromDate(fecha) {
+        if (!fecha) return null;
+        const [dd, mm, yyyy] = fecha.split("/").map(Number);
+        const fechaObj = new Date(yyyy, mm-1, dd);
+        const start = new Date(yyyy, 0, 0);
+        const diff = fechaObj - start;
+        const oneDay = 1000 * 60 * 60 * 24;
+        const dayOfYear = Math.floor(diff / oneDay);
+        return String(dayOfYear).padStart(3, "0"); // devuelve 3 dígitos, ej: 335
+    }
 
     /* ===============================
         BUSCADOR EN TIEMPO REAL (CORREGIDO)
@@ -611,21 +611,31 @@ inspectionTypeSelect.addEventListener("change", e => {
     const inputBusqueda = document.getElementById("inputBusquedaTable");
     const containerBusqueda = document.getElementById("containerBuscador");
 
-    // Solo ejecutamos si ambos existen en el HTML
     if (inputBusqueda && containerBusqueda) {
         inputBusqueda.addEventListener("input", () => {
-            const searchTerm = inputBusqueda.value.toLowerCase().trim();
+            const searchTerm = inputBusqueda.value.trim();
+            
+            if (!searchTerm) {
+                // Si el buscador está vacío, mostrar todas las filas
+                bodyRows.querySelectorAll("tr").forEach(tr => tr.style.display = "");
+                return;
+            }
+
             const rows = bodyRows.querySelectorAll("tr");
 
             rows.forEach(tr => {
-                const idText = tr.cells[1]?.textContent.toLowerCase() || "";
-                const loteText = tr.cells[6]?.textContent.toLowerCase() || "";
+                // 🎯 ÍNDICES CORRECTOS SEGÚN TU TABLA:
+                // Columna "Id" = cells[1] (segunda columna visible)
+                // Columna "Lote" = cells[4] (quinta columna visible)
+                const idText = tr.cells[1]?.textContent.trim() || "";
+                const loteText = tr.cells[4]?.textContent.trim() || "";
 
-                if (idText.includes(searchTerm) || loteText.includes(searchTerm)) {
-                    tr.style.display = ""; 
-                } else {
-                    tr.style.display = "none"; 
-                }
+                // 🔍 BÚSQUEDA APROXIMADA (case-insensitive)
+                const coincideID = idText.toUpperCase().includes(searchTerm.toUpperCase());
+                const coincideLote = loteText.includes(searchTerm);
+
+                // Mostrar si coincide en ID o LOTE
+                tr.style.display = (coincideID || coincideLote) ? "" : "none";
             });
         });
     } else {
@@ -832,7 +842,7 @@ inspectionTypeSelect.addEventListener("change", e => {
                 // --- LÓGICA DE CALIBRE Y SUBGRUPO (ACTUALIZADA J, M, E) ---
                 if (esClienteEspecial) {
                     // ✅ VALIDACIÓN INDIVIDUAL (obligatorios)
-                    //if (!calibreAR) incidencias.push("Calibre AR vacío (obligatorio)");   //---13 enero comienza la validacion ocmo tal en calibre para clientes especiales
+                    if (!calibreAR) incidencias.push("Calibre AR vacío (obligatorio)");   //---13 enero comienza la validacion ocmo tal en calibre para clientes especiales
                     if (!subGrupo) incidencias.push("Subgrupo vacío (obligatorio)");
                     
                     // ✅ VALIDACIÓN DE COINCIDENCIA (solo si ambos existen)
@@ -865,8 +875,21 @@ inspectionTypeSelect.addEventListener("change", e => {
                             incidencias.push(`Calibre AR "${calibreAR}" no reconocido`);
                         }
                     }
-                } else if (cliente) {
-                    if (!calibreAR) incidencias.push("Falta Calibre AR");
+                }  else if (cliente) {
+                    // VALIDAR QUE CALIBRE EXISTA
+                    if (!calibreAR) {
+                        incidencias.push("Falta Calibre AR");
+                    } else {
+                        // 🆕 VALIDAR QUE NO SEA UNA PALABRA PROHIBIDA
+                        const calibreTraducido = CALIBRES_MAP[calibreAR] || calibreAR;
+                        const palabrasProhibidas = ["JUMBO", "MIXED", "REGULAR", "SUPER JUMBO", "MEDIUM", "EXTRA JUMBO", "MIXTO", "NO COMBINADO", "SIN CALIBRAR"];
+                        
+                        if (palabrasProhibidas.includes(calibreTraducido)) {
+                            incidencias.push(`Calibre "${calibreAR}" no permitido para cliente regular (debe ser letra: A, B, K, etc.)`);
+                        }
+                    }
+                    
+                    // VALIDAR SUBGRUPO
                     if (subGrupo && subGrupo.toUpperCase() !== "N/A" && subGrupo.trim() !== "") {
                         incidencias.push("Cliente regular no debe tener Subgrupo");
                     }
@@ -883,7 +906,27 @@ inspectionTypeSelect.addEventListener("change", e => {
                 } else {
                     const traz = extraerTrazabilidad(trazCode);
                     const julianoFecha = getJulianoFromDate(inspectionDateSelect.value);
-                    if (traz && traz.juliano !== julianoFecha) incidencias.push(`Día juliano (${traz.juliano}) no coincide con fecha`);
+                    
+                    // 🆕 Validación especial para clientes que comienzan con DRISCOLL
+                    const esDriscoll = cliente && cliente.toString().toUpperCase().startsWith("DRISCOLL");
+                    
+                    if (traz && julianoFecha) {
+                        const julianoActual = parseInt(julianoFecha, 10);
+                        const julianoTraz = parseInt(traz.juliano, 10);
+                        
+                        if (esDriscoll) {
+                            // Permitir día actual o día siguiente
+                            if (julianoTraz !== julianoActual && julianoTraz !== julianoActual + 1) {
+                                incidencias.push(`Día juliano (${traz.juliano}) debe ser ${julianoFecha} o ${String(julianoActual + 1).padStart(3, '0')} para Driscoll's`);
+                            }
+                        } else {
+                            // Clientes regulares: debe coincidir exactamente
+                            if (julianoTraz !== julianoActual) {
+                                incidencias.push(`Día juliano (${traz.juliano}) no coincide con fecha (${julianoFecha})`);
+                            }
+                        }
+                    }
+                    
                     if (trazCode.length > 13) incidencias.push("Trazabilidad excede 13 caracteres");
                     if (traz && !VAR_MAP[traz.variedad]) incidencias.push(`Código variedad (${traz.variedad}) no existe`);
                     
@@ -957,23 +1000,29 @@ ${listaIncidencias}
 
                     if (esClienteEspecial) {
                         if (calibreAR) {
-                            // 1. OBTENEMOS LA CATEGORÍA REAL (Traducción)
-                            // Si calibreAR es "J" -> categoriaReal es "JUMBO"
-                            // Si calibreAR es "M" -> categoriaReal es "MEDIUM" (y luego MIXED)
+                            // 1. TRADUCIR LETRA A CATEGORÍA
                             let categoriaReal = CALIBRES_MAP[calibreAR] || calibreAR;
                             if (categoriaReal === "MEDIUM") categoriaReal = "MIXED";
 
-                            // 2. VALIDAMOS SI ES CATEGORÍA (JUMBO, MIXED, REGULAR...)
+                            // 2. SI ES CATEGORÍA (PALABRA) → MOSTRAR MM DEL SUBGRUPO
                             if (CATEGORIAS_FRUTIST[categoriaReal]) {
-                                calibreDescVal = categoriaReal; 
-                                // Ahora validamos con la categoría ya traducida
-                                if (!CATEGORIAS_FRUTIST[categoriaReal].includes(subGrupo)) {
+                                // ✅ ES UNA PALABRA (JUMBO, MIXED, REGULAR, SUPER JUMBO)
+                                // Mostramos los mm del subgrupo en lugar de la palabra
+                                if (subGrupo && CALIBRES_SUBGRUPO[subGrupo]) {
+                                    calibreDescVal = CALIBRES_SUBGRUPO[subGrupo]; // Ej: "+18mm"
+                                } else {
+                                    calibreDescVal = categoriaReal; // Si no hay subgrupo, mostrar categoría
+                                    colorRojo = true;
+                                }
+                                
+                                // Validar coincidencia de categoría
+                                if (subGrupo && !CATEGORIAS_FRUTIST[categoriaReal].includes(subGrupo)) {
                                     colorRojo = true;
                                 }
                             } 
-                            // 3. VALIDAMOS SI ES POR MILÍMETROS (K, A, B...)
+                            // 3. SI ES POR MILÍMETROS (K, A, B...) → SIGUE IGUAL
                             else if (CALIBRES_MAP[calibreAR]) {
-                                calibreDescVal = CALIBRES_MAP[calibreAR]; 
+                                calibreDescVal = CALIBRES_MAP[calibreAR]; // Ej: "+18mm"
                                 const mmLetra = parseInt(calibreDescVal.replace(/\D/g, ''), 10);
                                 const mmSub = CALIBRES_SUBGRUPO[subGrupo] ? parseInt(CALIBRES_SUBGRUPO[subGrupo].replace(/\D/g, ''), 10) : null;
                                 if (mmSub && mmLetra !== mmSub) colorRojo = true;
@@ -991,12 +1040,19 @@ ${listaIncidencias}
                             colorRojo = true;
                         }
                     } else {
-                        // OTROS CLIENTES: Sigue igual
+                        // CLIENTES REGULARES
                         calibreDescVal = CALIBRES_MAP[calibreAR] || "";
                         if (!calibreAR) colorRojo = true;
+                        
+                        // 🆕 VALIDAR QUE NO TENGA PALABRAS (JUMBO, MIXED, etc.)
+                        const palabrasProhibidas = ["JUMBO", "MIXED", "REGULAR", "SUPER JUMBO", "MEDIUM", "EXTRA JUMBO", "MIXTO"];
+                        if (calibreDescVal && palabrasProhibidas.includes(calibreDescVal)) {
+                            colorRojo = true;
+                            calibreDescVal = "ERROR: " + calibreDescVal;
+                        }
                     }
 
-                    // --- RENDERIZADO (Se mantiene igual) ---
+                    // --- RENDERIZADO ---
                     if (colorRojo) {
                         td.innerHTML = "";
                         const texto = String(calibreDescVal || "ERROR");
@@ -1007,7 +1063,7 @@ ${listaIncidencias}
                             span.style.fontWeight = "bold";
                             td.appendChild(span);
                         }
-                        td.title = "❌ Calibre no coincide con Subgrupo o es inválido"; // 🆕 TOOLTIP
+                        td.title = "❌ Calibre no coincide con Subgrupo o es inválido";
                     } else {
                         td.textContent = calibreDescVal;
                     }
@@ -1088,17 +1144,32 @@ ${listaIncidencias}
                 }
 
                 } else {
+                    // VALIDAR CALIBRE AR VACÍO
                     if (!calibreAR && c === 33) {
                         td.style.background = "red";
-                        td.title = "❌ Calibre AR vacío (obligatorio)"; // 🆕 TOOLTIP
+                        td.title = "❌ Calibre AR vacío (obligatorio)";
                     }
+                    
+                    // 🆕 VALIDAR QUE CALIBRE NO SEA PALABRA PROHIBIDA
+                    if (calibreAR && c === 33) {
+                        const calibreTraducido = CALIBRES_MAP[calibreAR] || calibreAR;
+                        const palabrasProhibidas = ["JUMBO", "MIXED", "REGULAR", "SUPER JUMBO", "MEDIUM", "EXTRA JUMBO", "MIXTO", "NO COMBINADO", "SIN CALIBRAR"];
+                        
+                        if (palabrasProhibidas.includes(calibreTraducido)) {
+                            td.style.color = "red";
+                            td.style.fontWeight = "bold";
+                            td.title = `❌ Calibre "${calibreAR}" no permitido para cliente regular (debe ser letra: A, B, K, etc.)`;
+                        }
+                    }
+                    
+                    // VALIDAR SUBGRUPO
                     if (subGrupo && subGrupo.toUpperCase() !== "N/A" && subGrupo.trim() !== "" && c === 56) {
                         td.style.background = "red";
-                        td.title = "❌ Cliente regular NO debe tener Subgrupo"; // 🆕 TOOLTIP
+                        td.title = "❌ Cliente regular NO debe tener Subgrupo";
                     }
                 }
 
-                /* ===============================
+/* ===============================
                 VALIDACIÓN TRAZABILIDAD
                 =============================== */
                 if (c === 58) {
@@ -1107,12 +1178,30 @@ ${listaIncidencias}
 
                     if (!val) {
                         td.style.background = "red";
-                        td.title = "❌ Trazabilidad vacía (obligatorio)"; // 🆕 TOOLTIP
+                        td.title = "❌ Trazabilidad vacía (obligatorio)";
                     } else {
-                        if (trazCheck && trazCheck.juliano !== julianoFecha) {
-                            td.style.color = "red";
-                            td.title = `❌ Día juliano (${trazCheck.juliano}) no coincide con fecha de inspección (${julianoFecha})`; // 🆕 TOOLTIP
+                        // 🆕 Validación especial para clientes que comienzan con DRISCOLL
+                        const esDriscoll = cliente && cliente.toString().toUpperCase().startsWith("DRISCOLL");
+                        
+                        if (trazCheck && julianoFecha) {
+                            const julianoActual = parseInt(julianoFecha, 10);
+                            const julianoTraz = parseInt(trazCheck.juliano, 10);
+                            
+                            if (esDriscoll) {
+                                // Permitir día actual o día siguiente
+                                if (julianoTraz !== julianoActual && julianoTraz !== julianoActual + 1) {
+                                    td.style.color = "red";
+                                    td.title = `❌ Juliano debe ser ${julianoFecha} o ${String(julianoActual + 1).padStart(3, '0')} para Driscoll's (actual: ${trazCheck.juliano})`;
+                                }
+                            } else {
+                                // Clientes regulares: debe coincidir exactamente
+                                if (julianoTraz !== julianoActual) {
+                                    td.style.color = "red";
+                                    td.title = `❌ Día juliano (${trazCheck.juliano}) no coincide con fecha de inspección (${julianoFecha})`;
+                                }
+                            }
                         }
+                        
                         const variedadCodigo = trazCheck?.variedad;
                         const variedadEsperada = VAR_MAP[variedadCodigo]?.[0];
                         if (variedadEsperada) {
@@ -1134,7 +1223,7 @@ ${listaIncidencias}
                                 }
                                 td.innerHTML = tdHTML;
                                 if (tieneError) {
-                                    td.title = `❌ Posición 5 debe ser '${letraEsperada}' para ${variedadEsperada} (actual: '${val[4]}')`; // 🆕 TOOLTIP
+                                    td.title = `❌ Posición 5 debe ser '${letraEsperada}' para ${variedadEsperada} (actual: '${val[4]}')`;
                                 }
                             }
                         }

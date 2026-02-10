@@ -98,9 +98,12 @@ document.addEventListener("DOMContentLoaded", () => {
             html: "calidad/calidad.html",
             js: "calidad/calidad.js",
             title: "Calidad"
+        },
+        destinos: {
+            html: "destinos/destinos.html",
+            js: "destinos/destinos.js",
+            title: "Destinos AGV"
         }
-
-
 
     };
 

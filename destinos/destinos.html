@@ -1,0 +1,89 @@
+<div class="dashboard-wrapper">
+
+  <h2>Revisión de Excel – Destinos AGV</h2>
+
+  <div class="controls">
+
+            <!-- EXCEL DESTINOS -->
+            <div class="file-box" id="boxDestino">
+            <label class="icon-label">
+                <i class="fi fi-rr-folder"></i> Excel Destinos (Clientes / País destino)
+            </label><br />
+            <input type="file" id="fileDestino" accept=".xlsx,.xls" multiple>
+            </div>
+
+            <!-- DESTINOS -->
+            <div class="select-wrapper">
+            <label class="icon-label">
+                <i class="fi fi-rr-world"></i> Destinos
+            </label><br />
+
+            <select id="destinationType" disabled>
+                <option value="" selected disabled>Selecciona destino</option>
+            </select>
+            </div>
+
+            <!-- FECHA inspección -->
+            <div class="select-wrapper">
+            <label class="icon-label">
+                <i class="fi fi-rr-calendar"></i> Fecha de inspección
+            </label><br />
+            <select id="destinationDate" class="styled-select" disabled>
+                <option value="" disabled selected>Selecciona fecha</option>
+            </select>
+            </div>
+
+            <!-- Select de contenedores actualizado -->
+            <div class="select-wrapper" id="destinocontenedor-wrapper">
+            <label class="icon-label">
+                <i class="fi fi-rr-box"></i> Contenedores
+            </label><br />
+            <select id="destinocontenedor" class="styled-select" multiple disabled>
+
+            </select>
+            </div>
+
+  </div>
+
+    <div class="controls controls1">
+
+        <!-- FECHA Arribo -->
+        <div class="select-wrapper">
+        <label class="icon-label">
+            <i class="fi fi-rr-calendar"></i> Fecha de Arribo WH
+        </label><br />
+        <div id="containerArribo" class="input-container"></div>
+            <select id="destinationUpdateDate" class="styled-select disabled-select" disabled>
+                <option value="" selected>Auto-Fecha</option>
+            </select>
+        </div>
+
+        <div><button id="runReviewDestino" disabled>▶ Revisar Excel</button></div>
+        <button id="exportDestino" style="padding: 10px 14px;" disabled>Excel filtrado</button>
+        <div><button id="clearDestino" style="padding:10px 14px;">Limpiar</button></div>
+
+    </div>
+
+  <div class="info-box">
+    ⚠️ Atención:
+    <ul>
+      <li>Los campos se marcarán en <b>rojo</b> si faltan destinos o clientes.</li>
+      <li>Los destinos se detectan automáticamente desde el Excel.</li>
+      <li>Selecciona un destino con data para revisar.</li>
+    </ul>
+  </div>
+
+  <div class="table-wrap">
+    <table id="destinationResultsTable">
+      <thead>
+        <tr id="destinationResultsHeader"></tr>
+      </thead>
+      <tbody id="destinationResultsBody"></tbody>
+    </table>
+
+    <div id="destinationTotalFilas"
+      style="margin-top:10px;font-weight:600;color:#0E1B40;">
+    </div>
+  </div>
+
+</div>

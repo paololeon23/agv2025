@@ -62,10 +62,10 @@ const DB_PESOS = {
             "12X250": { min: 250, max: 255, tipo: "ATADO", presentacion: "no validar" }
         },
 
-        "NATURE'S PRIDE B.V.": {
+        "NATURE’S PRIDE B.V.": {
             "10X250": { min: 250, max: 255, tipo: "ATADO", presentacion: "Box 2.50 Kg" },
             "20X250": { min: 250, max: 255, tipo: "ATADO", presentacion: "Box 5.00 Kg" },
-            "20X200": { min: 200, max: 204, tipo: "ATADO", presentacion: "Box 4.00 Kg" },
+            "20X200": { min: 200, max: 204, tipo: "ATADO", presentacion: "Box 4.0 Kg" },
             "11X450": { min: 450, max: 459, tipo: "ATADO", presentacion: "Box 5.00 Kg" }
         },
 
