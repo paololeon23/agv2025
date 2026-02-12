@@ -840,42 +840,30 @@ fileInput.addEventListener("change", async e => {
                 }
 
                 // --- LÓGICA DE CALIBRE Y SUBGRUPO (ACTUALIZADA J, M, E) ---
-                if (esClienteEspecial) {
-                    // ✅ VALIDACIÓN INDIVIDUAL (obligatorios)
-                    if (!calibreAR) incidencias.push("Calibre AR vacío (obligatorio)");   //---13 enero comienza la validacion ocmo tal en calibre para clientes especiales
-                    if (!subGrupo) incidencias.push("Subgrupo vacío (obligatorio)");
-                    
-                    // ✅ VALIDACIÓN DE COINCIDENCIA (solo si ambos existen)
-                    if (calibreAR && subGrupo) {
-                        
-                        // Traducimos la letra a nombre completo (J -> JUMBO, M -> MEDIUM, E -> SUPER JUMBO)
-                        let categoriaReal = CALIBRES_MAP[calibreAR] || calibreAR;
-                        
-                        // Ajuste para MEDIUM que es MIXED en categorías
-                        if (categoriaReal === "MEDIUM") categoriaReal = "MIXED";
+                    if (esClienteEspecial) {
 
-                        // Validamos si es una Categoría (Palabras: JUMBO, MIXED, REGULAR, SUPER JUMBO)
-                        if (CATEGORIAS_FRUTIST[categoriaReal]) {
-                            if (!CATEGORIAS_FRUTIST[categoriaReal].includes(subGrupo)) {
+                        const categoriasPermitidas = ["JUMBO", "MIXED", "REGULAR", "SUPER JUMBO"];
+
+                        // ✅ OBLIGATORIOS
+                        if (!calibreAR) incidencias.push("Calibre AR vacío (obligatorio)");
+                        if (!subGrupo) incidencias.push("Subgrupo vacío (obligatorio)");
+
+                        if (calibreAR && subGrupo) {
+
+                            const categoriaReal = calibreAR.toString().toUpperCase().trim();
+
+                            // 🔴 SOLO PALABRAS (NO LETRAS, NO mm, NO MAP)
+                            if (!categoriasPermitidas.includes(categoriaReal)) {
+                                incidencias.push(`Calibre "${calibreAR}" inválido (solo: JUMBO / MIXED / REGULAR / SUPER JUMBO)`);
+                            }
+                            // ✅ validar subgrupo contra categoría
+                            else if (!CATEGORIAS_FRUTIST[categoriaReal]?.includes(subGrupo)) {
                                 incidencias.push(`Subgrupo ${subGrupo} no pertenece a ${categoriaReal}`);
                             }
-                        } 
-                        // Validamos si es por Milímetros (Letras como K, B, A, C, D)
-                        else if (CALIBRES_MAP[calibreAR]) {
-                            const descAR = CALIBRES_MAP[calibreAR]; // Ej: "+15mm"
-                            const mmLetra = parseInt(descAR.replace(/\D/g, ''), 10); // 15
-                            const mmSub = CALIBRES_SUBGRUPO[subGrupo] ? parseInt(CALIBRES_SUBGRUPO[subGrupo].replace(/\D/g, ''), 10) : null;
-                            
-                            if (!mmSub) {
-                                incidencias.push(`Subgrupo ${subGrupo} no válido`);
-                            } else if (mmLetra !== mmSub) {
-                                incidencias.push(`Calibre ${descAR} no coincide con Subgrupo ${subGrupo} (${CALIBRES_SUBGRUPO[subGrupo]})`);
-                            }
-                        } else {
-                            incidencias.push(`Calibre AR "${calibreAR}" no reconocido`);
                         }
-                    }
-                }  else if (cliente) {
+
+                    } else if (cliente) {
+
                     // VALIDAR QUE CALIBRE EXISTA
                     if (!calibreAR) {
                         incidencias.push("Falta Calibre AR");
@@ -999,47 +987,33 @@ ${listaIncidencias}
                     let colorRojo = false;
 
                     if (esClienteEspecial) {
-                        if (calibreAR) {
-                            // 1. TRADUCIR LETRA A CATEGORÍA
-                            let categoriaReal = CALIBRES_MAP[calibreAR] || calibreAR;
-                            if (categoriaReal === "MEDIUM") categoriaReal = "MIXED";
 
-                            // 2. SI ES CATEGORÍA (PALABRA) → MOSTRAR MM DEL SUBGRUPO
-                            if (CATEGORIAS_FRUTIST[categoriaReal]) {
-                                // ✅ ES UNA PALABRA (JUMBO, MIXED, REGULAR, SUPER JUMBO)
-                                // Mostramos los mm del subgrupo en lugar de la palabra
-                                if (subGrupo && CALIBRES_SUBGRUPO[subGrupo]) {
-                                    calibreDescVal = CALIBRES_SUBGRUPO[subGrupo]; // Ej: "+18mm"
-                                } else {
-                                    calibreDescVal = categoriaReal; // Si no hay subgrupo, mostrar categoría
-                                    colorRojo = true;
-                                }
-                                
-                                // Validar coincidencia de categoría
-                                if (subGrupo && !CATEGORIAS_FRUTIST[categoriaReal].includes(subGrupo)) {
-                                    colorRojo = true;
-                                }
-                            } 
-                            // 3. SI ES POR MILÍMETROS (K, A, B...) → SIGUE IGUAL
-                            else if (CALIBRES_MAP[calibreAR]) {
-                                calibreDescVal = CALIBRES_MAP[calibreAR]; // Ej: "+18mm"
-                                const mmLetra = parseInt(calibreDescVal.replace(/\D/g, ''), 10);
-                                const mmSub = CALIBRES_SUBGRUPO[subGrupo] ? parseInt(CALIBRES_SUBGRUPO[subGrupo].replace(/\D/g, ''), 10) : null;
-                                if (mmSub && mmLetra !== mmSub) colorRojo = true;
-                            } 
-                            else {
-                                calibreDescVal = calibreAR;
+                            const categoriasPermitidas = ["JUMBO", "MIXED", "REGULAR", "SUPER JUMBO"];
+
+                            if (!calibreAR) {
+                                calibreDescVal = "";
                                 colorRojo = true;
+                            } else {
+
+                                let categoriaReal = CALIBRES_MAP[calibreAR] || calibreAR;
+                                if (categoriaReal === "MEDIUM") categoriaReal = "MIXED";
+
+                                // ❌ SOLO categorías → letras NO permitidas
+                                if (!categoriasPermitidas.includes(categoriaReal)) {
+                                    calibreDescVal = calibreAR; // muestra lo que escribió
+                                    colorRojo = true;           // rojo = error
+                                }
+                                // ✅ categoría válida → mostrar mm del subgrupo
+                                else if (subGrupo && CALIBRES_SUBGRUPO[subGrupo]) {
+                                    calibreDescVal = CALIBRES_SUBGRUPO[subGrupo];
+                                }
+                                else {
+                                    calibreDescVal = categoriaReal;
+                                    colorRojo = true;
+                                }
                             }
-                        } 
-                        else if (subGrupo && CALIBRES_SUBGRUPO[subGrupo]) {
-                            calibreDescVal = CALIBRES_SUBGRUPO[subGrupo];
-                        } 
-                        else {
-                            calibreDescVal = "";
-                            colorRojo = true;
                         }
-                    } else {
+                        else {
                         // CLIENTES REGULARES
                         calibreDescVal = CALIBRES_MAP[calibreAR] || "";
                         if (!calibreAR) colorRojo = true;
@@ -1131,19 +1105,33 @@ ${listaIncidencias}
             VALIDACIÓN CLIENTE / SUBGRUPO / CALIBRE
             =============================== */
             if (esClienteEspecial) {
-                // ✅ VALIDAR CALIBRE (OBLIGATORIO - INDIVIDUAL)
-                if (!calibreAR && c === 33) {
-                    td.style.background = "red";
-                    td.title = "❌ Calibre AR vacío (obligatorio para Fruitist/Costco)";
-                }
-                
-                // ✅ VALIDAR SUBGRUPO (OBLIGATORIO - INDIVIDUAL)
-                if (!subGrupo && c === 56) {
-                    td.style.background = "red";
-                    td.title = "❌ Subgrupo vacío (obligatorio para Fruitist/Costco)";
-                }
+                        const categoriasPermitidas = ["JUMBO", "MIXED", "REGULAR", "SUPER JUMBO"];
+                        if (c === 33) {
 
-                } else {
+                            if (!calibreAR) {
+                                // vacío
+                                td.style.background = "red";
+                                td.title = "❌ Calibre AR vacío (obligatorio)";
+                            } 
+                            else {
+                                const categoria = calibreAR.toString().trim().toUpperCase();
+
+                                // ❌ NO es palabra permitida → error
+                                if (!categoriasPermitidas.includes(categoria)) {
+                                    td.style.color = "red";
+                                    td.style.fontWeight = "bold";
+                                    td.title = "❌ Solo permitido: JUMBO / MIXED / REGULAR / SUPER JUMBO";
+                                }
+                            }
+                        }
+                        if (c === 56) {
+                            if (!subGrupo) {
+                                td.style.background = "red";
+                                td.title = "❌ Subgrupo vacío (obligatorio)";
+                            }
+                        }
+
+                    }else {
                     // VALIDAR CALIBRE AR VACÍO
                     if (!calibreAR && c === 33) {
                         td.style.background = "red";
@@ -1168,8 +1156,7 @@ ${listaIncidencias}
                         td.title = "❌ Cliente regular NO debe tener Subgrupo";
                     }
                 }
-
-/* ===============================
+                /* ===============================
                 VALIDACIÓN TRAZABILIDAD
                 =============================== */
                 if (c === 58) {
