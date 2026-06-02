@@ -1,0 +1,243 @@
+﻿/* ============================
+   CONTROLES
+============================ */
+
+/* CONTENEDOR: 3 columnas iguales */
+.controls {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  align-items: start;
+}
+
+/* BLOQUES INTERNOS */
+.controls > div {
+  display: flex;
+  flex-direction: column;
+}
+
+/* INPUTS Y SELECTS: MISMA ALTURA */
+.controls select,
+.controls input[type="file"] {
+  width: 100%;
+  height: 40px;
+  padding: 0 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* Corrige el input file */
+.controls input[type="file"] {
+  padding: 6px;
+}
+
+/* FOCUS */
+.controls select:focus-visible,
+.controls input[type="file"]:focus-visible {
+  border-color: #007BFF;
+  box-shadow: 0 0 5px rgba(0,123,255,0.3);
+  outline: none;
+}
+
+/* ===============================
+   NOTIFICACIÓN CAMPANA
+=============================== */
+.notification {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  /* ❌ quitamos transition: all */
+  transition: background-color 0.10s ease;
+}
+
+/* ICONO */
+.notification i {
+  font-size: 20px;
+  color: #fff;
+}
+
+/* CONTADOR */
+.notification .count {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #dc2626;
+  color: #fff;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  font-weight: 700;
+  display: block;
+}
+
+/* ===============================
+   ESTADO OK
+=============================== */
+.notification.ok {
+  background-color: #2f7cc0;
+  animation: bellPulse 1.6s ease-in-out infinite;
+}
+
+.notification.ok .count {
+  background: #2f7cc0;
+}
+
+/* ===============================
+   ESTADO ERROR
+=============================== */
+.notification.error {
+  background-color: #dc2626;
+  animation: bellShake 0.6s ease-in-out infinite alternate;
+}
+
+/* ===============================
+   ANIMACIONES
+=============================== */
+@keyframes bellShake {
+  0%   { transform: rotate(-8deg); }
+  100% { transform: rotate(8deg); }
+}
+
+@keyframes bellPulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+/* ===============================
+   HOVER (sin romper animación)
+=============================== */
+.notification:hover {
+  filter: brightness(1.1);
+}
+
+/* ===============================
+   TABLA
+=============================== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  margin-top: 8px;
+}
+
+/* SOLO PALTA */
+#dashboardPalta th,
+#dashboardPalta td {
+  padding: 7px 9px;
+  border: 1px solid var(--border, #ccc);
+  text-align: left;
+  font-size: 12px;
+  color: #2b2b2b;
+  max-width: 250px;
+  word-wrap: break-word;
+}
+
+
+/* CABECERA */
+th {
+  background-color: #f3f3f3;
+  font-weight: 600;
+}
+
+/* FILAS */
+tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+/* HOVER */
+tr:hover {
+  background-color: #e8f0ff;
+}
+
+/* CONTADOR TOTAL */
+#totalFilas {
+  margin-top: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #333;
+}
+
+/* columnas fijas solo para palta */
+.palta-col {
+  position: sticky;
+  background: #fff;
+}
+
+.palta-col-0 { left: 0; min-width: 90px; z-index: 4; }
+.palta-col-1 { left: 90px; min-width: 108px; z-index: 3; }
+.palta-col-6 { left: 198px; min-width: 246px; z-index: 3; }
+.palta-col-9 { left: 435px; min-width: 90px; z-index: 3; }
+
+
+#resultsTable {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+/* columnas fijas */
+.dashboard-wrapper #runReviewPalta:disabled,
+.dashboard-wrapper #exportPalta:disabled {
+  background: #b8c2cc;
+  cursor: not-allowed;
+  opacity: 0.7; /* opcional, recomendado */
+}
+
+/* SweetAlert — selector fechas exportación (igual que Plagas Palta) */
+.swal-fechas-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.swal-fecha-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f4f6f8;
+  border-radius: 10px;
+  padding: 8px 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.12);
+}
+
+.swal-fecha-card.actual {
+  background: #e3f2fd;
+  box-shadow: 0 2px 8px rgba(47, 124, 192, 0.25);
+}
+
+.swal-fecha-text {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.swal-fecha-delete {
+  border: none;
+  background: #e74c3c;
+  color: #fff;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+}
+
+.swal-fecha-delete:hover {
+  background: #c0392b;
+}

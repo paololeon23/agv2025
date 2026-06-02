@@ -1,0 +1,64 @@
+<div class="dashboard-wrapper">
+
+  <h2>Revisión de Excel – Palta</h2>
+
+  <div class="controls">
+
+    <!-- EXCEL -->
+    <div class="file-box" id="boxPalta">
+      <label class="icon-label">
+        <i class="fi fi-rr-folder"></i> Excel Palta (MPCP)
+      </label><br />
+      <input type="file" id="filePalta" accept=".xlsx,.xls">
+    </div>
+
+    <!-- FECHA INSPECCIÓN -->
+    <div class="select-wrapper">
+      <label class="icon-label">
+        <i class="fi fi-rr-calendar"></i> Fecha de inspección
+      </label><br />
+      <select id="inspectionDate" class="styled-select" disabled>
+        <option value="" disabled selected>Selecciona fecha</option>
+      </select>
+    </div>
+
+    <!-- Icono notificación -->
+    <div id="notificationIcon" class="notification ok" title="Notificaciones">
+      <i class="fa-solid fa-bell"></i>
+      <span id="notificationCount" class="count">0</span>
+    </div>
+
+  </div>
+
+  <div class="controls controls1">
+
+    <div><button id="runReviewPalta" disabled>▶ Revisar Excel</button></div>
+    <button id="exportPalta" style="padding: 10px 14px;" disabled>Excel filtrado</button>
+    <div><button id="clearPalta" style="padding:10px 14px;">Limpiar</button></div>
+
+  </div>
+
+  <div class="info-box">
+    ⚠️ Atención:
+    <ul>
+      <li>Los campos se marcarán en <b>rojo</b> si falta cargar información o el valor no cumple.</li>
+      <li>El archivo debe ser cartilla <b>MPCP</b> en estado <b>ENVIADA</b> (fila 4).</li>
+      <li>Se requieren <b>157 columnas</b>. Filtra y revisa por <b>fecha de inspección</b>.</li>
+      <li>Exportar: <b>solo la fecha en revisión</b> o <b>unir varias fechas</b> de inspección.</li>
+    </ul>
+  </div>
+
+  <div class="table-wrap">
+    <table id="resultsTable">
+      <thead>
+        <tr id="resultsHeader"></tr>
+      </thead>
+      <tbody id="resultsBody"></tbody>
+    </table>
+
+    <div id="totalFilas"
+      style="margin-top:10px;font-weight:600;color:#0E1B40;">
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,70 @@
+<div class="dashboard-wrapper">
+
+  <h2>Revisión de Excel – PT Palta</h2>
+
+  <div class="controls">
+
+    <div class="file-box" id="boxPTPalta">
+      <label class="icon-label">
+        <i class="fi fi-rr-folder"></i> Excel Producto Terminado – Palta
+      </label><br />
+      <input type="file" id="filePTPalta" accept=".xlsx,.xls">
+    </div>
+
+    <div class="select-wrapper pt-palta-col-embalaje">
+      <label class="icon-label">
+        <i class="fi fi-rr-calendar"></i> Fecha de embalaje
+      </label><br />
+      <select id="embalajeDatePTPalta" class="styled-select" disabled>
+        <option value="" disabled selected>Selecciona fecha</option>
+      </select>
+    </div>
+
+    <div class="select-wrapper pt-palta-col-cosecha">
+      <label class="icon-label">
+        <i class="fi fi-rr-calendar"></i> Fecha de cosecha
+      </label><br />
+      <input type="text" id="cosechaDatePTPalta" class="styled-select disabled-select" disabled readonly value="Auto-Fecha">
+    </div>
+
+    <div class="pt-palta-col-vacia" aria-hidden="true"></div>
+
+  </div>
+
+  <div class="controls controls1">
+
+    <div><button id="runReviewPTPalta" disabled>▶ Revisar PT</button></div>
+    <button id="exportPTPalta" style="padding: 10px 14px;" disabled>Exportar Excel</button>
+    <div><button id="clearPTPalta" style="padding:10px 14px;">Limpiar</button></div>
+
+  </div>
+
+  <div class="info-box">
+    ⚠️ Atención:
+    <ul>
+      <li>Cartilla <b>PTCP</b>, estado <b>ENVIADA</b> (fila 4), <b>119 columnas</b>.</li>
+      <li>Los campos se marcarán en <b>rojo</b> si falta información o no cumple.</li>
+      <li>Filtra por <b>fecha de embalaje</b> (col. 55); la <b>fecha de cosecha</b> (col. 54) se sincroniza sola.</li>
+      <li>Columna <b>Etapa/Campo</b> se calcula desde la trazabilidad (col. 73).</li>
+      <li>Exportar: <b>solo la fecha en revisión</b> o <b>unir varias fechas</b>; 93 columnas filtradas, numéricas salvo 1, 4, 5, 10, 34, 54, 55 y 73; vacíos sin rellenar.</li>
+    </ul>
+  </div>
+
+  <div id="containerBuscadorPTPalta" style="display: none; justify-content: flex-end;">
+    <input type="text" id="inputBusquedaPTPalta" placeholder="Buscar por ID o Lote...">
+  </div>
+
+  <div class="table-wrap" id="wrapperPTPalta">
+    <table id="resultsTablePTPalta" class="resultsTable-compact-mode">
+      <thead>
+        <tr id="resultsHeaderPTPalta"></tr>
+      </thead>
+      <tbody id="resultsBodyPTPalta"></tbody>
+    </table>
+
+    <div id="totalFilasPTPalta"
+      style="margin-top:10px;font-weight:600;color:#0E1B40;">
+    </div>
+  </div>
+
+</div>

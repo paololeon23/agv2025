@@ -79,6 +79,21 @@ document.addEventListener("DOMContentLoaded", () => {
             js: "esparrago/plagas-esparrago/plagas-esparrago.js",
             title: "Plagas Espárrago"
         },
+        mppalta: {
+            html: "palta/palta.html",
+            js: "palta/palta.js",
+            title: "Materia Prima Palta"
+        },
+        plagaspalta: {
+            html: "palta/plagas-palta/plagas-palta.html",
+            js: "palta/plagas-palta/plagas-palta.js",
+            title: "Plagas Palta"
+        },
+        ptpalta: {
+            html: "palta/pt-palta/pt-palta.html",
+            js: "palta/pt-palta/pt-palta.js",
+            title: "Producto Terminado Palta"
+        },
         agvchile: {
             html: "trazabilidad/chile/chile.html",
             js: "trazabilidad/chile/chile.js",

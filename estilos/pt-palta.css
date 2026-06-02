@@ -1,0 +1,744 @@
+/* PT PALTA — controles */
+.dashboard-wrapper:has(#filePTPalta) {
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+}
+
+.dashboard-wrapper:has(#filePTPalta) .controls {
+  display: grid;
+  /* 4 columnas como Plagas: col. 4 vacía; fechas solo el ancho del input */
+  grid-template-columns: minmax(0, 1fr) max-content max-content minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  width: 100%;
+}
+
+.dashboard-wrapper:has(#filePTPalta) .controls > div {
+  min-width: 0;
+}
+
+.dashboard-wrapper:has(#filePTPalta) .pt-palta-col-cosecha {
+  margin-left: -4px;
+}
+
+.dashboard-wrapper:has(#filePTPalta) .controls.controls1 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.dashboard-wrapper:has(#filePTPalta) .controls.controls1 button {
+  width: auto;
+}
+
+.dashboard-wrapper:has(#filePTPalta) .pt-palta-col-vacia {
+  min-height: 1px;
+}
+
+.dashboard-wrapper:has(#filePTPalta) .controls > .select-wrapper {
+  width: fit-content;
+  max-width: none;
+}
+
+/* Select embalaje */
+#embalajeDatePTPalta {
+  width: 9.25rem;
+  max-width: 9.25rem;
+  min-width: 0;
+  padding: 8px 10px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: white;
+  color: #333;
+  appearance: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D'10'%20height%3D'7'%20viewBox%3D'0%200%2010%207'%20fill%3D'none'%20xmlns%3D'http://www.w3.org/2000/svg'%3E%3Cpath%20d%3D'M1%201L5%206L9%201'%20stroke%3D'%23333'%20stroke-width%3D'1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 10px 7px;
+  padding-right: 35px;
+  box-sizing: border-box;
+}
+
+#embalajeDatePTPalta:hover {
+  border-color: #007BFF;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+#embalajeDatePTPalta:focus {
+  outline: none;
+  border-color: #007BFF;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Cosecha (solo lectura) — tono palta */
+#cosechaDatePTPalta {
+  width: 10.5rem;
+  max-width: 10.5rem;
+  min-width: 0;
+  height: 38px;
+  padding: 0 6px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 8px;
+  border: 1px solid #5a9e5c;
+  background: linear-gradient(160deg, #f4fbf2 0%, #d8efd6 45%, #b8e0b5 100%);
+  color: #1b5e20;
+  cursor: not-allowed;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 1px 3px rgba(46, 125, 50, 0.15);
+  text-align: center;
+  box-sizing: border-box;
+  pointer-events: none;
+  letter-spacing: 0.02em;
+}
+
+#cosechaDatePTPalta.pt-cosecha-error {
+  border: 2px solid #c62828 !important;
+  background: #ffebee !important;
+  color: #b71c1c !important;
+  box-shadow: inset 0 1px 2px rgba(198, 40, 40, 0.12) !important;
+}
+
+/* PT PALTA — tabla (mismos estilos que pt-arandano, IDs propios) */
+#resultsTablePTPalta.resultsTable-compact-mode tbody td {
+    height: 34px !important;
+    padding: 2px 8px !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    vertical-align: middle !important;
+    border: 1px solid #e0e0e0 !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#resultsTablePTPalta tbody td.pt-acciones-cell,
+#resultsTablePTPalta thead th.pt-th-acciones {
+    width: 120px !important;
+    min-width: 120px !important;
+    max-width: 120px !important;
+    text-align: center;
+    vertical-align: middle !important;
+    overflow: hidden !important;
+    box-sizing: border-box;
+}
+
+#resultsTablePTPalta tbody td.pt-acciones-cell {
+    display: table-cell !important;
+    padding: 2px 4px !important;
+}
+
+#resultsTablePTPalta .pt-acciones-inner {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 2px;
+    width: 100%;
+    max-width: 112px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+#resultsTablePTPalta .pt-drag-icon {
+    cursor: grab;
+    font-size: 12px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+#resultsTablePTPalta .pt-color-btn {
+    width: 16px;
+    height: 17px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+#resultsTablePTPalta .pt-color-verde {
+    background: linear-gradient(to right, #afd8af, #afd8af);
+}
+
+#resultsTablePTPalta .pt-color-naranja {
+    background: linear-gradient(to right, #ff9900, #ffcc66);
+}
+
+#resultsTablePTPalta .pt-wa-btn {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: #25D366;
+}
+
+#resultsTablePTPalta tbody td:first-child,
+#resultsTablePTPalta thead th.pt-th-acciones {
+    width: 120px !important;
+    min-width: 120px !important;
+    max-width: 120px !important;
+    text-align: center;
+}
+
+#resultsTablePTPalta tbody td:first-child {
+    display: table-cell !important;
+    padding: 2px 4px !important;
+    cursor: default;
+    overflow: hidden !important;
+}
+
+#resultsTablePTPalta .pt-sel-orden {
+    display: inline-block;
+    min-width: 11px;
+    font-size: 9px;
+    font-weight: 700;
+    line-height: 1;
+    color: transparent;
+    flex-shrink: 0;
+    text-align: center;
+}
+
+#resultsTablePTPalta .pt-sel-orden.pt-sel-orden-visible {
+    color: #0e1b40;
+}
+
+#resultsTablePTPalta tbody tr.pt-row-last-check .pt-sel-orden.pt-sel-orden-visible {
+    color: #2e7d32;
+}
+
+#resultsTablePTPalta .pt-sel-orden.pt-sel-orden-grupo {
+    font-size: 8px;
+    color: #5a6a7a;
+    letter-spacing: -0.02em;
+}
+
+#resultsTablePTPalta .pt-row-sel-cb:disabled {
+    cursor: not-allowed;
+    opacity: 0.85;
+}
+
+#resultsTablePTPalta .pt-row-sel-cb {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    cursor: pointer;
+    accent-color: #1565c0;
+    margin: 0;
+    opacity: 1;
+    appearance: auto;
+    -webkit-appearance: checkbox;
+    background-color: #fff;
+    border: 1px solid #5a6a7e;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.85);
+}
+
+#resultsTablePTPalta tbody tr.pt-row-check-grupo .pt-row-sel-cb {
+    accent-color: #0d47a1;
+    border-color: #1565c0;
+    cursor: default;
+}
+
+#resultsTablePTPalta thead th.pt-th-acciones {
+    vertical-align: middle;
+    font-size: 11px;
+    font-weight: bold;
+    color: #0e1b40;
+}
+
+/* Columnas ocultas: clase persistente tras re-render / agrupar */
+#resultsTablePTPalta th.pt-col-oculta,
+#resultsTablePTPalta td.pt-col-oculta {
+    display: none !important;
+}
+
+/* Filas ocultas por filtro de columna (persiste tras agrupar/re-render) */
+#resultsTablePTPalta tbody tr.pt-row-filter-hidden,
+#resultsTablePTPalta tbody tr[hidden] {
+    display: none !important;
+}
+
+/* Grupos: fondo sólido en todas las celdas (no transparente) */
+#resultsTablePTPalta tbody tr.pt-row-grupo-verde td {
+    background-color: #d4edd4 !important;
+}
+
+#resultsTablePTPalta tbody tr.pt-row-grupo-naranja td {
+    background-color: #ffe4c4 !important;
+}
+
+#resultsTablePTPalta tbody tr.pt-row-grupo-verde td.pt-acciones-cell,
+#resultsTablePTPalta tbody tr.pt-row-grupo-verde td.pt-acciones-cell .pt-acciones-inner {
+    background-color: #d4edd4 !important;
+}
+
+#resultsTablePTPalta tbody tr.pt-row-grupo-naranja td.pt-acciones-cell,
+#resultsTablePTPalta tbody tr.pt-row-grupo-naranja td.pt-acciones-cell .pt-acciones-inner {
+    background-color: #ffe4c4 !important;
+}
+
+#resultsTablePTPalta tbody tr.pt-row-grouped td:first-child {
+    box-shadow: inset 3px 0 0 #5a8f5a;
+}
+
+/* Lote duplicado dentro de un grupo: mantiene rojo, no el verde/naranja del bloque */
+#resultsTablePTPalta tbody tr.pt-row-grouped.pt-row-duplicado td {
+    background-color: #ffcccc !important;
+}
+
+#resultsTablePTPalta tbody tr.pt-row-grouped.pt-row-duplicado td.pt-acciones-cell,
+#resultsTablePTPalta tbody tr.pt-row-grouped.pt-row-duplicado td.pt-acciones-cell .pt-acciones-inner {
+    background-color: #ffcccc !important;
+}
+
+#resultsTablePTPalta tbody tr.pt-row-grouped.pt-row-duplicado td:first-child {
+    box-shadow: inset 3px 0 0 #c62828;
+}
+
+/* Borde “última fila al marcar” solo mientras seleccionas filas libres (antes de agrupar) */
+#resultsTablePTPalta tbody tr.pt-row-last-check:not(.pt-row-grouped) td:first-child {
+    box-shadow: inset 0 0 0 2px #5a8f5a;
+    outline: none;
+}
+#resultsTablePTPalta tbody td:first-child > span {
+    cursor: grab;
+}
+
+#resultsTablePTPalta tbody td.pt-acciones-cell:hover {
+    cursor: default;
+}
+
+#wrapperPTPalta {
+    max-height: 550px;
+    max-width: 100%;
+    overflow: auto;
+    position: relative;
+}
+
+#resultsHeaderPTPalta th {
+    position: sticky;
+    top: 0;
+    background-color: #f1f3f5;
+    color: #0E1B40;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 8px 6px;
+    border-bottom: 2px solid #dee2e6;
+    white-space: nowrap;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    vertical-align: bottom;
+}
+
+#resultsHeaderPTPalta .pt-th-filter-wrap {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+    min-width: 72px;
+}
+
+#resultsHeaderPTPalta .pt-th-label {
+    font-size: 11px;
+    line-height: 1.2;
+    text-align: center;
+}
+
+#resultsHeaderPTPalta th.pt-th-filtered .pt-th-filter-btn {
+    background: #2f7cc0;
+    color: #fff;
+    border-color: #2f7cc0;
+}
+
+#resultsHeaderPTPalta .pt-th-filter-btn {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    font-size: 12px;
+    line-height: 1;
+    border: 1px solid #b0bec5;
+    border-radius: 3px;
+    background: #fff;
+    color: #444;
+    cursor: pointer;
+}
+
+#resultsHeaderPTPalta .pt-th-filter-btn:hover {
+    border-color: #2f7cc0;
+    color: #2f7cc0;
+}
+
+/*
+ * Menú filtro PT Palta — solo #ptFilterMenuPTPalta (evita button global de styles_columnas.css)
+ */
+#ptFilterMenuPTPalta {
+    display: none;
+    position: fixed;
+    z-index: 10001;
+    width: 228px;
+    background: #fafcfd;
+    border: 1px solid #b8c9d9;
+    box-shadow: 0 6px 18px rgba(14, 27, 64, 0.18);
+    font-size: 12px;
+    font-weight: normal;
+    color: #0e1b40;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+#ptFilterMenuPTPalta button.pt-fm-item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 7px 12px;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    color: #0e1b40;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+#ptFilterMenuPTPalta button.pt-fm-item:hover {
+    background: #e3f0fa;
+    color: #0e1b40;
+}
+
+#ptFilterMenuPTPalta button.pt-fm-clear {
+    border-bottom: 1px solid #d5e3ef;
+    color: #c62828;
+}
+
+#ptFilterMenuPTPalta button.pt-fm-clear:hover {
+    background: #ffebee;
+    color: #b71c1c;
+}
+
+#ptFilterMenuPTPalta .pt-fm-search-wrap {
+    padding: 8px 10px;
+    background: #fff;
+    border-bottom: 1px solid #d5e3ef;
+}
+
+#ptFilterMenuPTPalta .pt-fm-search {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 5px 8px;
+    border: 1px solid #b0bec5;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #222;
+    background: #fff;
+}
+
+#ptFilterMenuPTPalta .pt-fm-search:focus {
+    outline: none;
+    border-color: #2f7cc0;
+}
+
+#ptFilterMenuPTPalta .pt-fm-check {
+    display: block;
+    padding: 4px 12px;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #333;
+}
+
+#ptFilterMenuPTPalta .pt-fm-check:hover {
+    background: #eef6ec;
+}
+
+#ptFilterMenuPTPalta .pt-fm-all {
+    background: #f0f7ee;
+    border-bottom: 1px solid #c8e6c9;
+    font-weight: 600;
+    color: #1b5e20;
+}
+
+#ptFilterMenuPTPalta input[type="checkbox"] {
+    accent-color: #2e7d32;
+    margin-right: 6px;
+}
+
+#ptFilterMenuPTPalta .pt-fm-list {
+    max-height: 180px;
+    overflow-y: auto;
+    padding: 4px 0;
+    background: #fff;
+}
+
+#ptFilterMenuPTPalta .pt-fm-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 10px;
+    background: #eef2f6;
+    border-top: 1px solid #d5e3ef;
+}
+
+#ptFilterMenuPTPalta button.pt-fm-ok {
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    border: 1px solid #2569a8;
+    border-radius: 4px;
+    background: #2f7cc0;
+    color: #fff;
+    cursor: pointer;
+}
+
+#ptFilterMenuPTPalta button.pt-fm-ok:hover {
+    background: #2569a8;
+    color: #fff;
+}
+
+#ptFilterMenuPTPalta button.pt-fm-cancel {
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    border: 1px solid #9e9e9e;
+    border-radius: 4px;
+    background: #fff;
+    color: #424242;
+    cursor: pointer;
+}
+
+#ptFilterMenuPTPalta button.pt-fm-cancel:hover {
+    background: #f5f5f5;
+    color: #212121;
+}
+
+#resultsTablePTPalta {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+
+#resultsTablePTPalta th:first-child,
+#resultsTablePTPalta td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 101;
+    background-color: #f8f9fa;
+    border-right: 1px solid #ddd;
+}
+
+#resultsHeaderPTPalta th:first-child,
+#resultsHeaderPTPalta th.pt-th-acciones {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 20;
+    width: 112px !important;
+    min-width: 112px !important;
+    max-width: 112px !important;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#resultsTablePTPalta tbody td:first-child {
+    background-color: #ffffff;
+    z-index: 19;
+}
+
+#resultsTablePTPalta tbody tr:hover td:first-child {
+    background-color: #f8f9fa;
+}
+
+#inputBusquedaPTPalta {
+    padding: 8px 15px;
+    width: 300px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+#inputBusquedaPTPalta:focus {
+    border-color: #0E1B40;
+    color: #0E1B40;
+    box-shadow: 0 0 5px rgba(14, 27, 64, 0.2);
+}
+
+#customContextMenuPTPalta {
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    min-width: 185px;
+    box-shadow: 0px 8px 20px rgba(0,0,0,0.2);
+    z-index: 10000;
+    border-radius: 8px;
+    padding: 6px 0;
+    border: none !important;
+    overflow: hidden;
+    font-family: sans-serif;
+}
+
+#customContextMenuPTPalta .ctx-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+}
+
+#customContextMenuPTPalta .ctx-item:hover {
+    background-color: #2f7cc0;
+    color: white;
+}
+
+#customContextMenuPTPalta .ctx-item + .ctx-item {
+    border-top: 1px solid #f5f5f5;
+}
+
+/* Menú contextual filas — agrupar (solo PT Palta) */
+#ptRowContextMenuPTPalta {
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    min-width: 210px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    z-index: 10002;
+    border-radius: 8px;
+    padding: 6px 0;
+    overflow: hidden;
+    font-family: sans-serif;
+}
+
+#ptRowContextMenuPTPalta .ctx-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+}
+
+#ptRowContextMenuPTPalta .ctx-item:hover:not(.pt-ctx-disabled) {
+    background-color: #2f7cc0;
+    color: white;
+}
+
+#ptRowContextMenuPTPalta .ctx-item.pt-ctx-disabled {
+    color: #aaa;
+    cursor: default;
+}
+
+#ptRowContextMenuPTPalta .pt-ctx-hint {
+    padding: 8px 12px;
+    font-size: 11px;
+    color: #555;
+    background: #f5f8fa;
+    border-bottom: 1px solid #e0e0e0;
+    line-height: 1.35;
+}
+
+#ptRowContextMenuPTPalta .ctx-item + .ctx-item {
+    border-top: 1px solid #f5f5f5;
+}
+
+#ptLoteContextMenuPTPalta {
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    min-width: 185px;
+    box-shadow: 0px 8px 20px rgba(0,0,0,0.2);
+    z-index: 10000;
+    border-radius: 8px;
+    padding: 6px 0;
+    border: none !important;
+    overflow: hidden;
+    font-family: sans-serif;
+}
+
+#ptLoteContextMenuPTPalta .ctx-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+}
+
+#ptLoteContextMenuPTPalta .ctx-item:hover {
+    background-color: #f0f4ff;
+    color: #0E1B40;
+}
+
+
+.dashboard-wrapper:has(#filePTPalta) #runReviewPTPalta:disabled,
+.dashboard-wrapper:has(#filePTPalta) #exportPTPalta:disabled {
+    background: #b8c2cc;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.dashboard-wrapper:has(#filePTPalta) #runReviewPTPalta:not(:disabled) {
+    background: #2f7cc0;
+    color: #fff;
+}
+
+.dashboard-wrapper:has(#filePTPalta) #exportPTPalta:not(:disabled) {
+    background: #2f7cc0;
+    color: #fff;
+}
+
+/* SweetAlert — selector fechas exportación (igual que Plagas Palta) */
+.swal-fechas-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.swal-fecha-card {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f4f6f8;
+    border-radius: 10px;
+    padding: 8px 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.12);
+}
+
+.swal-fecha-card.actual {
+    background: #e3f2fd;
+    box-shadow: 0 2px 8px rgba(47, 124, 192, 0.25);
+}
+
+.swal-fecha-text {
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+.swal-fecha-delete {
+    border: none;
+    background: #e74c3c;
+    color: #fff;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
+}
+
+.swal-fecha-delete:hover {
+    background: #c0392b;
+}

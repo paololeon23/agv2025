@@ -884,9 +884,12 @@
   }
 
   function valorExportConNumeroParcial(val, jsCol) {
+    if (val === undefined || val === null) return undefined;
+    if (typeof val === "string" && val.trim() === "") return undefined;
     if (!columnaExportComoNumero(jsCol)) return val;
     const n = parseFlexibleNumber(val);
-    return val === "" || val === null || val === undefined || Number.isNaN(n) ? val : n;
+    if (Number.isNaN(n)) return valorCeldaParaMostrar(val);
+    return n;
   }
 
   // ===============================
